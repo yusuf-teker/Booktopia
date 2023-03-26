@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.bookfinder.screens.common.BookList
+import com.example.bookfinder.screens.details.BookDetailsScreen
 import com.example.bookfinder.ui.theme.BookFinderTheme
 import com.example.bookfinder.util.mockItems
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,6 +27,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     BookList(mockItems)
+                    //BookDetailsScreen(book = mockItems.get(2))
                 }
             }
         }

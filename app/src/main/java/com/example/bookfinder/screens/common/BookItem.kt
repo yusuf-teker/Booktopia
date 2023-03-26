@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -44,7 +45,7 @@ fun BookItem(book: Book) {
         model = ImageRequest.Builder(context)
             .data(
                 if (book.volumeInfo?.imageLinks?.thumbnail.isNullOrEmpty())
-                   R.drawable.placeholder
+                   R.drawable.no_image
                 else
                     book.volumeInfo?.imageLinks?.thumbnail
             )
@@ -113,12 +114,13 @@ fun BookItem(book: Book) {
                 ) {
 
                     Text(
-                        text = book.volumeInfo?.title ?: "No title.",
-                        style = MaterialTheme.typography.h6
+                        text = book.volumeInfo?.title ?: stringResource(id = R.string.book_title_not_found),
+                        style = MaterialTheme.typography.h6,
+                        modifier = Modifier.fillMaxWidth(0.6f)
                     )
                     Text(
                         text = book.volumeInfo?.description
-                            ?: "No description.",
+                            ?: stringResource(id = R.string.book_description_not_found),
                         style = MaterialTheme.typography.body2,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 3,
@@ -146,7 +148,7 @@ fun BookItem(book: Book) {
 @Composable
 fun BookItemPreview() {
     BookFinderTheme {
-        BookItem(book = Book("", "1", "kind1", SearchInfo(""), "", null))
+        BookItem(book = Book( "1", "kind1", SearchInfo(""), "", null))
     }
 }
 
@@ -160,9 +162,8 @@ fun BookItemInScreenPreview() {
         ) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                //verticalArrangement = Arrangement.Center
             ) {
-                BookItem(book = Book("", "1", "kind1", SearchInfo(""), "", null))
+                BookItem(book = Book( "1", "kind1", SearchInfo(""), "", null))
             }
 
         }
