@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.bookfinder.screens.categories.CategoriesScreen
 import com.example.bookfinder.screens.common.BookList
 import com.example.bookfinder.screens.details.BookDetailsScreen
+import com.example.bookfinder.screens.favoriteDetails.FavoriteDetailsScreen
 import com.example.bookfinder.ui.theme.BookFinderTheme
 import com.example.bookfinder.util.categories
 import com.example.bookfinder.util.mockItems
@@ -32,7 +33,8 @@ class MainActivity : ComponentActivity() {
                     categories
                     //BookList(mockItems)
                     //BookDetailsScreen(book = mockItems.get(2))
-                    CategoriesScreen()
+                    //CategoriesScreen()
+                    FavoriteDetailsScreen()
                 }
             }
         }
