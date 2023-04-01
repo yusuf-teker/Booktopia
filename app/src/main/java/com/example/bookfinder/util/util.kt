@@ -1,11 +1,9 @@
 package com.example.bookfinder.util
 
-import android.util.Log
-import androidx.compose.runtime.internal.liveLiteral
 import androidx.compose.ui.graphics.Color
 import com.example.bookfinder.R
-import com.example.bookfinder.model.*
-import com.example.bookfinder.screens.common.BookItem
+import com.example.bookfinder.data.model.remote.*
+
 val harryPotter = createVolumeInfo("https://m.media-amazon.com/images/I/51mFoFmu0EL._SX335_BO1,204,203,200_.jpg","Harry Potter and the Chamber of Secrets")
 val mathBook = createVolumeInfo("http://books.google.com/books/content?id=kYYJLhL2arwC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api")
 val mockItems =

@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.example.bookfinder.ui.theme.BookFinderTheme
 
 @Composable
-fun SearchWidget(onSearch: (String) -> Unit) {
+fun SearchWidget(query: String, onQueryChanged: (String) -> Unit) {
     var text by remember { mutableStateOf("") }
     var isSearching by remember { mutableStateOf(false) }
 
@@ -50,7 +50,7 @@ fun SearchWidget(onSearch: (String) -> Unit) {
                 ),
                 keyboardActions = KeyboardActions(
                     onSearch = {
-                        onSearch(text)
+                        onQueryChanged(text)
                     }
                 ),
                 placeholder = {
@@ -103,7 +103,7 @@ fun SearchWidget(onSearch: (String) -> Unit) {
 fun SearchWidgetPreview() {
     BookFinderTheme {
         val context = LocalContext.current
-        SearchWidget(onSearch = {
+        SearchWidget("",onQueryChanged = {
             Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
         })
     }

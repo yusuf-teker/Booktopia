@@ -1,4 +1,4 @@
-package com.example.bookfinder.model
+package com.example.bookfinder.data.model.remote
 
 import androidx.compose.ui.graphics.Color
 

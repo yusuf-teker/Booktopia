@@ -26,8 +26,8 @@ import coil.request.ImageRequest
 import coil.size.Size
 import coil.transform.RoundedCornersTransformation
 import com.example.bookfinder.R
-import com.example.bookfinder.model.Book
-import com.example.bookfinder.model.SearchInfo
+import com.example.bookfinder.data.model.remote.Book
+import com.example.bookfinder.data.model.remote.SearchInfo
 import com.example.bookfinder.screens.common.FavoriteIcon
 import com.example.bookfinder.ui.theme.BookFinderTheme
 import com.example.bookfinder.util.harryPotter

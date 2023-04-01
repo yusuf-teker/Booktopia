@@ -1,6 +1,5 @@
 package com.example.bookfinder.screens.categories
 
-import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -12,33 +11,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.bookfinder.screens.common.SearchWidget
 import com.example.bookfinder.R
-import com.example.bookfinder.model.Category
+import com.example.bookfinder.data.model.remote.Category
 import com.example.bookfinder.util.categories
 
 
 @Composable
 fun CategoriesScreen(){
-    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
 
     ) {
-        SearchWidget(
-            onSearch = {
-                Toast.makeText(context,"",Toast.LENGTH_SHORT).show()
-            }
-        )
         Categories()
     }
 }
@@ -80,7 +71,7 @@ fun CategoryItem(category: Category) {
             .fillMaxWidth()
             .height(96.dp)
             .clickable {
-                       //todo go to list of book
+
             },
         shape = RoundedCornerShape(16.dp),
         elevation = 8.dp,

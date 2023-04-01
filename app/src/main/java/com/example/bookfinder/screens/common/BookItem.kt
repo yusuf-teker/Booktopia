@@ -26,8 +26,8 @@ import androidx.compose.ui.unit.dp
 import com.example.bookfinder.R
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
-import com.example.bookfinder.model.Book
-import com.example.bookfinder.model.SearchInfo
+import com.example.bookfinder.data.model.remote.Book
+import com.example.bookfinder.data.model.remote.SearchInfo
 import com.example.bookfinder.ui.theme.BookFinderTheme
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
@@ -97,9 +97,10 @@ fun BookItem(book: Book) {
             Row(
                 Modifier
                     .fillMaxSize()
+                    .padding(horizontal = 8.dp)
                     .background(
                         shape = RoundedCornerShape(8.dp),
-                        color = Color.Transparent
+                        color = Color.White
                     ),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -116,7 +117,9 @@ fun BookItem(book: Book) {
                     Text(
                         text = book.volumeInfo?.title ?: stringResource(id = R.string.book_title_not_found),
                         style = MaterialTheme.typography.h6,
-                        modifier = Modifier.fillMaxWidth(0.6f)
+                        modifier = Modifier.fillMaxWidth(0.6f),
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 2,
                     )
                     Text(
                         text = book.volumeInfo?.description

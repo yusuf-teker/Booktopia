@@ -1,4 +1,4 @@
-package com.example.bookfinder.model
+package com.example.bookfinder.data.model.remote
 
 data class VolumeInfo(
     val authors: List<String> = listOf(),
