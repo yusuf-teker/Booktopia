@@ -1,4 +1,4 @@
-package com.example.bookfinder.screens.search
+package com.example.bookfinder.screens.search.searchList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

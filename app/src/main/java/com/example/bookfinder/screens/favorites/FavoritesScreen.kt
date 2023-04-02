@@ -34,7 +34,7 @@ fun FavoritesScreen(viewModel: FavoritesScreenViewModel) {
         ) { backStackEntry ->
             val viewModel = hiltViewModel<FavoriteDetailsViewModel>()
             val bookId = backStackEntry.arguments!!.getString("bookId")
-            FavoriteDetailsScreen(bookId = bookId?:"0", viewModel)
+            FavoriteDetailsScreen(bookId = bookId?:"0", viewModel, favoritesNavHostController)
         }
     }
 

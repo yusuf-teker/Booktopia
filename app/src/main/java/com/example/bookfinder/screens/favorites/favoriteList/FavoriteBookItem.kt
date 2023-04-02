@@ -124,6 +124,7 @@ fun FavoriteBookItem(book: FavoriteBook,  onItemClicked : (FavoriteBook) -> Unit
                         modifier = Modifier.fillMaxWidth(0.6f),
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 2,
+                        color = MaterialTheme.colors.onSecondary
                     )
                     Text(
                         text = book.description
@@ -131,7 +132,8 @@ fun FavoriteBookItem(book: FavoriteBook,  onItemClicked : (FavoriteBook) -> Unit
                         style = MaterialTheme.typography.body2,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 3,
-                        modifier = Modifier.fillMaxWidth(0.6f)
+                        modifier = Modifier.fillMaxWidth(0.6f),
+                        color = MaterialTheme.colors.onSecondary
                     )
                 }
 

@@ -26,4 +26,13 @@ class SearchRepository @Inject constructor(
     suspend fun insertBookToFavorites(book: FavoriteBook) {
         bookDao.insertFavoriteBook(book)
     }
+
+    suspend fun getBookById(bookId: String): Book?{
+        return try {
+            val result  = bookApi.getBookById(bookId, apiKey = BuildConfig.BOOK_FINDER_API_KEY)
+            result
+        }catch (e: Exception){
+            null
+        }
+    }
 }

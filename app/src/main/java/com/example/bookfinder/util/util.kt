@@ -58,19 +58,34 @@ val categoryNames = listOf<String>(
     "Sanat ve Eğlence",
     "Tarih"
 )
+val categoryQueries = listOf<String>(
+    "subject:Comic+books+strips+etc&langRestrict=tr",
+    "subject:Bilim+subject:Kurgu+subject:Fantastik+subject:Bilim Kurgu ve Fantastik",
+    "subject:Çizgi roman",
+    "subject:Çocuk kitabı+subject:Çocuk Kitap",
+    "subject:Din+subject:İnanç+subject:Din ve İnanç",
+    "subject:Eğitim",
+    "subject:Gizem+subject:Macera+subject:Gizem ve Macera",
+    "subject:İş+subject:Yatırım+subject:İş ve Yatırım",
+    "subject:Kurgu+subject:Edebiyat+subject:Kurgu ve Edebiyat",
+    "subject:Romantik+subject:Romantizm",
+    "subject:Sağlık+subject:Zihin+subject:Sağlık, Zihin ve Beden",
+    "subject:Sanat+subject:Eğlence+subject:Sanat ve Eğlence",
+    "subject:Tarih"
+)
 var categories
 = listOf(
-    Category(0, categoryNames[0], R.drawable.computer_and_technology, categoryColors[0]),
-    Category(1, categoryNames[1], R.drawable.science_fiction, categoryColors[1]),
-    Category(2, categoryNames[2], R.drawable.comic, categoryColors[2]),
-    Category(3, categoryNames[3], R.drawable.child_books, categoryColors[3]),
-    Category(4, categoryNames[4], R.drawable.religion_belief, categoryColors[4]),
-    Category(5, categoryNames[5], R.drawable.education, categoryColors[5]),
-    Category(6, categoryNames[6], R.drawable.adventure, categoryColors[6]),
-    Category(7, categoryNames[7], R.drawable.business, categoryColors[7]),
-    Category(8 ,categoryNames[8], R.drawable.fiction_literature, categoryColors[8]),
-    Category(9, categoryNames[9], R.drawable.romantic, categoryColors[9]),
-    Category(10, categoryNames[10], R.drawable.health_mind_body, categoryColors[10]),
-    Category(11, categoryNames[11], R.drawable.art_entertainment, categoryColors[11]),
-    Category(12, categoryNames[12], R.drawable.history, categoryColors[12]),
+    Category(0, categoryNames[0], R.drawable.computer_and_technology, categoryColors[0],categoryQueries[0]),
+    Category(1, categoryNames[1], R.drawable.science_fiction, categoryColors[1],categoryQueries[1]),
+    Category(2, categoryNames[2], R.drawable.comic, categoryColors[2],categoryQueries[2]),
+    Category(3, categoryNames[3], R.drawable.child_books, categoryColors[3],categoryQueries[3]),
+    Category(4, categoryNames[4], R.drawable.religion_belief, categoryColors[4],categoryQueries[4]),
+    Category(5, categoryNames[5], R.drawable.education, categoryColors[5],categoryQueries[5]),
+    Category(6, categoryNames[6], R.drawable.adventure, categoryColors[6],categoryQueries[6]),
+    Category(7, categoryNames[7], R.drawable.business, categoryColors[7],categoryQueries[7]),
+    Category(8 ,categoryNames[8], R.drawable.fiction_literature, categoryColors[8],categoryQueries[8]),
+    Category(9, categoryNames[9], R.drawable.romantic, categoryColors[9],categoryQueries[9]),
+    Category(10, categoryNames[10], R.drawable.health_mind_body, categoryColors[10],categoryQueries[10]),
+    Category(11, categoryNames[11], R.drawable.art_entertainment, categoryColors[11],categoryQueries[11]),
+    Category(12, categoryNames[12], R.drawable.history, categoryColors[12],categoryQueries[12]),
 )

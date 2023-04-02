@@ -24,7 +24,7 @@ fun FavoriteIcon(onClick: (Boolean) -> Unit, modifier: Modifier) {
     Icon(
         icon,
         contentDescription = contentDescription,
-        tint = if (isFavorite.value) Color.Red else Color.Black,
+        tint = if (isFavorite.value) Color.Red else Color.White,
         modifier = modifier.clickable(
             onClick = {
                 isFavorite.value = !isFavorite.value

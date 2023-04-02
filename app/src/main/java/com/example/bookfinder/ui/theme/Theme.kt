@@ -5,26 +5,36 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 
-private val DarkColorPalette = darkColors(
-    primary = Purple200,
-    primaryVariant = Purple700,
-    secondary = Teal200
-)
-
-private val LightColorPalette = lightColors(
-    primary = Purple500,
-    primaryVariant = Purple700,
-    secondary = Teal200
-
-    /* Other default colors to override
+val LightColorPalette = lightColors(
+    primary = Color(0xFF3F51B5),
+    primaryVariant = Color(0xFF303F9F),
+    secondary = Color(0xFF00BCD4),
+    secondaryVariant = Color(0xFF0097A7),
     background = Color.White,
     surface = Color.White,
     onPrimary = Color.White,
     onSecondary = Color.Black,
     onBackground = Color.Black,
     onSurface = Color.Black,
-    */
+    error = Color(0xFFB00020),
+)
+
+
+
+val DarkColorPalette = darkColors(
+    primary = Color(0xFFBB86FC),
+    primaryVariant = Color(0xFF3700B3),
+    secondary = Color(0xFF03DAC6),
+    secondaryVariant = Color(0xFF018786),
+    background = Color.Black,
+    surface = Color.Black,
+    onPrimary = Color.Black,
+    onSecondary = Color.Black,
+    onBackground = Color.White,
+    onSurface = Color.White,
+    error = Color(0xFFCF6679)
 )
 
 @Composable
@@ -34,9 +44,8 @@ fun BookFinderTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Compos
     } else {
         LightColorPalette
     }
-
     MaterialTheme(
-        colors = colors,
+        colors = if (isSystemInDarkTheme()) DarkColorPalette else LightColorPalette,
         typography = Typography,
         shapes = Shapes,
         content = content

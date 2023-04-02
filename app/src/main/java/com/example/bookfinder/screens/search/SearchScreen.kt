@@ -1,48 +1,43 @@
 package com.example.bookfinder.screens.search
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.example.bookfinder.screens.common.BookList
-import com.example.bookfinder.screens.categories.CategoriesScreen
-import com.example.bookfinder.screens.common.SearchWidget
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
+import com.example.bookfinder.screens.Navigation.Screen
+import com.example.bookfinder.screens.search.searchDetail.SearchDetailScreen
+import com.example.bookfinder.screens.search.searchDetail.SearchDetailViewModel
+import com.example.bookfinder.screens.search.searchList.SearchScreenViewModel
 
 @Composable
-fun SearchScreen(viewModel: SearchScreenViewModel){
-    val booksState by viewModel.books.collectAsState()
-    val query = viewModel.query.collectAsState()
-    Scaffold(
-        topBar = {
-            SearchWidget(onQueryChanged = { viewModel.setQuery(it) })
-        },
-        content = {
-            it
-            if (query.value.isNullOrEmpty()){
-                CategoriesScreen()
-            }else{
-                if (!booksState.isNullOrEmpty()) {
-                    BookList(items = booksState, viewModel)
-                } else {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .fillMaxHeight()
-                            .padding(16.dp)
-                    ) {
-                        Text(text = "No results found.")
-                    }
-                }
-            }
+fun SearchScreen() {
 
+    val navController = rememberNavController()
 
-
+    NavHost(
+        navController = navController,
+        startDestination = Screen.SearchList.route
+    ) {
+        composable(Screen.SearchList.route) {
+            val searchScreenViewModel = hiltViewModel<SearchScreenViewModel>()
+            SearchListScreen( searchScreenViewModel, onBookClicked = {
+                navController.navigate("${Screen.SearchDetails.route}/$it")
+            } )
         }
-
-    )
+        composable(
+            route = "${Screen.SearchDetails.route}/{bookId}",
+            arguments = listOf(navArgument("bookId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val bookId = backStackEntry.arguments!!.getString("bookId") ?: ""
+            val viewModel = hiltViewModel<SearchDetailViewModel>()
+            SearchDetailScreen(bookId = bookId, viewModel = viewModel,
+                navController = navController
+            )
+        }
+    }
 
 }

@@ -6,5 +6,6 @@ data class Category(
     val categoryNo: Int,
     val categoryName: String,
     val categoryImage: Int,
-    val categoryColor: Color
+    val categoryColor: Color,
+    val categortQuery: String
 )

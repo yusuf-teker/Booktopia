@@ -9,6 +9,7 @@ import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -29,6 +30,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
@@ -39,13 +41,13 @@ import com.example.bookfinder.screens.common.FavoriteIcon
 import com.example.bookfinder.screens.favorites.favoritesDetails.FavoriteDetailsViewModel
 
 @Composable
-fun FavoriteDetailsScreen(bookId: String, viewModel: FavoriteDetailsViewModel) {
+fun FavoriteDetailsScreen(bookId: String, viewModel: FavoriteDetailsViewModel, navController: NavController) {
     Log.d("yusuf",bookId)
-    FavoriteDetailItem(bookId,viewModel)
+    FavoriteDetailItem(bookId,viewModel,navController)
 }
 
 @Composable
-fun FavoriteDetailItem(bookId: String, viewModel: FavoriteDetailsViewModel){
+fun FavoriteDetailItem(bookId: String, viewModel: FavoriteDetailsViewModel, navController: NavController){
     val context = LocalContext.current
     viewModel.getFavoriteBookById(bookId)
     val book = viewModel.book.collectAsState().value
@@ -91,22 +93,29 @@ fun FavoriteDetailItem(bookId: String, viewModel: FavoriteDetailsViewModel){
                 Spacer(modifier = Modifier.fillMaxHeight(0.05f))
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_arrow_back),
-                        contentDescription = "Back",
+                    Box(
                         modifier = Modifier
-                            .weight(1f)
-                            .width(48.dp)
-                            .height(48.dp)
-                            .padding(start = 4.dp)
-                            .clickable {
-                                // todo go back
-                            },
-                        tint = Color.Black
-                    )
+                            .background(Color.Black, CircleShape)
+                            .size(36.dp)
+                            .shadow(2.dp, CircleShape)
+                            .padding(4.dp)
+                    ){
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_arrow_back),
+                            contentDescription = "Back",
+                            modifier = Modifier
+                                .size(36.dp)
+                                .clickable {
+                                    navController.popBackStack()
+                                },
+                            tint = Color.White
+                        )
+                    }
+
                     Image(
                         painter = rememberAsyncImagePainter(
                             model = ImageRequest.Builder(context)
@@ -129,21 +138,27 @@ fun FavoriteDetailItem(bookId: String, viewModel: FavoriteDetailsViewModel){
                             .aspectRatio(1f)
                             .width(IntrinsicSize.Min)
                     )
-                    FavoriteIcon(
+                    Box(
                         modifier = Modifier
-                            .weight(1f)
-                            .width(48.dp)
-                            .height(48.dp)
-                            .padding(end = 4.dp),
-                        onClick = { isFavorite ->
-                            Toast.makeText(context, "$isFavorite", Toast.LENGTH_SHORT).show()
-                            if (isFavorite){
-                                viewModel.saveFavoriteBook(book = book)
-                            }else{
-                                viewModel.deleteFavoriteBook(book = book)
+                            .background(Color.Black, CircleShape)
+                            .size(36.dp)
+                            .shadow(2.dp, CircleShape)
+
+                    ){
+                        FavoriteIcon(
+                            modifier = Modifier
+                                .size(36.dp),
+                            onClick = { isFavorite ->
+                                Toast.makeText(context, "$isFavorite", Toast.LENGTH_SHORT).show()
+                                if (isFavorite){
+                                    viewModel.saveFavoriteBook(book = book)
+                                }else{
+                                    viewModel.deleteFavoriteBook(book = book)
+                                }
                             }
-                        }
-                    )
+                        )
+                    }
+
                 }
 
                 Spacer(modifier = Modifier.fillMaxHeight(0.1f))
@@ -175,11 +190,16 @@ fun FavoriteDetailItem(bookId: String, viewModel: FavoriteDetailsViewModel){
                             textAlign = TextAlign.Center,
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Bold,
-                            maxLines = 2
+                            maxLines = 2,
+                            color = MaterialTheme.colors.surface
                         )
-                        Text(
-                            text = book?.authors?.get(0) ?: stringResource(id = R.string.book_author_not_found),
-                        )
+                        if (!book?.authors.isNullOrEmpty()){
+                            Text(
+                                text = book?.authors?.get(0) ?: stringResource(id = R.string.book_author_not_found),
+                                color = MaterialTheme.colors.surface
+                            )
+                        }
+
                     }
 
                 }
@@ -228,20 +248,24 @@ fun FavoriteDetailItem(bookId: String, viewModel: FavoriteDetailsViewModel){
                         durationMillis = 300,
                         easing = FastOutSlowInEasing
                     )
-                ) + fadeIn(animationSpec = tween(
-                    durationMillis = 300,
-                    easing = LinearOutSlowInEasing
-                )),
+                ) + fadeIn(
+                    animationSpec = tween(
+                        durationMillis = 300,
+                        easing = LinearOutSlowInEasing
+                    )
+                ),
                 exit = slideOutVertically(
                     targetOffsetY = { -it },
                     animationSpec = tween(
                         durationMillis = 300,
                         easing = FastOutLinearInEasing
                     )
-                ) + fadeOut(animationSpec = tween(
-                    durationMillis = 300,
-                    easing = LinearOutSlowInEasing
-                ))
+                ) + fadeOut(
+                    animationSpec = tween(
+                        durationMillis = 300,
+                        easing = LinearOutSlowInEasing
+                    )
+                )
             ) {
                 TextField(
                     value = noteText,
@@ -263,7 +287,7 @@ fun FavoriteDetailItem(bookId: String, viewModel: FavoriteDetailsViewModel){
                         .fillMaxWidth()
                         .height(240.dp)
                         .padding(vertical = 8.dp)
-                        .border(4.dp, Color.Black),
+                        .border(4.dp, MaterialTheme.colors.onSurface),
 
                     )
             }

@@ -29,13 +29,13 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.bookfinder.data.model.remote.Book
 import com.example.bookfinder.data.model.remote.toFavoriteBook
-import com.example.bookfinder.screens.search.SearchScreenViewModel
+import com.example.bookfinder.screens.search.searchList.SearchScreenViewModel
 import com.example.bookfinder.ui.theme.BookFinderTheme
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
 @Composable
-fun BookItem(book: Book, viewModel: SearchScreenViewModel) {
+fun BookItem(book: Book, viewModel: SearchScreenViewModel,  onBookClicked: (String )-> Unit) {
 
     val context = LocalContext.current
 
@@ -88,7 +88,7 @@ fun BookItem(book: Book, viewModel: SearchScreenViewModel) {
                 .fillMaxWidth()
                 .height(200.dp)
                 .clickable{
-
+                   onBookClicked(book.id)
                 }
                 .background(
                     color = Color.LightGray
@@ -98,8 +98,7 @@ fun BookItem(book: Book, viewModel: SearchScreenViewModel) {
                     4.dp,
                     RoundedCornerShape(8.dp),
                     spotColor = if (isFavorite) Color.Red else Color.DarkGray
-                )
-                ,
+                ),
 
             ) {
 
@@ -113,7 +112,6 @@ fun BookItem(book: Book, viewModel: SearchScreenViewModel) {
                     ),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
-
 
             ) {
                 Column(
@@ -129,6 +127,7 @@ fun BookItem(book: Book, viewModel: SearchScreenViewModel) {
                         modifier = Modifier.fillMaxWidth(0.6f),
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 2,
+                        color = MaterialTheme.colors.onSecondary
                     )
                     Text(
                         text = book.volumeInfo?.description
@@ -136,7 +135,8 @@ fun BookItem(book: Book, viewModel: SearchScreenViewModel) {
                         style = MaterialTheme.typography.body2,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 3,
-                        modifier = Modifier.fillMaxWidth(0.6f)
+                        modifier = Modifier.fillMaxWidth(0.6f),
+                        color = MaterialTheme.colors.onSecondary
                     )
                 }
 
