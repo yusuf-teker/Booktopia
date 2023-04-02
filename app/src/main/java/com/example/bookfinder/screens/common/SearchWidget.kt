@@ -1,6 +1,5 @@
 package com.example.bookfinder.screens.common
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -10,17 +9,22 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bookfinder.ui.theme.BookFinderTheme
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun SearchWidget(query: String, onQueryChanged: (String) -> Unit) {
-    var text by remember { mutableStateOf("") }
+fun SearchWidget( onQueryChanged: (String) -> Unit) {
+    var query by remember { mutableStateOf("") }
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     var isSearching by remember { mutableStateOf(false) }
 
     Surface(
@@ -34,9 +38,10 @@ fun SearchWidget(query: String, onQueryChanged: (String) -> Unit) {
             horizontalArrangement = Arrangement.Center
         ) {
             TextField(
-                value = text,
+                value = query,
                 onValueChange = {
-                    text = it
+                    query = it
+                    onQueryChanged(it)
                     isSearching = it.isNotEmpty()
                 },
                 modifier = Modifier
@@ -50,7 +55,7 @@ fun SearchWidget(query: String, onQueryChanged: (String) -> Unit) {
                 ),
                 keyboardActions = KeyboardActions(
                     onSearch = {
-                        onQueryChanged(text)
+                        onQueryChanged(query)
                     }
                 ),
                 placeholder = {
@@ -71,9 +76,12 @@ fun SearchWidget(query: String, onQueryChanged: (String) -> Unit) {
                     if (isSearching) {
                         IconButton(
                             onClick = {
-                                text = ""
+                                query = ""
+                                onQueryChanged(query)
                                 isSearching = false
+                                keyboardController?.hide()
                             },
+
                             modifier = Modifier.padding(8.dp)
                         ) {
                             Icon(
@@ -103,8 +111,8 @@ fun SearchWidget(query: String, onQueryChanged: (String) -> Unit) {
 fun SearchWidgetPreview() {
     BookFinderTheme {
         val context = LocalContext.current
-        SearchWidget("",onQueryChanged = {
-            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
-        })
+        //SearchWidget("",onQueryChanged = {
+        //    Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+       // })
     }
 }

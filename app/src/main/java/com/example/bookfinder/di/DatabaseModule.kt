@@ -2,7 +2,6 @@ package com.example.bookfinder.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.bookfinder.MyApplication
 import com.example.bookfinder.data.local.BookDatabase
 import com.example.bookfinder.data.local.dao.BookDao
 import dagger.Module
@@ -11,8 +10,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 
-@Module
 @InstallIn(SingletonComponent::class)
+@Module
 object DatabaseModule {
     @Provides
     fun provideDatabase(@ApplicationContext context: Context): BookDatabase {

@@ -3,6 +3,7 @@ package com.example.bookfinder.screens.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bookfinder.data.model.remote.Book
+import com.example.bookfinder.data.model.room.FavoriteBook
 import com.example.bookfinder.data.repositories.SearchRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,6 +28,16 @@ class SearchScreenViewModel @Inject constructor(
         }
     }
 
+    fun insertFavoriteBook(book: FavoriteBook) {
+        viewModelScope.launch {
+            repository.insertBookToFavorites(book)
+        }
+    }
+    fun deleteFavoriteBook(book: FavoriteBook) {
+        viewModelScope.launch {
+            repository.deleteBookFromFavorites(book)
+        }
+    }
     init {
         searchBooks()
     }

@@ -1,6 +1,4 @@
-package com.example.bookfinder.screens.common
-
-
+package com.example.bookfinder.screens.favorites.favoriteList
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -9,7 +7,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.twotone.Favorite
@@ -22,20 +19,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bookfinder.R
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
-import com.example.bookfinder.data.model.remote.Book
-import com.example.bookfinder.data.model.remote.toFavoriteBook
-import com.example.bookfinder.screens.search.SearchScreenViewModel
-import com.example.bookfinder.ui.theme.BookFinderTheme
+import com.example.bookfinder.data.model.room.FavoriteBook
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
 @Composable
-fun BookItem(book: Book, viewModel: SearchScreenViewModel) {
+fun FavoriteBookItem(book: FavoriteBook,  onItemClicked : (FavoriteBook) -> Unit, viewModel: FavoritesScreenViewModel) {
 
     val context = LocalContext.current
 
@@ -46,10 +39,10 @@ fun BookItem(book: Book, viewModel: SearchScreenViewModel) {
     val painter = rememberAsyncImagePainter(
         model = ImageRequest.Builder(context)
             .data(
-                if (book.volumeInfo?.imageLinks?.thumbnail.isNullOrEmpty())
-                   R.drawable.no_image
+                if (book.thumbnail.isNullOrEmpty())
+                    R.drawable.no_image
                 else
-                    book.volumeInfo?.imageLinks?.thumbnail
+                    book.thumbnail
             )
             .crossfade(true)
             .placeholder(
@@ -71,14 +64,14 @@ fun BookItem(book: Book, viewModel: SearchScreenViewModel) {
         onSwipe = {
             isFavorite = !isFavorite
             if (isFavorite){
-                viewModel.insertFavoriteBook(book.toFavoriteBook())
+                viewModel.insertFavoriteBook(book)
             }else{
-                viewModel.deleteFavoriteBook(book.toFavoriteBook())
+                viewModel.deleteFavoriteBook(book)
             }
 
         },
 
-    )
+        )
     SwipeableActionsBox(
         endActions = listOf(favorite),
         swipeThreshold = 150.dp
@@ -88,7 +81,9 @@ fun BookItem(book: Book, viewModel: SearchScreenViewModel) {
                 .fillMaxWidth()
                 .height(200.dp)
                 .clickable{
-
+                    if (isFavorite){
+                        onItemClicked(book)
+                    }
                 }
                 .background(
                     color = Color.LightGray
@@ -99,7 +94,7 @@ fun BookItem(book: Book, viewModel: SearchScreenViewModel) {
                     RoundedCornerShape(8.dp),
                     spotColor = if (isFavorite) Color.Red else Color.DarkGray
                 )
-                ,
+            ,
 
             ) {
 
@@ -115,7 +110,7 @@ fun BookItem(book: Book, viewModel: SearchScreenViewModel) {
                 horizontalArrangement = Arrangement.SpaceBetween,
 
 
-            ) {
+                ) {
                 Column(
                     Modifier
                         .fillMaxHeight()
@@ -124,14 +119,14 @@ fun BookItem(book: Book, viewModel: SearchScreenViewModel) {
                 ) {
 
                     Text(
-                        text = book.volumeInfo?.title ?: stringResource(id = R.string.book_title_not_found),
+                        text = book.title ?: stringResource(id = R.string.book_title_not_found),
                         style = MaterialTheme.typography.h6,
                         modifier = Modifier.fillMaxWidth(0.6f),
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 2,
                     )
                     Text(
-                        text = book.volumeInfo?.description
+                        text = book.description
                             ?: stringResource(id = R.string.book_description_not_found),
                         style = MaterialTheme.typography.body2,
                         overflow = TextOverflow.Ellipsis,
@@ -148,37 +143,9 @@ fun BookItem(book: Book, viewModel: SearchScreenViewModel) {
                         .fillMaxSize()
                         .padding(24.dp)
                         .border(4.dp, Color.Black)
-                    )
+                )
             }
 
         }
-    }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun BookItemPreview() {
-    BookFinderTheme {
-        //BookItem(book = Book( "1", "kind1", SearchInfo(""), "", null)){}
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun BookItemInScreenPreview() {
-    BookFinderTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colors.background
-        ) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                //BookItem(book = Book( "1", "kind1", SearchInfo(""), "", null))
-            }
-
-        }
-
     }
 }

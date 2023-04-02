@@ -5,9 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.bookfinder.data.local.dao.BookDao
-import com.example.bookfinder.data.model.room.FavoriteBookEntity
+import com.example.bookfinder.data.model.room.FavoriteBook
 
-@Database(entities = [FavoriteBookEntity::class], version = 1)
+@Database(entities = [FavoriteBook::class], version = 1)
 abstract class BookDatabase : RoomDatabase() {
     abstract fun bookDao(): BookDao
 

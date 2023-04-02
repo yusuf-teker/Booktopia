@@ -18,9 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.bookfinder.screens.Navigation.bottomNavigation.BottomNavItem
 import com.example.bookfinder.screens.Navigation.BottomNavigationBar
 import com.example.bookfinder.screens.Navigation.Navigation
-import com.example.bookfinder.screens.common.BookList
 import com.example.bookfinder.ui.theme.BookFinderTheme
-import com.example.bookfinder.util.mockItems
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -47,7 +45,7 @@ class MainActivity : ComponentActivity() {
                                     icon = Icons.Default.Favorite
                                 ),
                                 BottomNavItem(
-                                    name = "Categories",
+                                    name = "Search",
                                     route = "categories",
                                     icon = Icons.Default.Search
                                 )
@@ -59,7 +57,7 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                 ) {
-
+                    //SearchScreen()
                     Navigation(navController)
 
                 }
@@ -72,6 +70,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     BookFinderTheme {
-        BookList(mockItems)
+        //BookList(mockItems)
     }
 }

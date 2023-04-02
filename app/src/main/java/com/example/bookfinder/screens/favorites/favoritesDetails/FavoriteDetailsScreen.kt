@@ -1,5 +1,6 @@
 package com.example.bookfinder.screens.favoriteDetails
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutLinearInEasing
@@ -26,7 +27,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
@@ -36,13 +36,19 @@ import coil.transform.RoundedCornersTransformation
 import com.example.bookfinder.R
 import com.example.bookfinder.screens.common.CustomCheckBox
 import com.example.bookfinder.screens.common.FavoriteIcon
-import com.example.bookfinder.ui.theme.BookFinderTheme
-import com.example.bookfinder.util.mockItems
+import com.example.bookfinder.screens.favorites.favoritesDetails.FavoriteDetailsViewModel
 
 @Composable
-fun FavoriteDetailsScreen() {
+fun FavoriteDetailsScreen(bookId: String, viewModel: FavoriteDetailsViewModel) {
+    Log.d("yusuf",bookId)
+    FavoriteDetailItem(bookId,viewModel)
+}
+
+@Composable
+fun FavoriteDetailItem(bookId: String, viewModel: FavoriteDetailsViewModel){
     val context = LocalContext.current
-    val book = mockItems[0];
+    viewModel.getFavoriteBookById(bookId)
+    val book = viewModel.book.collectAsState().value
     var noteText by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
 
@@ -59,10 +65,10 @@ fun FavoriteDetailsScreen() {
                 painter = rememberAsyncImagePainter(
                     model = ImageRequest.Builder(context)
                         .data(
-                            if (book.volumeInfo?.imageLinks?.thumbnail.isNullOrEmpty())
+                            if (book?.thumbnail.isNullOrEmpty())
                                 R.drawable.placeholder
                             else
-                                book.volumeInfo?.imageLinks?.thumbnail
+                                book?.thumbnail
                         )
                         .crossfade(true)
                         .placeholder(
@@ -105,10 +111,10 @@ fun FavoriteDetailsScreen() {
                         painter = rememberAsyncImagePainter(
                             model = ImageRequest.Builder(context)
                                 .data(
-                                    if (book.volumeInfo?.imageLinks?.thumbnail.isNullOrEmpty())
+                                    if (book?.thumbnail.isNullOrEmpty())
                                         R.drawable.placeholder
                                     else
-                                        book.volumeInfo?.imageLinks?.thumbnail
+                                        book?.thumbnail
                                 )
                                 .crossfade(true)
                                 .placeholder(R.drawable.placeholder)
@@ -131,6 +137,11 @@ fun FavoriteDetailsScreen() {
                             .padding(end = 4.dp),
                         onClick = { isFavorite ->
                             Toast.makeText(context, "$isFavorite", Toast.LENGTH_SHORT).show()
+                            if (isFavorite){
+                                viewModel.saveFavoriteBook(book = book)
+                            }else{
+                                viewModel.deleteFavoriteBook(book = book)
+                            }
                         }
                     )
                 }
@@ -156,7 +167,7 @@ fun FavoriteDetailsScreen() {
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = book.volumeInfo?.title
+                            text = book?.title
                                 ?: stringResource(id = R.string.book_title_not_found),
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -167,7 +178,7 @@ fun FavoriteDetailsScreen() {
                             maxLines = 2
                         )
                         Text(
-                            text = book.volumeInfo?.authors?.get(0) ?: stringResource(id = R.string.book_author_not_found),
+                            text = book?.authors?.get(0) ?: stringResource(id = R.string.book_author_not_found),
                         )
                     }
 
@@ -260,14 +271,5 @@ fun FavoriteDetailsScreen() {
 
         }
 
-    }
-
-}
-
-@Preview(showBackground = true)
-@Composable
-fun FavoriteDetailsPreview() {
-    BookFinderTheme {
-        FavoriteDetailsScreen()
     }
 }
