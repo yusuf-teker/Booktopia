@@ -19,5 +19,8 @@ class FavoritesRepository @Inject constructor(
     suspend fun getFavoriteBookById(id: String): FavoriteBook?{
         return bookDao.getBookById(id)
     }
+    suspend fun updateBook(book: FavoriteBook){
+        return bookDao.updateBook(book)
+    }
 
 }

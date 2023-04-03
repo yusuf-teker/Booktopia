@@ -1,4 +1,4 @@
-package com.example.bookfinder.screens.favoriteDetails
+package com.example.bookfinder.screens.favorites.favoritesDetails
 
 import android.util.Log
 import android.widget.Toast
@@ -38,7 +38,7 @@ import coil.transform.RoundedCornersTransformation
 import com.example.bookfinder.R
 import com.example.bookfinder.screens.common.CustomCheckBox
 import com.example.bookfinder.screens.common.FavoriteIcon
-import com.example.bookfinder.screens.favorites.favoritesDetails.FavoriteDetailsViewModel
+import com.example.bookfinder.ui.theme.Dimens.Dimens.bottomNavigationHeight
 
 @Composable
 fun FavoriteDetailsScreen(bookId: String, viewModel: FavoriteDetailsViewModel, navController: NavController) {
@@ -51,12 +51,13 @@ fun FavoriteDetailItem(bookId: String, viewModel: FavoriteDetailsViewModel, navC
     val context = LocalContext.current
     viewModel.getFavoriteBookById(bookId)
     val book = viewModel.book.collectAsState().value
-    var noteText by remember { mutableStateOf("") }
+    val noteText = viewModel.noteText.collectAsState()
     var expanded by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(bottom = bottomNavigationHeight)
     ) {
         Box(
             modifier = Modifier
@@ -191,12 +192,12 @@ fun FavoriteDetailItem(bookId: String, viewModel: FavoriteDetailsViewModel, navC
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Bold,
                             maxLines = 2,
-                            color = MaterialTheme.colors.surface
+                            color = Color.Black
                         )
                         if (!book?.authors.isNullOrEmpty()){
                             Text(
                                 text = book?.authors?.get(0) ?: stringResource(id = R.string.book_author_not_found),
-                                color = MaterialTheme.colors.surface
+                                color = Color.Black
                             )
                         }
 
@@ -267,35 +268,43 @@ fun FavoriteDetailItem(bookId: String, viewModel: FavoriteDetailsViewModel, navC
                     )
                 )
             ) {
-                TextField(
-                    value = noteText,
-                    onValueChange = {
-                        noteText = it
-                    },
-                    maxLines = 5,
-                    textStyle = MaterialTheme.typography.subtitle1,
-                    colors = TextFieldDefaults.textFieldColors(
-                        textColor = MaterialTheme.colors.onBackground,
-                        backgroundColor = MaterialTheme.colors.background,
-                        cursorColor = MaterialTheme.colors.onBackground,
-                        focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent
-                    ),
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    TextField(
+                        value = noteText.value,
+                        onValueChange = {
+                            viewModel.setNoteText(it)
+                        },
+                        maxLines = 5,
+                        textStyle = MaterialTheme.typography.subtitle1,
+                        colors = TextFieldDefaults.textFieldColors(
+                            textColor = MaterialTheme.colors.onBackground,
+                            backgroundColor = MaterialTheme.colors.background,
+                            cursorColor = MaterialTheme.colors.onBackground,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent
+                        ),
 
-                    shape = RoundedCornerShape(8.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(240.dp)
-                        .padding(vertical = 8.dp)
-                        .border(4.dp, MaterialTheme.colors.onSurface),
+                        shape = RoundedCornerShape(8.dp),
+                        modifier = Modifier
+                            .fillMaxWidth(0.7f)
+                            .height(240.dp)
+                            .padding(vertical = 8.dp)
+                            .border(4.dp, MaterialTheme.colors.onSurface)
+                        )
 
-                    )
+                    TextButton( onClick = {
+                        viewModel.updateBook()
+                    }) {
+                        Text(text = "Save")
+                    }
+                }
+
             }
 
 
         }
-        Spacer(modifier = Modifier.height(100.dp))
-        Text(text = "")
+
+
 
     }
 }
