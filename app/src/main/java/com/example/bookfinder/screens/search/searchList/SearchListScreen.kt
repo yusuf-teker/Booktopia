@@ -25,12 +25,14 @@ fun SearchListScreen(viewModel: SearchScreenViewModel,  onBookClicked: (String )
             SearchWidget(onQueryChanged = { viewModel.setQuery(it) })
         },
         content = {
-            Box(modifier = Modifier.fillMaxSize().padding(bottom = bottomNavigationHeight)){
-                if (query.value.isNullOrEmpty()){
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = bottomNavigationHeight)){
+                    if (query.value.isNullOrEmpty()){
                     CategoriesScreen(viewModel)
                 }else{
-                    if (!booksState.isNullOrEmpty()) {
-                        BookList(items = booksState, viewModel, onBookClicked)
+                        if (!booksState.isNullOrEmpty()) {
+                            BookList(items = booksState, viewModel, onBookClicked)
                     } else {
                         Box(
                             modifier = Modifier

@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.example.bookfinder.data.model.room.FavoriteBook
 import com.example.bookfinder.screens.common.InfoPopup
+import com.example.bookfinder.ui.theme.Dimens.Dimens
 
 @Composable
 fun FavoritesListScreen(
@@ -24,14 +25,21 @@ fun FavoritesListScreen(
             onNeverShowAgain = { viewModel.neverShowInfoPopUpAgain() }
         )
     }
-    LazyColumn(
+    Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.LightGray),
+            .padding(bottom = Dimens.bottomNavigationHeight)
     ) {
-        items(favoriteBooks.value.size) {
-            FavoriteBookItem(book = favoriteBooks.value[it], onItemClicked, viewModel)
-        }
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.LightGray),
+        ) {
+            items(favoriteBooks.value.size) {
+                FavoriteBookItem(book = favoriteBooks.value[it], onItemClicked, viewModel)
+            }
 
+        }
     }
+
 }

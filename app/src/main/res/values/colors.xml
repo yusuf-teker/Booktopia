@@ -13,4 +13,5 @@
     <color name="red">#FF0000</color>
 
     <color name="favorite_shadow_spot_color">#FF0000</color>
+    <color name="onSurface">#000000</color>
 </resources>

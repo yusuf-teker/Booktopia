@@ -33,14 +33,19 @@ import coil.transform.RoundedCornersTransformation
 import com.example.bookfinder.R
 import com.example.bookfinder.data.model.remote.Book
 import com.example.bookfinder.screens.common.FavoriteIcon
+import com.example.bookfinder.screens.common.HtmlText
 
 @Composable
-fun SearchDetailScreen(viewModel: SearchDetailViewModel, bookId: String, navController: NavController) {
+fun SearchDetailScreen(
+    viewModel: SearchDetailViewModel,
+    bookId: String,
+    navController: NavController
+) {
 
     val book = viewModel.book.collectAsState().value
-    if (book != null){
-        BookDetailsScreen(book = book,navController)
-    }else{
+    if (book != null) {
+        BookDetailsScreen(book = book, navController)
+    } else {
         viewModel.getBookById(bookId)
         Box(modifier = Modifier.fillMaxSize()) {
             Text("Loading", modifier = Modifier.align(Center))
@@ -111,7 +116,8 @@ fun BookDetailsScreen(book: Book, navController: NavController) {
                                 .size(36.dp)
                                 .clickable {
                                     navController.popBackStack()
-                                }.align(Center),
+                                }
+                                .align(Center),
                             tint = Color.White,
 
                             )
@@ -222,6 +228,7 @@ fun BookDetailsScreen(book: Book, navController: NavController) {
                 )
             }
         }
+
         if (!book.volumeInfo?.description.isNullOrEmpty()) {
             Column(
                 modifier = Modifier
@@ -231,23 +238,17 @@ fun BookDetailsScreen(book: Book, navController: NavController) {
 
             ) {
                 Text(
-                    text = "What is this book about?",
+                    text = "Hakkında",
                     fontWeight = FontWeight.Bold,
                     fontSize = 24.sp,
                     modifier = Modifier.padding(bottom = 8.dp),
                     color = MaterialTheme.colors.onSurface
                 )
-                book.volumeInfo?.description?.let {
-                    Text(
-                        text = it,
-                        fontSize = 20.sp,
-                        lineHeight = 24.sp,
-                        color = MaterialTheme.colors.onSurface
-                    )
-                }
+                HtmlText(htmlText = book.volumeInfo?.description!!)
             }
+        }else{
+            Text(text = "There is no description :/")
         }
-
 
     }
 
