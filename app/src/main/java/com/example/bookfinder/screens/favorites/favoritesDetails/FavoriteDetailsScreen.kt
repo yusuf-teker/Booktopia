@@ -162,7 +162,7 @@ fun FavoriteDetailItem(bookId: String, viewModel: FavoriteDetailsViewModel, navC
                 }
 
                 Spacer(modifier = Modifier.fillMaxHeight(0.1f))
-                Box(
+                Box( //Kitap Başlığı ve Yazarı
                     Modifier
                         .fillMaxWidth(0.8f)
                         .wrapContentHeight()
@@ -208,7 +208,7 @@ fun FavoriteDetailItem(bookId: String, viewModel: FavoriteDetailsViewModel, navC
 
         }
 
-        Row(
+        Row( //CheckBox
             modifier = Modifier.fillMaxWidth()
         ) {
             CustomCheckBox(name = "Okuyacağım", onCheckChange = {
@@ -218,7 +218,7 @@ fun FavoriteDetailItem(bookId: String, viewModel: FavoriteDetailsViewModel, navC
 
             })
         }
-        Column(
+        Column( //Notlarım
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
@@ -294,6 +294,8 @@ fun FavoriteDetailItem(bookId: String, viewModel: FavoriteDetailsViewModel, navC
 
 
         }
+        Spacer(modifier = Modifier.height(100.dp))
+        Text(text = "")
 
     }
 }

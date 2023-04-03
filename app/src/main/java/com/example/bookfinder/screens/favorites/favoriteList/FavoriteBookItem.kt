@@ -74,33 +74,31 @@ fun FavoriteBookItem(book: FavoriteBook,  onItemClicked : (FavoriteBook) -> Unit
         )
     SwipeableActionsBox(
         endActions = listOf(favorite),
-        swipeThreshold = 150.dp
+        swipeThreshold = 150.dp,
     ) {
         Box(
             Modifier
                 .fillMaxWidth()
                 .height(200.dp)
-                .clickable{
-                    if (isFavorite){
+                .clickable {
+                    if (isFavorite) {
                         onItemClicked(book)
                     }
                 }
                 .background(
-                    color = Color.LightGray
+                    color = Color.Transparent
                 )
                 .padding(8.dp)
-                .shadow(
-                    4.dp,
-                    RoundedCornerShape(8.dp),
-                    spotColor = if (isFavorite) Color.Red else Color.DarkGray
-                )
-            ,
 
             ) {
 
             Row(
                 Modifier
-                    .fillMaxSize()
+                    .fillMaxSize().shadow(
+                        shape = RoundedCornerShape(8.dp),
+                        elevation = 4.dp,
+                        spotColor = if (isFavorite) Color.Red else Color.DarkGray,
+                    )
                     .padding(horizontal = 8.dp)
                     .background(
                         shape = RoundedCornerShape(8.dp),

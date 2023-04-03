@@ -1,6 +1,6 @@
 package com.example.bookfinder.screens.search
 
-import androidx.compose.foundation.background
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -13,7 +13,9 @@ import com.example.bookfinder.screens.common.BookList
 import com.example.bookfinder.screens.categories.CategoriesScreen
 import com.example.bookfinder.screens.common.SearchWidget
 import com.example.bookfinder.screens.search.searchList.SearchScreenViewModel
+import com.example.bookfinder.ui.theme.Dimens.Dimens.bottomNavigationHeight
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun SearchListScreen(viewModel: SearchScreenViewModel,  onBookClicked: (String )-> Unit ){
     val booksState by viewModel.books.collectAsState()
@@ -23,25 +25,26 @@ fun SearchListScreen(viewModel: SearchScreenViewModel,  onBookClicked: (String )
             SearchWidget(onQueryChanged = { viewModel.setQuery(it) })
         },
         content = {
-            it
-            if (query.value.isNullOrEmpty()){
-                CategoriesScreen(viewModel)
-            }else{
-                if (!booksState.isNullOrEmpty()) {
-                    BookList(items = booksState, viewModel, onBookClicked)
-                } else {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .fillMaxHeight()
-                            .padding(16.dp)
+            Box(modifier = Modifier.fillMaxSize().padding(bottom = bottomNavigationHeight)){
+                if (query.value.isNullOrEmpty()){
+                    CategoriesScreen(viewModel)
+                }else{
+                    if (!booksState.isNullOrEmpty()) {
+                        BookList(items = booksState, viewModel, onBookClicked)
+                    } else {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .fillMaxHeight()
+                                .padding(16.dp)
 
-                    ) {
-                        Text(text = "No results found.")
+                        ) {
+                            Text(text = "No results found.")
+                        }
                     }
                 }
-            }
 
+            }
 
 
         }

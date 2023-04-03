@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -19,6 +20,7 @@ import com.example.bookfinder.screens.Navigation.bottomNavigation.BottomNavItem
 import com.example.bookfinder.screens.Navigation.BottomNavigationBar
 import com.example.bookfinder.screens.Navigation.Navigation
 import com.example.bookfinder.ui.theme.BookFinderTheme
+import com.example.bookfinder.ui.theme.Dimens.Dimens.bottomNavigationHeight
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -53,7 +55,8 @@ class MainActivity : ComponentActivity() {
                             navController = navController,
                             onItemClick = {
                                 navController.navigate(it.route)
-                            }
+                            },
+                            modifier = Modifier.height(bottomNavigationHeight)
                         )
                     }
                 ) {

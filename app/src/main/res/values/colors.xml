@@ -11,4 +11,6 @@
     <color name="child_book">#000000</color>
     <color name="white_gray">#FFFFFF</color>
     <color name="red">#FF0000</color>
+
+    <color name="favorite_shadow_spot_color">#FF0000</color>
 </resources>
