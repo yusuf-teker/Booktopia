@@ -9,6 +9,7 @@ import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -36,169 +37,188 @@ import coil.request.ImageRequest
 import coil.size.Size
 import coil.transform.RoundedCornersTransformation
 import com.example.bookfinder.R
-import com.example.bookfinder.screens.common.CustomCheckBox
+import com.example.bookfinder.data.model.remote.toFavoriteBook
+import com.example.bookfinder.screens.common.CustomCheckboxGroup
 import com.example.bookfinder.screens.common.FavoriteIcon
 import com.example.bookfinder.ui.theme.Dimens.Dimens.bottomNavigationHeight
 
 @Composable
-fun FavoriteDetailsScreen(bookId: String, viewModel: FavoriteDetailsViewModel, navController: NavController) {
-    Log.d("yusuf",bookId)
-    FavoriteDetailItem(bookId,viewModel,navController)
+fun FavoriteDetailsScreen(
+    bookId: String,
+    viewModel: FavoriteDetailsViewModel,
+    navController: NavController
+) {
+    Log.d("yusuf", bookId)
+    FavoriteDetailItem(bookId, viewModel, navController)
 }
 
 @Composable
-fun FavoriteDetailItem(bookId: String, viewModel: FavoriteDetailsViewModel, navController: NavController){
+fun FavoriteDetailItem(
+    bookId: String,
+    viewModel: FavoriteDetailsViewModel,
+    navController: NavController
+) {
     val context = LocalContext.current
     viewModel.getFavoriteBookById(bookId)
-    val book = viewModel.book.collectAsState().value
+    val book = viewModel.book.collectAsState()
     val noteText = viewModel.noteText.collectAsState()
     var expanded by remember { mutableStateOf(false) }
+    val isFavorite = viewModel.isFavorite.collectAsState()
 
-    Column(
+
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(bottom = bottomNavigationHeight)
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.5f)
-        ) {
-            Image(
-                painter = rememberAsyncImagePainter(
-                    model = ImageRequest.Builder(context)
-                        .data(
-                            if (book?.thumbnail.isNullOrEmpty())
-                                R.drawable.placeholder
-                            else
-                                book?.thumbnail
-                        )
-                        .crossfade(true)
-                        .placeholder(
-                            R.drawable.placeholder
-                        ).transformations(RoundedCornersTransformation(1f))
-                        .build()
-                ),
-                contentDescription = null,
-                contentScale = ContentScale.FillBounds,
+        item {
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.9f)
-                    .blur(7.dp)
-            )
-
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .height(400.dp)
             ) {
-                Spacer(modifier = Modifier.fillMaxHeight(0.05f))
-                Row(
+                Image(
+                    painter = rememberAsyncImagePainter(
+                        model = ImageRequest.Builder(context)
+                            .data(
+                                if (book.value?.thumbnail.isNullOrEmpty())
+                                    R.drawable.placeholder
+                                else
+                                    book.value?.thumbnail
+                            )
+                            .crossfade(true)
+                            .placeholder(
+                                R.drawable.placeholder
+                            ).transformations(RoundedCornersTransformation(1f))
+                            .build()
+                    ),
+                    contentDescription = null,
+                    contentScale = ContentScale.FillBounds,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
+                        .fillMaxHeight()
+                        .blur(7.dp)
+                )
+
+                Column( //iconlar ve image
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Box(
+                    Spacer(modifier = Modifier.fillMaxHeight(0.05f))
+                    Row(
                         modifier = Modifier
-                            .background(Color.Black, CircleShape)
-                            .size(36.dp)
-                            .shadow(2.dp, CircleShape)
-                            .padding(4.dp)
-                    ){
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_arrow_back),
-                            contentDescription = "Back",
-                            modifier = Modifier
-                                .size(36.dp)
-                                .clickable {
-                                    navController.popBackStack()
-                                },
-                            tint = Color.White
-                        )
-                    }
-
-                    Image(
-                        painter = rememberAsyncImagePainter(
-                            model = ImageRequest.Builder(context)
-                                .data(
-                                    if (book?.thumbnail.isNullOrEmpty())
-                                        R.drawable.placeholder
-                                    else
-                                        book?.thumbnail
-                                )
-                                .crossfade(true)
-                                .placeholder(R.drawable.placeholder)
-                                .transformations(RoundedCornersTransformation(1f))
-                                .size(Size.ORIGINAL)
-                                .build()
-                        ),
-                        contentDescription = null,
-                        contentScale = ContentScale.FillHeight,
-                        modifier = Modifier
-                            .fillMaxHeight(0.7f)
-                            .aspectRatio(1f)
-                            .width(IntrinsicSize.Min)
-                    )
-                    Box(
-                        modifier = Modifier
-                            .background(Color.Black, CircleShape)
-                            .size(36.dp)
-                            .shadow(2.dp, CircleShape)
-
-                    ){
-                        FavoriteIcon(
-                            modifier = Modifier
-                                .size(36.dp),
-                            onClick = { isFavorite ->
-                                Toast.makeText(context, "$isFavorite", Toast.LENGTH_SHORT).show()
-                                if (isFavorite){
-                                    viewModel.saveFavoriteBook(book = book)
-                                }else{
-                                    viewModel.deleteFavoriteBook(book = book)
-                                }
-                            }
-                        )
-                    }
-
-                }
-
-                Spacer(modifier = Modifier.fillMaxHeight(0.1f))
-                Box( //Kitap Başlığı ve Yazarı
-                    Modifier
-                        .fillMaxWidth(0.8f)
-                        .wrapContentHeight()
-                        .shadow(
-                            4.dp,
-                            RoundedCornerShape(16.dp),
-                            spotColor = Color.DarkGray
-                        )
-                        .background(
-                            color = Color.White,
-                            shape = RoundedCornerShape(16.dp)
-                        )
-                        .padding(8.dp),
-                ) {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                            .fillMaxWidth()
+                            .padding(horizontal = 32.dp, vertical = 12.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text(
-                            text = book?.title
-                                ?: stringResource(id = R.string.book_title_not_found),
+                        Box(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(4.dp),
-                            textAlign = TextAlign.Center,
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Bold,
-                            maxLines = 2,
-                            color = Color.Black
+                                .background(Color.Black, CircleShape)
+                                .size(36.dp)
+                                .shadow(2.dp, CircleShape)
+
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_arrow_back),
+                                contentDescription = "Back",
+                                modifier = Modifier
+                                    .size(36.dp)
+                                    .clickable {
+                                        navController.popBackStack()
+                                    }
+                                    .shadow(2.dp, CircleShape),
+                                tint = Color.White
+                            )
+                        }
+                        Image(
+                            painter = rememberAsyncImagePainter(
+                                model = ImageRequest.Builder(context)
+                                    .data(
+                                        if (book.value?.thumbnail.isNullOrEmpty())
+                                            R.drawable.placeholder
+                                        else
+                                            book.value?.thumbnail
+                                    )
+                                    .crossfade(true)
+                                    .placeholder(R.drawable.placeholder)
+                                    .transformations(RoundedCornersTransformation(1f))
+                                    .size(Size.ORIGINAL)
+                                    .build()
+                            ),
+                            contentDescription = null,
+                            contentScale = ContentScale.FillHeight,
+                            modifier = Modifier
+                                .fillMaxHeight(0.7f)
+                                .aspectRatio(1f)
+                                .width(IntrinsicSize.Min)
                         )
-                        if (!book?.authors.isNullOrEmpty()){
+                        Box(
+                            modifier = Modifier
+                                .background(Color.Black, CircleShape)
+                                .size(36.dp)
+                                .shadow(2.dp, CircleShape)
+
+                        ) {
+                            FavoriteIcon(
+                                isFavorite.value,
+                                modifier = Modifier
+                                    .size(36.dp)
+                                    .shadow(2.dp, CircleShape),
+                                onClick = { isFavorite ->
+
+                                    if (isFavorite) {
+                                        viewModel.saveFavoriteBook(book = book.value)
+                                    } else {
+                                        viewModel.deleteFavoriteBookById(book.value?.id ?:"")
+                                    }
+                                    viewModel.setIsFavorite(isFavorite)
+                                }
+                            )
+
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.fillMaxHeight(0.1f))
+                    Box(
+                        //Kitap Başlığı ve Yazarı
+                        Modifier
+                            .wrapContentWidth()
+                            .wrapContentHeight()
+                            .shadow(
+                                4.dp,
+                                RoundedCornerShape(16.dp),
+                                spotColor = Color.DarkGray
+                            )
+                            .background(
+                                color = Color.LightGray,
+                                shape = RoundedCornerShape(16.dp)
+                            )
+                            .padding(horizontal = 32.dp, vertical = 4.dp),
+                    ) {
+                        Column(
+                            modifier = Modifier.wrapContentSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
                             Text(
-                                text = book?.authors?.get(0) ?: stringResource(id = R.string.book_author_not_found),
+                                text = book.value?.title
+                                    ?: stringResource(id = R.string.book_title_not_found),
+                                modifier = Modifier
+                                    .wrapContentSize(),
+                                textAlign = TextAlign.Center,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                maxLines = 2,
                                 color = Color.Black
                             )
+                            if (!book.value?.authors.isNullOrEmpty()) {
+                                Text(
+                                    text = book.value?.authors?.get(0)
+                                        ?: stringResource(id = R.string.book_author_not_found),
+                                    color = Color.Black
+                                )
+                            }
+
                         }
 
                     }
@@ -206,105 +226,108 @@ fun FavoriteDetailItem(bookId: String, viewModel: FavoriteDetailsViewModel, navC
                 }
 
             }
-
         }
 
-        Row( //CheckBox
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            CustomCheckBox(name = "Okuyacağım", onCheckChange = {
+        item {
 
-            })
-            CustomCheckBox(name = "Okudum", onCheckChange = {
+            val selectedBox by viewModel.selectedBox.collectAsState()
 
-            })
-        }
-        Column( //Notlarım
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-        ) {
-
-            Row() {
-                Text(
-                    text = "Notlarım", fontFamily = FontFamily.Cursive,
-                    fontSize = 32.sp
-                )
-                IconButton(
-                    onClick = { expanded = !expanded },
-                    modifier = Modifier.rotate(if (expanded) 180f else 0f)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowDropDown,
-                        contentDescription = null,
-                        tint = MaterialTheme.colors.onSurface
-                    )
-                }
-            }
-            AnimatedVisibility(
-                visible = expanded,
-                enter = slideInVertically(
-                    initialOffsetY = { -it },
-                    animationSpec = tween(
-                        durationMillis = 300,
-                        easing = FastOutSlowInEasing
-                    )
-                ) + fadeIn(
-                    animationSpec = tween(
-                        durationMillis = 300,
-                        easing = LinearOutSlowInEasing
-                    )
-                ),
-                exit = slideOutVertically(
-                    targetOffsetY = { -it },
-                    animationSpec = tween(
-                        durationMillis = 300,
-                        easing = FastOutLinearInEasing
-                    )
-                ) + fadeOut(
-                    animationSpec = tween(
-                        durationMillis = 300,
-                        easing = LinearOutSlowInEasing
-                    )
-                )
+            CustomCheckboxGroup(
+                selectedBox = selectedBox,
+                onBoxSelected = { index ->
+                    viewModel.setSelectedBox(index)
+                },
+                options = listOf("Okuyacağım", "Okuyorum", "Okudum")
+            )
+            Column(
+                //Notlarım
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
             ) {
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    TextField(
-                        value = noteText.value,
-                        onValueChange = {
-                            viewModel.setNoteText(it)
-                        },
-                        maxLines = 5,
-                        textStyle = MaterialTheme.typography.subtitle1,
-                        colors = TextFieldDefaults.textFieldColors(
-                            textColor = MaterialTheme.colors.onBackground,
-                            backgroundColor = MaterialTheme.colors.background,
-                            cursorColor = MaterialTheme.colors.onBackground,
-                            focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent
-                        ),
 
-                        shape = RoundedCornerShape(8.dp),
-                        modifier = Modifier
-                            .fillMaxWidth(0.7f)
-                            .height(240.dp)
-                            .padding(vertical = 8.dp)
-                            .border(4.dp, MaterialTheme.colors.onSurface)
+                Row() {
+                    Text(
+                        text = "Notlarım", fontFamily = FontFamily.Cursive,
+                        fontSize = 32.sp
+                    )
+                    IconButton(
+                        onClick = { expanded = !expanded },
+                        modifier = Modifier.rotate(if (expanded) 180f else 0f)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowDropDown,
+                            contentDescription = null,
+                            tint = MaterialTheme.colors.onSurface
                         )
-
-                    TextButton( onClick = {
-                        viewModel.updateBook()
-                    }) {
-                        Text(text = "Save")
                     }
                 }
+                AnimatedVisibility(
+                    visible = expanded,
+                    enter = slideInHorizontally(
+                        initialOffsetX = { -it },
+                        animationSpec = tween(
+                            durationMillis = 300,
+                            easing = FastOutSlowInEasing
+                        )
+                    ) + fadeIn(
+                        animationSpec = tween(
+                            durationMillis = 300,
+                            easing = LinearOutSlowInEasing
+                        )
+                    ),
+                    exit = slideOutHorizontally(
+                        targetOffsetX = { -it },
+                        animationSpec = tween(
+                            durationMillis = 300,
+                            easing = FastOutLinearInEasing
+                        )
+                    ) + fadeOut(
+                        animationSpec = tween(
+                            durationMillis = 300,
+                            easing = LinearOutSlowInEasing
+                        )
+                    )
+                )  {
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        TextField(
+                            value = noteText.value,
+                            onValueChange = {
+                                viewModel.setNoteText(it)
+                            },
+                            maxLines = 5,
+                            textStyle = MaterialTheme.typography.subtitle1,
+                            colors = TextFieldDefaults.textFieldColors(
+                                textColor = MaterialTheme.colors.onBackground,
+                                backgroundColor = MaterialTheme.colors.background,
+                                cursorColor = MaterialTheme.colors.onBackground,
+                                focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent
+                            ),
+
+                            shape = RoundedCornerShape(8.dp),
+                            modifier = Modifier
+                                .fillMaxWidth(1f)
+                                .height(240.dp)
+                                .padding(vertical = 8.dp)
+                                .border(4.dp, MaterialTheme.colors.onSurface)
+                        )
+
+                    }
+
+                }
+
 
             }
-
-
+            TextButton(onClick = {
+                viewModel.updateBook()
+            }) {
+                Text(text = "Save")
+            }
         }
-
 
 
     }
 }
+
+

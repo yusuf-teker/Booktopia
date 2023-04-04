@@ -1,4 +1,4 @@
-package com.example.bookfinder.screens.Navigation
+package com.example.bookfinder.Navigation
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel

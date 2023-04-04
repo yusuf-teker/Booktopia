@@ -16,9 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.*
 import androidx.navigation.compose.rememberNavController
-import com.example.bookfinder.screens.Navigation.bottomNavigation.BottomNavItem
+import com.example.bookfinder.Navigation.bottomNavigation.BottomNavItem
 import com.example.bookfinder.screens.Navigation.BottomNavigationBar
-import com.example.bookfinder.screens.Navigation.Navigation
+import com.example.bookfinder.Navigation.Navigation
 import com.example.bookfinder.ui.theme.BookFinderTheme
 import com.example.bookfinder.ui.theme.Dimens.Dimens.bottomNavigationHeight
 import dagger.hilt.android.AndroidEntryPoint

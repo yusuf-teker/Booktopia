@@ -17,18 +17,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.bookfinder.ui.theme.BookFinderTheme
 
 @Composable
-fun FavoriteIcon(onClick: (Boolean) -> Unit, modifier: Modifier) {
-    val isFavorite = remember { mutableStateOf(false) }
-    val icon = if (isFavorite.value) Icons.Default.Favorite else Icons.Default.FavoriteBorder
-    val contentDescription = if (isFavorite.value) "Favorited" else "Not favorited"
+fun FavoriteIcon(isFavorite : Boolean, onClick: (Boolean) -> Unit, modifier: Modifier) {
+    val icon = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder
+    val contentDescription = if (isFavorite) "Favorited" else "Not favorited"
     Icon(
         icon,
         contentDescription = contentDescription,
-        tint = if (isFavorite.value) Color.Red else Color.White,
+        tint = if (isFavorite) Color.Red else Color.White,
         modifier = modifier.clickable(
             onClick = {
-                isFavorite.value = !isFavorite.value
-                onClick(isFavorite.value)
+                onClick(!isFavorite)
             }
         )
     )
@@ -40,6 +38,7 @@ fun FavoriteIconPreview() {
     BookFinderTheme {
         val context = LocalContext.current
         FavoriteIcon(
+            isFavorite = true,
             onClick = {isFavorite ->
                 Toast.makeText(context,"$isFavorite",Toast.LENGTH_SHORT).show()
             },

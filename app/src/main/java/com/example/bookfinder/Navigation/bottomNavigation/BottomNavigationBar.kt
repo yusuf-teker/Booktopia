@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.bookfinder.screens.Navigation.bottomNavigation.BottomNavItem
+import com.example.bookfinder.Navigation.bottomNavigation.BottomNavItem
 
 @Composable
 fun BottomNavigationBar(

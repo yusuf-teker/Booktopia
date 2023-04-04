@@ -1,6 +1,5 @@
-package com.example.bookfinder.screens.Navigation.bottomNavigation
+package com.example.bookfinder.Navigation.bottomNavigation
 
-import android.widget.ImageView
 import androidx.compose.ui.graphics.vector.ImageVector
 
 data class BottomNavItem(

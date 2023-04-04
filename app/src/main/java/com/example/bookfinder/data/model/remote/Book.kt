@@ -26,7 +26,7 @@ fun Book.toFavoriteBook(): FavoriteBook{
      title  = volumeInfo?.title ?: "",
      isFavorite = true,
      myNotes = "",
-     isReaded = false
+     readingStatus = -1
     )
     return favoriteBook
 }

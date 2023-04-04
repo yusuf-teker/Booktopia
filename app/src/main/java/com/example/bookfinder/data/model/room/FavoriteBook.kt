@@ -22,7 +22,7 @@ data class FavoriteBook(
     val title: String = "",
     var isFavorite: Boolean = false,
     var myNotes: String?,
-    var isReaded: Boolean = false
+    var readingStatus: Int = -1
 )
 
 class Converters {

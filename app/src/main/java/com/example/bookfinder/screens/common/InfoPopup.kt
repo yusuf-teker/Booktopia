@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -36,7 +37,7 @@ fun InfoPopup(onDismiss: () -> Unit, onNeverShowAgain: () -> Unit) {
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(8.dp),
+                    .padding(8.dp, vertical = 16.dp),
                 horizontalArrangement = Arrangement.End
             ) {
                 TextButton(
@@ -55,7 +56,7 @@ fun InfoPopup(onDismiss: () -> Unit, onNeverShowAgain: () -> Unit) {
                 }
             }
         },
-        shape = MaterialTheme.shapes.medium,
+        shape = RoundedCornerShape(32.dp),
         backgroundColor = MaterialTheme.colors.surface
     )
 }

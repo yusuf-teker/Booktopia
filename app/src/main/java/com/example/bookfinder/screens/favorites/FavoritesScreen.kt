@@ -2,12 +2,13 @@ package com.example.bookfinder.screens.favorites
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.bookfinder.screens.Navigation.Screen
+import com.example.bookfinder.Navigation.Screen
 import com.example.bookfinder.screens.favorites.favoritesDetails.FavoriteDetailsScreen
 import com.example.bookfinder.screens.favorites.favoriteList.FavoritesListScreen
 import com.example.bookfinder.screens.favorites.favoriteList.FavoritesScreenViewModel

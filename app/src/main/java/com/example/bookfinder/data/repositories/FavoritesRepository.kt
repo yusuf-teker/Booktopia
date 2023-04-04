@@ -13,6 +13,10 @@ class FavoritesRepository @Inject constructor(
     suspend fun insertBookToFavorites(book: FavoriteBook) {
         bookDao.insertFavoriteBook(book)
     }
+
+    suspend fun deleteBookFromFavoritesById(bookId: String) {
+        bookDao.deleteFavoriteBookById(bookId)
+    }
     suspend fun getAllFavoriteBooks(): List<FavoriteBook>{
         return bookDao.getAllBooks()
     }

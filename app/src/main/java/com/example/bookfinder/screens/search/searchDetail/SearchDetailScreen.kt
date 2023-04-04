@@ -32,6 +32,7 @@ import coil.size.Size
 import coil.transform.RoundedCornersTransformation
 import com.example.bookfinder.R
 import com.example.bookfinder.data.model.remote.Book
+import com.example.bookfinder.data.model.remote.toFavoriteBook
 import com.example.bookfinder.screens.common.FavoriteIcon
 import com.example.bookfinder.screens.common.HtmlText
 
@@ -44,7 +45,7 @@ fun SearchDetailScreen(
 
     val book = viewModel.book.collectAsState().value
     if (book != null) {
-        BookDetailsScreen(book = book, navController)
+        BookDetailsScreen(book = book, navController, viewModel)
     } else {
         viewModel.getBookById(bookId)
         Box(modifier = Modifier.fillMaxSize()) {
@@ -55,9 +56,9 @@ fun SearchDetailScreen(
 }
 
 @Composable
-fun BookDetailsScreen(book: Book, navController: NavController) {
+fun BookDetailsScreen(book: Book, navController: NavController, viewModel: SearchDetailViewModel) {
     val context = LocalContext.current
-
+    val isFavorite = viewModel.isFavorite.collectAsState()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -65,7 +66,8 @@ fun BookDetailsScreen(book: Book, navController: NavController) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.3f)
+                .height(350.dp)
+
         ) {
             Image(
                 painter = rememberAsyncImagePainter(
@@ -86,7 +88,7 @@ fun BookDetailsScreen(book: Book, navController: NavController) {
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.9f)
+                    .fillMaxHeight(1f)
                     .blur(7.dp)
             )
 
@@ -153,11 +155,19 @@ fun BookDetailsScreen(book: Book, navController: NavController) {
                             .padding(4.dp)
                     ) {
                         FavoriteIcon(
+                            isFavorite.value,
                             modifier = Modifier
                                 .size(36.dp)
                                 .align(Center),
                             onClick = { isFavorite ->
-                                Toast.makeText(context, "$isFavorite", Toast.LENGTH_SHORT).show()
+                                if (isFavorite){
+                                    viewModel.insertFavoriteBook(book.toFavoriteBook())
+                                    Toast.makeText(context, "${book.volumeInfo?.title} favorilere eklendi.", Toast.LENGTH_SHORT).show()
+                                }else{
+                                    viewModel.deleteFavoriteBookById(book.id)
+                                }
+
+                                viewModel.setIsFavorite(isFavorite)
                             }
                         )
                     }
@@ -178,7 +188,7 @@ fun BookDetailsScreen(book: Book, navController: NavController) {
                             color = MaterialTheme.colors.surface,
                             shape = RoundedCornerShape(16.dp)
                         )
-                        .padding(8.dp),
+                        .padding(horizontal = 8.dp),
                 ) {
                     Column(
                         modifier = Modifier
@@ -202,7 +212,8 @@ fun BookDetailsScreen(book: Book, navController: NavController) {
                             Text(
                                 text = book.volumeInfo?.authors?.get(0)
                                     ?: stringResource(id = R.string.book_author_not_found),
-                                color = MaterialTheme.colors.onSurface
+                                color = MaterialTheme.colors.onSurface,
+                                modifier = Modifier .padding(4.dp),
                             )
                         }
 
@@ -214,29 +225,25 @@ fun BookDetailsScreen(book: Book, navController: NavController) {
 
         }
 
-        Column(
-            modifier = Modifier
-                .verticalScroll(rememberScrollState())
-                .padding(16.dp)
-        ) {
-            book.volumeInfo?.categories?.joinToString(separator = " ")?.let {
-                Text(
-                    text = it,
-                    fontStyle = FontStyle.Normal,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-        }
 
-        if (!book.volumeInfo?.description.isNullOrEmpty()) {
+
+
             Column(
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
                     .weight(weight = 1f, fill = false)
-                    .padding(16.dp)
+                    .padding(horizontal = 16.dp)
 
             ) {
+                book.volumeInfo?.categories?.joinToString(separator = " ")?.let {
+                    Text(
+                        text = it,
+                        fontStyle = FontStyle.Normal,
+                        color = Color.Black,
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 2
+                    )
+                }
                 Text(
                     text = "Hakkında",
                     fontWeight = FontWeight.Bold,
@@ -244,10 +251,14 @@ fun BookDetailsScreen(book: Book, navController: NavController) {
                     modifier = Modifier.padding(bottom = 8.dp),
                     color = MaterialTheme.colors.onSurface
                 )
-                HtmlText(htmlText = book.volumeInfo?.description!!)
-            }
-        }else{
-            Text(text = "There is no description :/")
+                if (!book.volumeInfo?.description.isNullOrEmpty()){
+                    HtmlText(htmlText = book.volumeInfo?.description!!)
+
+                } else{
+                    HtmlText(htmlText ="There is no description.")
+                }
+
+
         }
 
     }

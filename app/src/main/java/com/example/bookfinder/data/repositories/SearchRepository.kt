@@ -23,6 +23,10 @@ class SearchRepository @Inject constructor(
     suspend fun deleteBookFromFavorites(book: FavoriteBook) {
         bookDao.deleteFavoriteBook(book)
     }
+
+    suspend fun deleteBookFromFavoritesById(bookId: String) {
+        bookDao.deleteFavoriteBookById(bookId)
+    }
     suspend fun insertBookToFavorites(book: FavoriteBook) {
         bookDao.insertFavoriteBook(book)
     }
@@ -34,5 +38,9 @@ class SearchRepository @Inject constructor(
         }catch (e: Exception){
             null
         }
+    }
+
+    suspend fun getFavoriteStatus(bookId: String): Boolean{
+        return bookDao.getFavoriteStatus(bookId = bookId)?:false
     }
 }

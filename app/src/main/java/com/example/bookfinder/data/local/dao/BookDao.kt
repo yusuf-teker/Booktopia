@@ -17,6 +17,12 @@ interface BookDao {
     @Delete
     suspend fun deleteFavoriteBook(bookEntity: FavoriteBook)
 
+    @Query("DELETE FROM books WHERE id = :bookId")
+    suspend fun deleteFavoriteBookById(bookId: String)
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertFavoriteBook(book: FavoriteBook)
+
+    @Query("SELECT isFavorite FROM books WHERE id = :bookId" )
+    suspend fun getFavoriteStatus(bookId: String): Boolean?
 }
