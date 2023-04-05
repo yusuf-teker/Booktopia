@@ -17,12 +17,29 @@ class FavoritesScreenViewModel @Inject constructor(
     private val repository: FavoritesRepository,
     private val userPreferencesManager: UserPreferencesManager
 ): ViewModel(){
+
+
     private val _books = MutableStateFlow<List<FavoriteBook>>(emptyList())
     val books: StateFlow<List<FavoriteBook>> = _books
 
 
-    private val _shouldShowInfoPopUp = MutableStateFlow<Boolean>(false)
+    private val _shouldShowInfoPopUp = MutableStateFlow(false)
     val shouldShowInfoPopUp: StateFlow<Boolean> = _shouldShowInfoPopUp
+
+    private val _searchAppBarState = MutableStateFlow(SearchAppBarState.CLOSED)
+    val searchAppBarState: StateFlow<SearchAppBarState> = _searchAppBarState
+
+    private val _searchTextState = MutableStateFlow("")
+    val searchTextState: StateFlow<String> = _searchTextState
+
+
+
+    fun setSearchAppBarState(status: SearchAppBarState){
+        _searchAppBarState.value = status
+    }
+    fun setSearchTextState(searchText: String){
+        _searchTextState.value = searchText
+    }
 
     fun hidePopUpTemporary(){
         _shouldShowInfoPopUp.value = false
@@ -35,6 +52,18 @@ class FavoritesScreenViewModel @Inject constructor(
     fun getAllFavoriteBooks() {
         viewModelScope.launch {
             _books.value = repository.getAllFavoriteBooks()
+        }
+    }
+
+    fun findFavoriteBooks(query: String){
+        viewModelScope.launch {
+            _books.value = repository.findFavotireBooks(query)
+        }
+    }
+
+    fun findBooksByReadingStatus(readingStatus: Int){
+        viewModelScope.launch {
+            _books.value = repository.findBooksByReadingStatus(readingStatus)
         }
     }
 
@@ -55,15 +84,21 @@ class FavoritesScreenViewModel @Inject constructor(
         }
 
     }
-    fun getShouldShowInfoPopUp(){
+    private fun getShouldShowInfoPopUp(){
         viewModelScope.launch {
             userPreferencesManager.getShouldShowInfoPopUp.collectLatest {
                 _shouldShowInfoPopUp.value = it ?: false
             }
         }
     }
+
+
     init {
         getAllFavoriteBooks()
         getShouldShowInfoPopUp()
     }
+}
+enum class SearchAppBarState {
+    CLOSED,
+    OPENED
 }

@@ -12,9 +12,11 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.bookfinder.R
 
 @Composable
 fun InfoPopup(onDismiss: () -> Unit, onNeverShowAgain: () -> Unit) {
@@ -22,14 +24,14 @@ fun InfoPopup(onDismiss: () -> Unit, onNeverShowAgain: () -> Unit) {
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = "How to add a book into favorites",
+                text = stringResource(R.string.title_how_to_add_favorite),
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp
             )
         },
         text = {
             Text(
-                text = "You can add the book to your favorites by performing a left swipe on the Search screen.",
+                text = stringResource(R.string.info_message_how_to_add_favorite),
                 fontSize = 16.sp
             )
         },
@@ -45,14 +47,14 @@ fun InfoPopup(onDismiss: () -> Unit, onNeverShowAgain: () -> Unit) {
                         onNeverShowAgain()
                     }
                 ) {
-                    Text("Don't show again", color = Color.Red)
+                    Text(stringResource(R.string.dont_show_again), color = Color.Red)
                 }
                 TextButton(
                     onClick = {
                         onDismiss()
                     }
                 ) {
-                    Text("Okey", color = MaterialTheme.colors.primary)
+                    Text(stringResource(R.string.okay), color = MaterialTheme.colors.primary)
                 }
             }
         },

@@ -14,9 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.bookfinder.R
 import com.example.bookfinder.ui.theme.BookFinderTheme
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -60,7 +62,7 @@ fun SearchWidget( onQueryChanged: (String) -> Unit) {
                 ),
                 placeholder = {
                     Text(
-                        text = "Search...",
+                        text = stringResource(R.string.search_widget_hint),
                         style = MaterialTheme.typography.body1.copy(
                             color = MaterialTheme.colors.onSurface.copy(alpha = 0.6f)
                         )
@@ -69,7 +71,7 @@ fun SearchWidget( onQueryChanged: (String) -> Unit) {
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Default.Search,
-                        contentDescription = "Search"
+                        contentDescription = stringResource(R.string.search)
                     )
                 },
                 trailingIcon = {
@@ -86,7 +88,7 @@ fun SearchWidget( onQueryChanged: (String) -> Unit) {
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Clear,
-                                contentDescription = "Clear"
+                                contentDescription = stringResource(R.string.clear)
                             )
                         }
                     } else {

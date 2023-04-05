@@ -1,7 +1,6 @@
 package com.example.bookfinder.screens.favorites.favoritesDetails
 
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.FastOutSlowInEasing
@@ -37,10 +36,10 @@ import coil.request.ImageRequest
 import coil.size.Size
 import coil.transform.RoundedCornersTransformation
 import com.example.bookfinder.R
-import com.example.bookfinder.data.model.remote.toFavoriteBook
 import com.example.bookfinder.screens.common.CustomCheckboxGroup
 import com.example.bookfinder.screens.common.FavoriteIcon
-import com.example.bookfinder.ui.theme.Dimens.Dimens.bottomNavigationHeight
+import com.example.bookfinder.ui.theme.Dimen.bottomNavigationHeight
+import com.example.bookfinder.ui.theme.Dimen.circleIconPadding
 
 @Composable
 fun FavoriteDetailsScreen(
@@ -121,13 +120,12 @@ fun FavoriteDetailItem(
                         ) {
                             Icon(
                                 painter = painterResource(id = R.drawable.ic_arrow_back),
-                                contentDescription = "Back",
+                                contentDescription = stringResource(R.string.back),
                                 modifier = Modifier
                                     .size(36.dp)
                                     .clickable {
                                         navController.popBackStack()
-                                    }
-                                    .shadow(2.dp, CircleShape),
+                                    }.padding(circleIconPadding),
                                 tint = Color.White
                             )
                         }
@@ -237,7 +235,9 @@ fun FavoriteDetailItem(
                 onBoxSelected = { index ->
                     viewModel.setSelectedBox(index)
                 },
-                options = listOf("Okuyacağım", "Okuyorum", "Okudum")
+                options = listOf(stringResource(R.string.to_be_read), stringResource(R.string.reading), stringResource(
+                                    R.string.read)
+                                )
             )
             Column(
                 //Notlarım
@@ -248,7 +248,7 @@ fun FavoriteDetailItem(
 
                 Row() {
                     Text(
-                        text = "Notlarım", fontFamily = FontFamily.Cursive,
+                        text = stringResource(R.string.my_notes), fontFamily = FontFamily.Cursive,
                         fontSize = 32.sp
                     )
                     IconButton(
@@ -322,7 +322,7 @@ fun FavoriteDetailItem(
             TextButton(onClick = {
                 viewModel.updateBook()
             }) {
-                Text(text = "Save")
+                Text(text = stringResource(R.string.save))
             }
         }
 

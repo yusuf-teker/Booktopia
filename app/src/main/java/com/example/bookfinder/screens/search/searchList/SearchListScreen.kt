@@ -2,18 +2,21 @@ package com.example.bookfinder.screens.search
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.*
+
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.bookfinder.screens.common.BookList
+import com.example.bookfinder.R
 import com.example.bookfinder.screens.categories.CategoriesScreen
+import com.example.bookfinder.screens.common.BookList
 import com.example.bookfinder.screens.common.SearchWidget
 import com.example.bookfinder.screens.search.searchList.SearchScreenViewModel
-import com.example.bookfinder.ui.theme.Dimens.Dimens.bottomNavigationHeight
+import com.example.bookfinder.ui.theme.Dimen.bottomNavigationHeight
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -41,7 +44,7 @@ fun SearchListScreen(viewModel: SearchScreenViewModel,  onBookClicked: (String )
                                 .padding(16.dp)
 
                         ) {
-                            Text(text = "No results found.")
+                            Text(text = stringResource(id = R.string.no_result_founds))
                         }
                     }
                 }

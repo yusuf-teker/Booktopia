@@ -35,6 +35,7 @@ import com.example.bookfinder.data.model.remote.Book
 import com.example.bookfinder.data.model.remote.toFavoriteBook
 import com.example.bookfinder.screens.common.FavoriteIcon
 import com.example.bookfinder.screens.common.HtmlText
+import com.example.bookfinder.ui.theme.Dimen.circleIconPadding
 
 @Composable
 fun SearchDetailScreen(
@@ -108,7 +109,6 @@ fun BookDetailsScreen(book: Book, navController: NavController, viewModel: Searc
                             .background(Color.Black, CircleShape)
                             .size(36.dp)
                             .shadow(2.dp, CircleShape)
-                            .padding(4.dp)
 
                     ) {
                         Icon(
@@ -118,7 +118,7 @@ fun BookDetailsScreen(book: Book, navController: NavController, viewModel: Searc
                                 .size(36.dp)
                                 .clickable {
                                     navController.popBackStack()
-                                }
+                                }.padding(circleIconPadding)
                                 .align(Center),
                             tint = Color.White,
 
@@ -152,7 +152,7 @@ fun BookDetailsScreen(book: Book, navController: NavController, viewModel: Searc
                             .background(Color.Black, CircleShape)
                             .size(36.dp)
                             .shadow(2.dp, CircleShape)
-                            .padding(4.dp)
+
                     ) {
                         FavoriteIcon(
                             isFavorite.value,
@@ -162,7 +162,7 @@ fun BookDetailsScreen(book: Book, navController: NavController, viewModel: Searc
                             onClick = { isFavorite ->
                                 if (isFavorite){
                                     viewModel.insertFavoriteBook(book.toFavoriteBook())
-                                    Toast.makeText(context, "${book.volumeInfo?.title} favorilere eklendi.", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(context, "${book.volumeInfo?.title} ${context.getString(R.string.added_to_favorites)}", Toast.LENGTH_SHORT).show()
                                 }else{
                                     viewModel.deleteFavoriteBookById(book.id)
                                 }
@@ -245,7 +245,7 @@ fun BookDetailsScreen(book: Book, navController: NavController, viewModel: Searc
                     )
                 }
                 Text(
-                    text = "Hakkında",
+                    text = stringResource(R.string.about_title),
                     fontWeight = FontWeight.Bold,
                     fontSize = 24.sp,
                     modifier = Modifier.padding(bottom = 8.dp),
@@ -255,7 +255,7 @@ fun BookDetailsScreen(book: Book, navController: NavController, viewModel: Searc
                     HtmlText(htmlText = book.volumeInfo?.description!!)
 
                 } else{
-                    HtmlText(htmlText ="There is no description.")
+                    HtmlText(htmlText = stringResource(id = R.string.book_description_not_found))
                 }
 
 

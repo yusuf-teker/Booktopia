@@ -19,12 +19,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.bookfinder.R
 import com.example.bookfinder.data.model.remote.Category
-import com.example.bookfinder.util.categories
+import com.example.bookfinder.util.categoryColors
 
 @Composable
 fun CategoryItem(category: Category, onItemClicked: (categoryName: String) -> Unit) {
     val backgroundColors = mutableListOf(category.categoryColor)
-    val secondColor = if (category.categoryNo== categories.size-1) categories[0].categoryColor else categories[category.categoryNo+1].categoryColor
+    val secondColor = if (category.categoryNo== category.totalCategorySize-1) categoryColors[0] else categoryColors[category.categoryNo+1]
     backgroundColors.add(secondColor)
     val brush = Brush.linearGradient(backgroundColors)
 

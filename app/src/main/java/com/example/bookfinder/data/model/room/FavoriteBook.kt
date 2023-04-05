@@ -22,7 +22,8 @@ data class FavoriteBook(
     val title: String = "",
     var isFavorite: Boolean = false,
     var myNotes: String?,
-    var readingStatus: Int = -1
+    var readingStatus: Int = -1,
+    val addedDate : String = ""
 )
 
 class Converters {

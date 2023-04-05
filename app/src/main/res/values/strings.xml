@@ -1,6 +1,48 @@
 <resources>
     <string name="app_name">BookFinder</string>
-    <string name="book_title_not_found">Title not found.</string>
-    <string name="book_description_not_found">Description not found.</string>
-    <string name="book_author_not_found">Author not found.</string>
+    <string name="book_title_not_found">Başlık bulunamadı.</string>
+    <string name="book_description_not_found">Açıklama bulunamadı.</string>
+    <string name="book_author_not_found">Yazar bulunamadı.</string>
+    <string name="title_categories">Kategoriler</string>
+    <string name="remove_from_favorites">Favorilerden kaldır.</string>
+    <string name="add_to_favorites">Favorilere ekle.</string>
+    <string name="title_how_to_add_favorite">Favorilere nasıl kitap eklerim?</string>
+    <string name="info_message_how_to_add_favorite">Arama ekranında kitabı sola kaydırarak favorilere ekleme işlemini gerçekleştirebilirsiniz.</string>
+    <string name="dont_show_again">Tekrar gösterme</string>
+    <string name="okay">Tamam</string>
+    <string name="search_widget_hint">Ara…</string>
+    <string name="search">Ara</string>
+    <string name="clear">Temizle</string>
+    <string name="back">Geri</string>
+    <string name="to_be_read">Okuyacağım</string>
+    <string name="reading">Okuyorum</string>
+    <string name="readings">Okuyor olduklarım</string>
+    <string name="read">Okudum</string>
+    <string name="my_notes">Notlarım</string>
+    <string name="save">Kaydet</string>
+    <string name="added_to_favorites">{} favorilere eklendi.</string>
+    <string name="about_title">Hakkında</string>
+    <string name="no_result_founds">Hiç sonuç bulunamadı.</string>
+    <string name="my_favorites">Favorilerim</string>
+    <string name="filter">Filtrele</string>
+    <string name="sort_by_date">Yüklenme gününe göre sırala</string>
+    <string name="reads">Okuduklarım</string>
+    <string name="show_all">Hepsini göster</string>
+    <string name="help_and_feedback">Yardım ve Geribildirim</string>
+
+    <string-array name="categories">
+        <item>Bilgisayar ve Teknoloji</item>
+        <item>Bilim Kurgu ve Fantastik</item>
+        <item>Çizgi Romanlar</item>
+        <item>Çocuk Kitaplar</item>
+        <item>Din ve İnanç</item>
+        <item>Eğitim</item>
+        <item>Gizem ve Macera</item>
+        <item>İş ve Yatırım</item>
+        <item>Kurgu ve Edebiyat</item>
+        <item>Romantik</item>
+        <item>Sağlık, Zihin ve Beden</item>
+        <item>Sanat ve Eğlence</item>
+        <item>Tarih</item>
+    </string-array>
 </resources>

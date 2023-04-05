@@ -25,4 +25,12 @@ interface BookDao {
 
     @Query("SELECT isFavorite FROM books WHERE id = :bookId" )
     suspend fun getFavoriteStatus(bookId: String): Boolean?
+
+    @Query("SELECT * FROM books WHERE title LIKE '%' || :query || '%'")
+    suspend fun findFavotireBooks(query: String): List<FavoriteBook>?
+
+    @Query("SELECT * FROM books WHERE readingStatus = :readingStatus")
+    suspend fun findBooksByReadingStatus(readingStatus: Int): List<FavoriteBook>?
+
+
 }

@@ -20,7 +20,7 @@ import com.example.bookfinder.Navigation.bottomNavigation.BottomNavItem
 import com.example.bookfinder.screens.Navigation.BottomNavigationBar
 import com.example.bookfinder.Navigation.Navigation
 import com.example.bookfinder.ui.theme.BookFinderTheme
-import com.example.bookfinder.ui.theme.Dimens.Dimens.bottomNavigationHeight
+import com.example.bookfinder.ui.theme.Dimen.bottomNavigationHeight
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

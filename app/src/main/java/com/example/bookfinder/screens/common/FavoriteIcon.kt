@@ -2,6 +2,7 @@ package com.example.bookfinder.screens.common
 
 import android.widget.Toast
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -12,14 +13,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.bookfinder.R
 
 import com.example.bookfinder.ui.theme.BookFinderTheme
+import com.example.bookfinder.ui.theme.Dimen.circleIconPadding
 
 @Composable
 fun FavoriteIcon(isFavorite : Boolean, onClick: (Boolean) -> Unit, modifier: Modifier) {
     val icon = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder
-    val contentDescription = if (isFavorite) "Favorited" else "Not favorited"
+    val contentDescription = if (isFavorite) stringResource(R.string.remove_from_favorites) else stringResource(
+            R.string.add_to_favorites)
     Icon(
         icon,
         contentDescription = contentDescription,
@@ -28,7 +34,7 @@ fun FavoriteIcon(isFavorite : Boolean, onClick: (Boolean) -> Unit, modifier: Mod
             onClick = {
                 onClick(!isFavorite)
             }
-        )
+        ).padding(circleIconPadding)
     )
 }
 

@@ -13,6 +13,12 @@ class FavoritesRepository @Inject constructor(
     suspend fun insertBookToFavorites(book: FavoriteBook) {
         bookDao.insertFavoriteBook(book)
     }
+    suspend fun findFavotireBooks(query: String): List<FavoriteBook>{
+        return bookDao.findFavotireBooks(query) ?: emptyList()
+    }
+    suspend fun findBooksByReadingStatus(readingStatus: Int): List<FavoriteBook>{
+        return bookDao.findBooksByReadingStatus(readingStatus) ?: emptyList()
+    }
 
     suspend fun deleteBookFromFavoritesById(bookId: String) {
         bookDao.deleteFavoriteBookById(bookId)
@@ -26,5 +32,6 @@ class FavoritesRepository @Inject constructor(
     suspend fun updateBook(book: FavoriteBook){
         return bookDao.updateBook(book)
     }
+
 
 }

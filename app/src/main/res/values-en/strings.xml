@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">BookFinder</string>
+    <string name="book_title_not_found">Title not found.</string>
+    <string name="book_description_not_found">Description not found.</string>
+    <string name="book_author_not_found">Author not found.</string>
+    <string name="title_categories">Categories</string>
+    <string name="remove_from_favorites">Remove from favorites</string>
+    <string name="add_to_favorites">Add to favorites</string>
+    <string name="title_how_to_add_favorite">How to add a book into favorites?</string>
+    <string name="info_message_how_to_add_favorite">You can add the book to your favorites by performing a left swipe on the Search screen.</string>
+    <string name="dont_show_again">Don\'t show again</string>
+    <string name="okay">Okay</string>
+    <string name="search_widget_hint">Search…</string>
+    <string name="search">Search</string>
+    <string name="clear">Clear</string>
+    <string name="back">Back</string>
+    <string name="to_be_read">To be read</string>
+    <string name="reading">Reading</string>
+    <string name="readings">Readings</string>
+    <string name="read">Read</string>
+    <string name="my_notes">My notes</string>
+    <string name="save">Save</string>
+    <string name="added_to_favorites">{} added to favorites.</string>
+    <string name="about_title">About</string>
+    <string name="no_result_founds">No result founds.</string>
+    <string name="my_favorites">My Favorites</string>
+    <string name="filter">Filter</string>
+    <string name="sort_by_date">Sort by date</string>
+    <string name="reads">Reads</string>
+    <string name="show_all">Show all</string>
+    <string name="help_and_feedback"><![CDATA[Help & Feedback]]></string>
+
+    <string-array name="categories">
+        <item>Computer and Technology</item>
+        <item>Science Fiction &amp; Fantasy</item>
+        <item>Comics</item>
+        <item>Children\'s Books</item>
+        <item>Religion and Faith</item>
+        <item>Education</item>
+        <item>Mystery and Adventure</item>
+        <item>Business and Investment</item>
+        <item>Fiction and Literature</item>
+        <item>Romantic</item>
+        <item>Health, Mind and Body</item>
+        <item>Arts &amp; Entertainment</item>
+        <item>History</item>
+    </string-array>
+</resources>

@@ -147,7 +147,6 @@ fun BookItem(book: Book, viewModel: SearchScreenViewModel,  onBookClicked: (Stri
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(24.dp)
-                        .border(4.dp, Color.Black)
                     )
             }
 
@@ -155,30 +154,3 @@ fun BookItem(book: Book, viewModel: SearchScreenViewModel,  onBookClicked: (Stri
     }
 }
 
-
-@Preview(showBackground = true)
-@Composable
-fun BookItemPreview() {
-    BookFinderTheme {
-        //BookItem(book = Book( "1", "kind1", SearchInfo(""), "", null)){}
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun BookItemInScreenPreview() {
-    BookFinderTheme {
-        Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colors.background
-        ) {
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                //BookItem(book = Book( "1", "kind1", SearchInfo(""), "", null))
-            }
-
-        }
-
-    }
-}

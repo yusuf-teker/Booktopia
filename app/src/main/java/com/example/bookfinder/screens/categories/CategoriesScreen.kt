@@ -11,15 +11,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.bookfinder.R
 import com.example.bookfinder.screens.search.searchList.SearchScreenViewModel
-import com.example.bookfinder.util.categories
+import com.example.bookfinder.util.createCategory
 
 
 @Composable
 fun CategoriesScreen(viewModel: SearchScreenViewModel){
+    val categoryNames = stringArrayResource(id = R.array.categories).toList()
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -38,7 +42,7 @@ fun CategoriesScreen(viewModel: SearchScreenViewModel){
             ) {
             Box(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = "Categories",
+                    text = stringResource(R.string.title_categories),
                     fontWeight = FontWeight.Bold,
                     fontSize = 24.sp,
                     modifier = Modifier
@@ -48,9 +52,10 @@ fun CategoriesScreen(viewModel: SearchScreenViewModel){
             }
 
             }
-            items(categories.size){
+
+            items(categoryNames.size){
                 CategoryItem(
-                    category = categories[it],
+                    category = createCategory(it, categoryNames.get(it), categoryNames.size),
                     onItemClicked = {
                         viewModel.setQuery(it)
                         viewModel.searchBooks()
