@@ -167,7 +167,10 @@ fun FilterAction(onFilter: (Int) -> Unit) {
                     onFilter(SORTED_BY_DATE)
                 }
             ) {
-                Text(text = stringResource(R.string.sort_by_date))
+                Text(
+                    text = stringResource(R.string.sort_by_date),
+                    color = MaterialTheme.colors.onSurface
+                )
             }
             DropdownMenuItem(
                 onClick = {
@@ -175,7 +178,10 @@ fun FilterAction(onFilter: (Int) -> Unit) {
                     onFilter(FILTER_TO_BE_READ)
                 }
             ) {
-                Text(text = stringResource(id = R.string.to_be_read))
+                Text(
+                    text = stringResource(id = R.string.to_be_read),
+                    color = MaterialTheme.colors.onSurface
+                )
             }
             DropdownMenuItem(
                 onClick = {
@@ -183,15 +189,21 @@ fun FilterAction(onFilter: (Int) -> Unit) {
                     onFilter(FILTER_READINGS)
                 }
             ) {
-                Text(text = stringResource(id = R.string.readings))
+                Text(
+                    text = stringResource(id = R.string.readings),
+                    color = MaterialTheme.colors.onSurface
+                )
             }
             DropdownMenuItem(
                 onClick = {
                     expanded = false
-                    onFilter(FILTER_READINGS)
+                    onFilter(FILTER_READS)
                 }
             ) {
-                Text(text = stringResource(R.string.reads))
+                Text(
+                    text = stringResource(R.string.reads),
+                    color = MaterialTheme.colors.onSurface
+                )
             }
             DropdownMenuItem(
                 onClick = {
@@ -199,7 +211,10 @@ fun FilterAction(onFilter: (Int) -> Unit) {
                     onFilter(SHOW_ALL)
                 }
             ) {
-                Text(text = stringResource(R.string.show_all))
+                Text(
+                    text = stringResource(R.string.show_all),
+                    color = MaterialTheme.colors.onSurface
+                )
             }
         }
 
@@ -230,7 +245,10 @@ fun MoreAction() {
             DropdownMenuItem(
                 onClick = { expanded = false }
             ) {
-                Text(text = stringResource(R.string.help_and_feedback))
+                Text(
+                    text = stringResource(R.string.help_and_feedback),
+                    color = MaterialTheme.colors.onSurface
+                )
             }
         }
     }

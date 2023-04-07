@@ -5,11 +5,13 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Modifier
@@ -48,10 +50,14 @@ fun SearchDetailScreen(
     if (book != null) {
         BookDetailsScreen(book = book, navController, viewModel)
     } else {
-        viewModel.getBookById(bookId)
-        Box(modifier = Modifier.fillMaxSize()) {
-            Text("Loading", modifier = Modifier.align(Center))
+        Box(modifier = Modifier.background(Color.Transparent).fillMaxSize()) {
+            CircularProgressIndicator(
+                color = Color.Green,
+                backgroundColor = Color.White,
+                modifier = Modifier.align(Center)
+            )
         }
+        viewModel.getBookById(bookId)
 
     }
 }
@@ -59,6 +65,7 @@ fun SearchDetailScreen(
 @Composable
 fun BookDetailsScreen(book: Book, navController: NavController, viewModel: SearchDetailViewModel) {
     val context = LocalContext.current
+
     val isFavorite = viewModel.isFavorite.collectAsState()
     Column(
         modifier = Modifier

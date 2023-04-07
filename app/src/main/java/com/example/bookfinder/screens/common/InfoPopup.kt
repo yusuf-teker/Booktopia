@@ -26,13 +26,16 @@ fun InfoPopup(onDismiss: () -> Unit, onNeverShowAgain: () -> Unit) {
             Text(
                 text = stringResource(R.string.title_how_to_add_favorite),
                 fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
+                fontSize = 18.sp,
+                color = MaterialTheme.colors.onSurface
+
             )
         },
         text = {
             Text(
                 text = stringResource(R.string.info_message_how_to_add_favorite),
-                fontSize = 16.sp
+                fontSize = 16.sp,
+                color = MaterialTheme.colors.onSurface
             )
         },
         buttons = {
@@ -54,7 +57,7 @@ fun InfoPopup(onDismiss: () -> Unit, onNeverShowAgain: () -> Unit) {
                         onDismiss()
                     }
                 ) {
-                    Text(stringResource(R.string.okay), color = MaterialTheme.colors.primary)
+                    Text(stringResource(R.string.okay), color = MaterialTheme.colors.onSurface)
                 }
             }
         },

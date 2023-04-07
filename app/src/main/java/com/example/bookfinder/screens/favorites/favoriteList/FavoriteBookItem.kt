@@ -1,7 +1,6 @@
 package com.example.bookfinder.screens.favorites.favoriteList
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,10 +12,10 @@ import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -24,6 +23,7 @@ import com.example.bookfinder.R
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import com.example.bookfinder.data.model.room.FavoriteBook
+import com.example.bookfinder.util.shadow
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
@@ -57,7 +57,7 @@ fun FavoriteBookItem(book: FavoriteBook,  onItemClicked : (FavoriteBook) -> Unit
                 Modifier.size(96.dp),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(Icons.TwoTone.Favorite, contentDescription = null,Modifier.size(48.dp))
+                Icon(Icons.TwoTone.Favorite, contentDescription = null, Modifier.size(48.dp))
             }
         },
         background = Color.Red,
@@ -86,24 +86,22 @@ fun FavoriteBookItem(book: FavoriteBook,  onItemClicked : (FavoriteBook) -> Unit
                     }
                 }
                 .background(
-                    color = Color.Transparent
+                    color = Color.Transparent,
                 )
                 .padding(8.dp)
+                .shadow(
+                    color = if (isFavorite) Color.Red else Color.Black
+                )
 
             ) {
 
             Row(
                 Modifier
-                    .fillMaxSize().shadow(
-                        shape = RoundedCornerShape(8.dp),
-                        elevation = 4.dp,
-                        spotColor = if (isFavorite) Color.Red else Color.DarkGray,
-                    )
-                    .padding(horizontal = 8.dp)
+                    .fillMaxSize()
                     .background(
-                        shape = RoundedCornerShape(8.dp),
-                        color = Color.White
-                    ),
+                        color = MaterialTheme.colors.surface,
+                        shape = RoundedCornerShape(8.dp)
+                    )   .padding(horizontal = 8.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
 
@@ -122,7 +120,7 @@ fun FavoriteBookItem(book: FavoriteBook,  onItemClicked : (FavoriteBook) -> Unit
                         modifier = Modifier.fillMaxWidth(0.6f),
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 2,
-                        color = MaterialTheme.colors.onSecondary
+                        color = colorResource(R.color.onSurface)
                     )
                     Text(
                         text = book.description
@@ -131,7 +129,7 @@ fun FavoriteBookItem(book: FavoriteBook,  onItemClicked : (FavoriteBook) -> Unit
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 3,
                         modifier = Modifier.fillMaxWidth(0.6f),
-                        color = MaterialTheme.colors.onSecondary
+                        color = colorResource(R.color.onSurface)
                     )
                 }
 
@@ -142,7 +140,6 @@ fun FavoriteBookItem(book: FavoriteBook,  onItemClicked : (FavoriteBook) -> Unit
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(24.dp)
-                        .border(4.dp, Color.Black)
                 )
             }
 

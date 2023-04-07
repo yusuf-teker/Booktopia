@@ -31,6 +31,10 @@
     <string name="reads">Reads</string>
     <string name="show_all">Show all</string>
     <string name="help_and_feedback"><![CDATA[Help & Feedback]]></string>
+    <string name="favorites">Favorites</string>
+    <string name="home">Home</string>
+    <string name="saved">Saved</string>
+    <string name="empty_favorite_book_message">You don\'t have a favorite book.</string>
 
     <string-array name="categories">
         <item>Computer and Technology</item>

@@ -20,7 +20,7 @@
     <string name="read">Okudum</string>
     <string name="my_notes">Notlarım</string>
     <string name="save">Kaydet</string>
-    <string name="added_to_favorites">{} favorilere eklendi.</string>
+    <string name="added_to_favorites"> favorilere eklendi.</string>
     <string name="about_title">Hakkında</string>
     <string name="no_result_founds">Hiç sonuç bulunamadı.</string>
     <string name="my_favorites">Favorilerim</string>
@@ -29,6 +29,10 @@
     <string name="reads">Okuduklarım</string>
     <string name="show_all">Hepsini göster</string>
     <string name="help_and_feedback">Yardım ve Geribildirim</string>
+    <string name="favorites">Favoriler</string>
+    <string name="home">Ana sayfa</string>
+    <string name="saved">Kaydedildi</string>
+    <string name="empty_favorite_book_message">Favori kitabınız yok.</string>
 
     <string-array name="categories">
         <item>Bilgisayar ve Teknoloji</item>

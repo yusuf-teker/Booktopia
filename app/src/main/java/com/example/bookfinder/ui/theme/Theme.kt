@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 val LightColorPalette = lightColors(
-    primary = Color(0xFF3F51B5),
+    primary = Color(0xFFFFFFFF),
     primaryVariant = Color(0xFF303F9F),
     secondary = Color(0xFF00BCD4),
     secondaryVariant = Color(0xFF0097A7),
@@ -24,7 +24,7 @@ val LightColorPalette = lightColors(
 
 
 val DarkColorPalette = darkColors(
-    primary = Color(0xFFBB86FC),
+    primary = Color(0xFF000000),
     primaryVariant = Color(0xFF3700B3),
     secondary = Color(0xFF03DAC6),
     secondaryVariant = Color(0xFF018786),

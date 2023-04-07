@@ -6,19 +6,18 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.bookfinder.R
 import com.example.bookfinder.data.model.remote.Category
+import com.example.bookfinder.screens.common.ResponsiveText
 import com.example.bookfinder.util.categoryColors
 
 @Composable
@@ -43,6 +42,7 @@ fun CategoryItem(category: Category, onItemClicked: (categoryName: String) -> Un
             .fillMaxWidth()
             .background(brush)){
             Row(
+                horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .padding(16.dp)
@@ -51,17 +51,17 @@ fun CategoryItem(category: Category, onItemClicked: (categoryName: String) -> Un
                 Image(
                     painter = painterResource(id = category.categoryImage),
                     contentDescription = category.categoryName,
-                    modifier = Modifier.size(48.dp)
+                    modifier = Modifier.size(48.dp).padding(end = 8.dp)
                 )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = category.categoryName,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp,
+                ResponsiveText(
                     modifier = Modifier.weight(1f),
-                    textAlign = TextAlign.Center,
-                    color = colorResource(id = R.color.white_gray),
+                    text = category.categoryName,
+                    textStyle = TextStyle(fontSize = 16 .sp)
+                    //textAlign Center default
+                    , color = colorResource(id = R.color.white_gray),
+                    maxLines = 3
                 )
+
             }
         }
 

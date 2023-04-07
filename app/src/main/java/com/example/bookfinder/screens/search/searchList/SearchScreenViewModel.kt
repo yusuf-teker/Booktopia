@@ -1,5 +1,6 @@
 package com.example.bookfinder.screens.search.searchList
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bookfinder.data.model.remote.Book
@@ -22,10 +23,22 @@ class SearchScreenViewModel @Inject constructor(
     private val _query = MutableStateFlow("")
     val query: StateFlow<String> = _query
 
+    private val _loading = MutableStateFlow(false)
+    val loading: StateFlow<Boolean> = _loading
+
     fun searchBooks() {
+        _loading.value = true // set loading to true
         viewModelScope.launch {
-            _books.value = repository.searchBooks(_query.value)
+            try {
+
+                _books.value = repository.searchBooks(_query.value)
+            } catch (e: Exception) {
+                Log.e("SearchScreenViewModel", "Error searching books", e)
+            } finally {
+                _loading.value = false // set loading to false
+            }
         }
+
     }
 
     fun insertFavoriteBook(book: FavoriteBook) {
@@ -41,7 +54,7 @@ class SearchScreenViewModel @Inject constructor(
     init {
         searchBooks()
     }
-    fun setQuery(query: String) {
+    fun setQueryAndSearch(query: String) {
         _query.value = query
         searchBooks()
     }

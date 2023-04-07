@@ -1,32 +1,17 @@
 package com.example.bookfinder.util
 
+import android.graphics.BlurMaskFilter
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.example.bookfinder.R
 import com.example.bookfinder.data.model.remote.*
 
-val harryPotter = createVolumeInfo("https://m.media-amazon.com/images/I/51mFoFmu0EL._SX335_BO1,204,203,200_.jpg","Harry Potter and the Chamber of Secrets")
-val mathBook = createVolumeInfo("http://books.google.com/books/content?id=kYYJLhL2arwC&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api")
-val mockItems =
-
-    mutableListOf<Book>(
-        Book("1","kind1", SearchInfo("searchInfo1"),null, mathBook, false),
-        Book("2","kind2", SearchInfo("searchInfo2"),null, harryPotter,true),
-        Book("3","kind3", SearchInfo("searchInfo3"),null, null),
-        Book("4","kind4", SearchInfo("searchInfo4"),null, mathBook,true),
-        Book("5","kind5", SearchInfo("searchInfo5"),null, harryPotter),
-        Book("6","kind6", SearchInfo("searchInfo6"),null, harryPotter),
-        Book("1","kind1", SearchInfo("searchInfo1"),null, harryPotter,false),
-        Book("2","kind2", SearchInfo("searchInfo2"),null, mathBook,true),
-        Book("3","kind3", SearchInfo("searchInfo3"),null, mathBook),
-        Book("4","kind4", SearchInfo("searchInfo4"),null, harryPotter,true),
-        Book("5","kind5", SearchInfo("searchInfo5"),null, mathBook),
-        Book("6","kind6", SearchInfo("searchInfo6"),null, harryPotter),
-    )
-
-fun createVolumeInfo(link: String, title: String= "Tilte of the book"): VolumeInfo {
-    return VolumeInfo(listOf("Name Surname","Name1 Surname1"),listOf("",""),"Mathematics plays a key role in computer science, some researchers would consider computers as nothing but the physical embodiment of mathematical systems. And whether you are designing a digital circuit, a computer program or a new programming language, you need mathematics to be able to reason about the design -- its correctness, robustness and dependability. This book covers the foundational mathematics necessary for courses in computer science. The common approach to presenting mathematical concepts and operators is to define them in terms of properties they satisfy, and then based on these definitions develop ways of computing the result of applying the operators and prove them correct. This book is mainly written for computer science students, so here the author takes a different approach: he starts by defining ways of calculating the results of applying the operators and then proves that they satisfy various properties. After justifying his underlying approach the author offers detailed chapters covering propositional logic, predicate calculus, sets, relations, discrete structures, structured types, numbers, and reasoning about programs. The book contains chapter and section summaries, detailed proofs and many end-of-section exercises -- key to the learning process. The book is suitable for undergraduate and graduate students, and although the treatment focuses on areas with frequent applications in computer science, the book is also suitable for students of mathematics and engineering.", ImageLinks("",link),"","",0,"","","","",title)
-}
-val colors2 = listOf(Color.Blue, Color.Cyan, Color.Green, Color.Yellow, Color.Magenta, Color.Red, Color.LightGray, Color.White)
 
 val categoryColors = listOf<Color>(
     Color(0xFF87CEEB), // Gökyüzü mavisi
@@ -59,9 +44,18 @@ val categoryDrawableList = listOf(
     R.drawable.art_entertainment,
     R.drawable.history,
 )
-fun createCategory(index: Int, categoryName: String, totalCategorySize: Int): Category{
-    return Category(index, categoryName, categoryDrawableList[index], categoryColors[index],categoryQueries[index], totalCategorySize)
+
+fun createCategory(index: Int, categoryName: String, totalCategorySize: Int): Category {
+    return Category(
+        index,
+        categoryName,
+        categoryDrawableList[index],
+        categoryColors[index],
+        categoryQueries[index],
+        totalCategorySize
+    )
 }
+
 val categoryQueries = listOf<String>(
     "subject:Comic+books+strips+etc&langRestrict=tr",
     "subject:Bilim+subject:Kurgu+subject:Fantastik+subject:Bilim Kurgu ve Fantastik",
@@ -78,3 +72,40 @@ val categoryQueries = listOf<String>(
     "subject:Tarih"
 )
 
+//Extension Function For SHADOW
+fun Modifier.shadow(
+    color: Color = Color.Black,
+    borderRadius: Dp = 8.dp,
+    blurRadius: Dp = 8.dp,
+    offsetY: Dp = 0.dp,
+    offsetX: Dp = 0.dp,
+    spread: Dp = 2f.dp,
+    modifier: Modifier = Modifier
+) = this.then(
+    modifier.drawBehind {
+        this.drawIntoCanvas {
+            val paint = Paint()
+            val frameworkPaint = paint.asFrameworkPaint()
+            val spreadPixel = spread.toPx()
+            val leftPixel = (0f - spreadPixel) + offsetX.toPx()
+            val topPixel = (0f - spreadPixel) + offsetY.toPx()
+            val rightPixel = (this.size.width + spreadPixel)
+            val bottomPixel = (this.size.height + spreadPixel)
+
+            if (blurRadius != 0.dp) {
+                frameworkPaint.maskFilter =
+                    (BlurMaskFilter(blurRadius.toPx(), BlurMaskFilter.Blur.NORMAL))
+            }
+
+            frameworkPaint.color = color.toArgb()
+            it.drawRoundRect(
+                left = leftPixel,
+                top = topPixel,
+                right = rightPixel,
+                bottom = bottomPixel,
+                radiusX = borderRadius.toPx(),
+                radiusY = borderRadius.toPx(),
+                paint
+            )
+        }
+    })

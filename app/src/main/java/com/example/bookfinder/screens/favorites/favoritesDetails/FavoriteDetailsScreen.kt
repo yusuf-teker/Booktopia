@@ -1,12 +1,15 @@
 package com.example.bookfinder.screens.favorites.favoritesDetails
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -70,6 +73,7 @@ fun FavoriteDetailItem(
             .fillMaxSize()
             .padding(bottom = bottomNavigationHeight)
     ) {
+        // Top - Images + Icons
         item {
             Box(
                 modifier = Modifier
@@ -100,16 +104,15 @@ fun FavoriteDetailItem(
                 )
 
                 Column( //iconlar ve image
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Spacer(modifier = Modifier.fillMaxHeight(0.05f))
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 32.dp, vertical = 12.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
+                            .padding( vertical = 12.dp),
+                        horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
                         Box(
                             modifier = Modifier
@@ -125,7 +128,8 @@ fun FavoriteDetailItem(
                                     .size(36.dp)
                                     .clickable {
                                         navController.popBackStack()
-                                    }.padding(circleIconPadding),
+                                    }
+                                    .padding(circleIconPadding) .align(Alignment.Center),
                                 tint = Color.White
                             )
                         }
@@ -147,9 +151,10 @@ fun FavoriteDetailItem(
                             contentDescription = null,
                             contentScale = ContentScale.FillHeight,
                             modifier = Modifier
-                                .fillMaxHeight(0.7f)
+                                .fillMaxHeight(0.5f)
                                 .aspectRatio(1f)
                                 .width(IntrinsicSize.Min)
+                                //.wrapContentWidth()
                         )
                         Box(
                             modifier = Modifier
@@ -162,13 +167,13 @@ fun FavoriteDetailItem(
                                 isFavorite.value,
                                 modifier = Modifier
                                     .size(36.dp)
-                                    .shadow(2.dp, CircleShape),
+                                    .align(Alignment.Center),
                                 onClick = { isFavorite ->
 
                                     if (isFavorite) {
                                         viewModel.saveFavoriteBook(book = book.value)
                                     } else {
-                                        viewModel.deleteFavoriteBookById(book.value?.id ?:"")
+                                        viewModel.deleteFavoriteBookById(book.value?.id ?: "")
                                     }
                                     viewModel.setIsFavorite(isFavorite)
                                 }
@@ -226,6 +231,7 @@ fun FavoriteDetailItem(
             }
         }
 
+        //Checkboxes
         item {
 
             val selectedBox by viewModel.selectedBox.collectAsState()
@@ -235,10 +241,21 @@ fun FavoriteDetailItem(
                 onBoxSelected = { index ->
                     viewModel.setSelectedBox(index)
                 },
-                options = listOf(stringResource(R.string.to_be_read), stringResource(R.string.reading), stringResource(
-                                    R.string.read)
-                                )
+                options = listOf(
+                    stringResource(R.string.to_be_read),
+                    stringResource(R.string.reading),
+                    stringResource(R.string.read)
+                ),
+                modifier = Modifier.fillMaxWidth().wrapContentHeight()
             )
+
+
+
+
+        }
+
+        // Notes
+        item{
             Column(
                 //Notlarım
                 modifier = Modifier
@@ -249,7 +266,8 @@ fun FavoriteDetailItem(
                 Row() {
                     Text(
                         text = stringResource(R.string.my_notes), fontFamily = FontFamily.Cursive,
-                        fontSize = 32.sp
+                        fontSize = 32.sp,
+                        color = MaterialTheme.colors.onSurface
                     )
                     IconButton(
                         onClick = { expanded = !expanded },
@@ -288,7 +306,8 @@ fun FavoriteDetailItem(
                             easing = LinearOutSlowInEasing
                         )
                     )
-                )  {
+                ) {
+
                     Column(modifier = Modifier.fillMaxWidth()) {
                         TextField(
                             value = noteText.value,
@@ -308,25 +327,61 @@ fun FavoriteDetailItem(
                             shape = RoundedCornerShape(8.dp),
                             modifier = Modifier
                                 .fillMaxWidth(1f)
-                                .height(240.dp)
+                                .height(IntrinsicSize.Min)
                                 .padding(vertical = 8.dp)
-                                .border(4.dp, MaterialTheme.colors.onSurface)
-                        )
+                                .border(4.dp, MaterialTheme.colors.onSurface),
+
+                            )
 
                     }
+
 
                 }
 
 
             }
-            TextButton(onClick = {
-                viewModel.updateBook()
-            }) {
-                Text(text = stringResource(R.string.save))
+
+        }
+        // Save Button
+        item {
+            val interactionSource = remember { MutableInteractionSource() }
+            val isPressed by interactionSource.collectIsPressedAsState()
+
+            Button(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .padding(horizontal = 48.dp),
+
+
+                onClick = {
+                    viewModel.updateBook()
+                    Toast.makeText(context, context.resources.getString(R.string.saved), Toast.LENGTH_SHORT).show()
+                },
+                interactionSource = interactionSource,
+                colors = ButtonDefaults.buttonColors(backgroundColor = if (isPressed) Color.Red else MaterialTheme.colors.onSurface)
+
+            ) {
+                Row(
+                    modifier = Modifier
+
+                        .fillMaxSize()
+                        .background(Color.Transparent),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = stringResource(id = R.string.save),
+                        color = MaterialTheme.colors.onPrimary,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp
+                    )
+                }
+
             }
         }
-
-
     }
 }
 

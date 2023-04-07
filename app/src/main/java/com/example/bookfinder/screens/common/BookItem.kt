@@ -3,7 +3,6 @@ package com.example.bookfinder.screens.common
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -16,13 +15,12 @@ import androidx.compose.material.icons.twotone.Favorite
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bookfinder.R
 import coil.compose.rememberAsyncImagePainter
@@ -30,7 +28,7 @@ import coil.request.ImageRequest
 import com.example.bookfinder.data.model.remote.Book
 import com.example.bookfinder.data.model.remote.toFavoriteBook
 import com.example.bookfinder.screens.search.searchList.SearchScreenViewModel
-import com.example.bookfinder.ui.theme.BookFinderTheme
+import com.example.bookfinder.util.shadow
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
@@ -87,67 +85,69 @@ fun BookItem(book: Book, viewModel: SearchScreenViewModel,  onBookClicked: (Stri
             Modifier
                 .fillMaxWidth()
                 .height(200.dp)
-                .clickable{
-                   onBookClicked(book.id)
+                .clickable {
+                    onBookClicked(book.id)
                 }
                 .background(
-                    color = Color.LightGray
+                    shape = RoundedCornerShape(8.dp),
+                    color = Color.Transparent,
                 )
                 .padding(8.dp)
                 .shadow(
-                    4.dp,
-                    RoundedCornerShape(8.dp),
-                    spotColor = if (isFavorite) Color.Red else Color.DarkGray
-                ),
+                    color = if (isFavorite) Color.Red else Color.Black
+                )
+            ,
 
             ) {
-
-            Row(
-                Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 8.dp)
-                    .background(
-                        shape = RoundedCornerShape(8.dp),
-                        color = Color.White
-                    ),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-
+            Surface(modifier = Modifier
             ) {
-                Column(
+                Row(
                     Modifier
-                        .fillMaxHeight()
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.SpaceEvenly
-                ) {
+                        .fillMaxSize()
+                        .padding(horizontal = 8.dp)
+                    ,
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
 
-                    Text(
-                        text = book.volumeInfo?.title ?: stringResource(id = R.string.book_title_not_found),
-                        style = MaterialTheme.typography.h6,
-                        modifier = Modifier.fillMaxWidth(0.6f),
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 2,
-                        color = MaterialTheme.colors.onSecondary
-                    )
-                    Text(
-                        text = book.volumeInfo?.description
-                            ?: stringResource(id = R.string.book_description_not_found),
-                        style = MaterialTheme.typography.body2,
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 3,
-                        modifier = Modifier.fillMaxWidth(0.6f),
-                        color = MaterialTheme.colors.onSecondary
+                    ) {
+
+                    Column(
+                        Modifier
+                            .fillMaxHeight()
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.SpaceEvenly
+                    ) {
+
+                        Text(
+                            text = book.volumeInfo?.title
+                                ?: stringResource(id = R.string.book_title_not_found),
+                            style = MaterialTheme.typography.h6,
+                            modifier = Modifier.fillMaxWidth(0.6f),
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 2,
+                            color = colorResource(R.color.onSurface)
+                        )
+                        Text(
+                            text = book.volumeInfo?.description
+                                ?: stringResource(id = R.string.book_description_not_found),
+                            style = MaterialTheme.typography.body2,
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 3,
+                            modifier = Modifier.fillMaxWidth(0.6f),
+                            color = colorResource(R.color.onSurface)
+                        )
+                    }
+
+
+                    Image(
+                        painter = painter,
+                        contentDescription = null,
+                        contentScale = ContentScale.FillBounds,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(24.dp),
                     )
                 }
-
-                Image(
-                    painter = painter,
-                    contentDescription = null,
-                    contentScale = ContentScale.FillBounds,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(24.dp)
-                    )
             }
 
         }
