@@ -50,7 +50,9 @@ fun SearchDetailScreen(
     if (book != null) {
         BookDetailsScreen(book = book, navController, viewModel)
     } else {
-        Box(modifier = Modifier.background(Color.Transparent).fillMaxSize()) {
+        Box(modifier = Modifier
+            .background(Color.Transparent)
+            .fillMaxSize()) {
             CircularProgressIndicator(
                 color = Color.Green,
                 backgroundColor = Color.White,
@@ -125,7 +127,8 @@ fun BookDetailsScreen(book: Book, navController: NavController, viewModel: Searc
                                 .size(36.dp)
                                 .clickable {
                                     navController.popBackStack()
-                                }.padding(circleIconPadding)
+                                }
+                                .padding(circleIconPadding)
                                 .align(Center),
                             tint = Color.White,
 
@@ -167,10 +170,14 @@ fun BookDetailsScreen(book: Book, navController: NavController, viewModel: Searc
                                 .size(36.dp)
                                 .align(Center),
                             onClick = { isFavorite ->
-                                if (isFavorite){
+                                if (isFavorite) {
                                     viewModel.insertFavoriteBook(book.toFavoriteBook())
-                                    Toast.makeText(context, "${book.volumeInfo?.title} ${context.getString(R.string.added_to_favorites)}", Toast.LENGTH_SHORT).show()
-                                }else{
+                                    Toast.makeText(
+                                        context,
+                                        "${book.volumeInfo?.title} ${context.getString(R.string.added_to_favorites)}",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                } else {
                                     viewModel.deleteFavoriteBookById(book.id)
                                 }
 
@@ -220,7 +227,7 @@ fun BookDetailsScreen(book: Book, navController: NavController, viewModel: Searc
                                 text = book.volumeInfo?.authors?.get(0)
                                     ?: stringResource(id = R.string.book_author_not_found),
                                 color = MaterialTheme.colors.onSurface,
-                                modifier = Modifier .padding(4.dp),
+                                modifier = Modifier.padding(4.dp),
                             )
                         }
 
@@ -231,41 +238,35 @@ fun BookDetailsScreen(book: Book, navController: NavController, viewModel: Searc
             }
 
         }
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .weight(weight = 1f, fill = false)
+                .padding(horizontal = 16.dp)
 
-
-
-
-            Column(
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-                    .weight(weight = 1f, fill = false)
-                    .padding(horizontal = 16.dp)
-
-            ) {
-                book.volumeInfo?.categories?.joinToString(separator = " ")?.let {
-                    Text(
-                        text = it,
-                        fontStyle = FontStyle.Normal,
-                        color = Color.Black,
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 2
-                    )
-                }
+        ) {
+            book.volumeInfo?.categories?.joinToString(separator = " ")?.let {
                 Text(
-                    text = stringResource(R.string.about_title),
+                    text = it,
+                    fontStyle = FontStyle.Normal,
+                    color = MaterialTheme.colors.onSurface,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 24.sp,
-                    modifier = Modifier.padding(bottom = 8.dp),
-                    color = MaterialTheme.colors.onSurface
+                    maxLines = 2
                 )
-                if (!book.volumeInfo?.description.isNullOrEmpty()){
-                    HtmlText(htmlText = book.volumeInfo?.description!!)
+            }
+            Text(
+                text = stringResource(R.string.about_title),
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp,
+                modifier = Modifier.padding(bottom = 8.dp),
+                color = MaterialTheme.colors.onSurface
+            )
+            if (!book.volumeInfo?.description.isNullOrEmpty()) {
+                HtmlText(htmlText = book.volumeInfo?.description!!)
 
-                } else{
-                    HtmlText(htmlText = stringResource(id = R.string.book_description_not_found))
-                }
-
-
+            } else {
+                HtmlText(htmlText = stringResource(id = R.string.book_description_not_found))
+            }
         }
 
     }
