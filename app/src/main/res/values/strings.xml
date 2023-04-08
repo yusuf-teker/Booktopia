@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BookFinder</string>
+    <string name="app_name">Booktopia</string>
     <string name="book_title_not_found">Başlık bulunamadı.</string>
     <string name="book_description_not_found">Açıklama bulunamadı.</string>
     <string name="book_author_not_found">Yazar bulunamadı.</string>

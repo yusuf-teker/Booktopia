@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">BookFinder</string>
+    <string name="app_name">Booktopia</string>
     <string name="book_title_not_found">Title not found.</string>
     <string name="book_description_not_found">Description not found.</string>
     <string name="book_author_not_found">Author not found.</string>
