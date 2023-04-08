@@ -6,7 +6,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -88,7 +87,11 @@ fun FavoritesListScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Image(painter = painterResource(id = R.drawable.empty), contentDescription = "empty")
-                    Text(text = stringResource(id = R.string.empty_favorite_book_message), fontSize = 24.sp)
+                    Text(
+                        text = stringResource(id = R.string.empty_favorite_book_message),
+                        fontSize = 24.sp,
+                        color = Color.Black
+                    )
                 }
 
             }
