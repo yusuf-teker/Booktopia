@@ -121,7 +121,6 @@ fun AppBarActions(
 fun SearchAction(
     onSearchClicked: () -> Unit
 ) {
-    val context = LocalContext.current
     IconButton(
         onClick = {
             onSearchClicked()
@@ -243,7 +242,9 @@ fun MoreAction() {
         ) {
 
             DropdownMenuItem(
-                onClick = { expanded = false }
+                onClick = {
+                    expanded = false
+                }
             ) {
                 Text(
                     text = stringResource(R.string.help_and_feedback),

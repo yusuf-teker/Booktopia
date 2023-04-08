@@ -33,6 +33,12 @@
     <string name="home">Ana sayfa</string>
     <string name="saved">Kaydedildi</string>
     <string name="empty_favorite_book_message">Favori kitabınız yok.</string>
+    <string name="login">Giriş</string>
+    <string name="enter_your_email">Email girin.</string>
+    <string name="enter_your_password">Şifre girin.</string>
+    <string name="dont_have_account">Hesabınız yok mu?</string>
+    <string name="signup">Kaydol</string>
+    <string name="do_you_have_account">Hesabınız var mı?</string>
 
     <string-array name="categories">
         <item>Bilgisayar ve Teknoloji</item>

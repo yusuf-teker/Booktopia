@@ -13,6 +13,9 @@ import com.example.bookfinder.R
 import com.example.bookfinder.data.model.remote.*
 
 
+const val emailMaxLength = 35
+const val passwordMaxLength = 15
+
 val categoryColors = listOf<Color>(
     Color(0xFF87CEEB), // Gökyüzü mavisi
     Color(0xFF0F52BA), // Kobalt mavisi

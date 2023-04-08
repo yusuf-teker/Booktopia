@@ -14,14 +14,13 @@ import com.example.bookfinder.screens.search.SearchScreen
 fun Navigation(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Screen.Home.route ){
         composable(Screen.Home.route){
-            HomeScreen(navController)
+            HomeScreen()
         }
         composable(Screen.Favorites.route){
             val viewModel = hiltViewModel<FavoritesScreenViewModel>()
             FavoritesScreen(viewModel)
         }
         composable(Screen.Categories.route) {
-
             SearchScreen()
         }
 
@@ -35,4 +34,6 @@ sealed class Screen(val route: String) {
     object SearchList : Screen("search_list")
     object SearchDetails: Screen("search_details")
     object FavoriteDetails: Screen("favorite_details")
+    object Auth: Screen("auth")
+    object App: Screen("app")
 }
