@@ -56,15 +56,13 @@ fun SignupScreen(viewModel: AuthViewModel, onAuthScreenStateChange: (AuthScreenS
             )
             Button(
                 onClick = {
-                    if (!emailText.value.isNullOrEmpty() && !passwordText.value.isNullOrEmpty()){
                         viewModel.signUp(email = emailText.value, passwordText.value)
-                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = MaterialTheme.colors.surface,
                     contentColor = MaterialTheme.colors.onSurface,
                     disabledBackgroundColor = Color.Gray
-                )
+                ),
             ) {
                 Text(text = stringResource(id = R.string.signup))
             }

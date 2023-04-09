@@ -13,7 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
-import com.example.bookfinder.Navigation.Screen
+import com.example.bookfinder.screens.app.Screen
 
 
 @Composable

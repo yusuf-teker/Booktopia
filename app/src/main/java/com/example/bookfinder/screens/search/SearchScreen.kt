@@ -7,7 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.bookfinder.Navigation.Screen
+import com.example.bookfinder.screens.app.Screen
 import com.example.bookfinder.screens.search.searchDetail.SearchDetailScreen
 import com.example.bookfinder.screens.search.searchDetail.SearchDetailViewModel
 import com.example.bookfinder.screens.search.searchList.SearchScreenViewModel

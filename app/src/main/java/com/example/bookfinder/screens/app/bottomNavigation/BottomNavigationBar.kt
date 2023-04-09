@@ -1,4 +1,4 @@
-package com.example.bookfinder.Navigation.bottomNavigation
+package com.example.bookfinder.screens.app.bottomNavigation
 
 
 import androidx.compose.foundation.background

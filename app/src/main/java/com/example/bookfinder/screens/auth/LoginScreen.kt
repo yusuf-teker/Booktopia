@@ -1,16 +1,12 @@
 package com.example.bookfinder.screens.auth
 
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,8 +18,8 @@ import com.example.bookfinder.screens.common.PasswordTextField
 
 @Composable
 fun LoginScreen( viewModel: AuthViewModel, onAuthScreenStateChange: (AuthScreenState) -> Unit){
-    val emailText = remember { mutableStateOf("") }
-    val passwordText = remember { mutableStateOf("") }
+    val emailText = viewModel.emailText.collectAsState()
+    val passwordText = viewModel.passwordText.collectAsState()
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -46,7 +42,7 @@ fun LoginScreen( viewModel: AuthViewModel, onAuthScreenStateChange: (AuthScreenS
             EmailTextField(
                 emailText.value,
                 onEmailTextChange = {
-                    emailText.value = it
+                   viewModel.setEmailText(it)
                 }
             )
 
@@ -54,16 +50,14 @@ fun LoginScreen( viewModel: AuthViewModel, onAuthScreenStateChange: (AuthScreenS
             PasswordTextField(
                 passwordText.value,
                 onPasswordTextChange = {
-                    passwordText.value = it
+                    viewModel.setPasswordText(it)
                 }
             )
 
             // Login Button
             Button(
                 onClick = {
-                    if (!emailText.value.isNullOrEmpty() && !passwordText.value.isNullOrEmpty()){
-                        viewModel.login(emailText.value, passwordText.value)
-                    }
+                    viewModel.login()
                 },
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = MaterialTheme.colors.surface,
