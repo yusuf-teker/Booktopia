@@ -19,6 +19,7 @@ import com.example.bookfinder.util.passwordMaxLength
 @Composable
 fun PasswordTextField(
     passwordText: String,
+    passwordValidationState: Boolean,
     onPasswordTextChange: (String) -> Unit,
 ) {
 
@@ -53,6 +54,7 @@ fun PasswordTextField(
             IconButton(onClick = {passwordVisible.value = !passwordVisible.value}){
                 Icon(imageVector  = image, description)
             }
-        }
+        },
+        isError = !passwordValidationState
     )
 }

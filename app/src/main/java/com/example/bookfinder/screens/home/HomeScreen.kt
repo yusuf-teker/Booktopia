@@ -30,7 +30,7 @@ fun HomeScreen(onLogout: () -> Unit){
                     elevation = 0.dp,
                     title = {
                         Text(
-                            text = stringResource(id = R.string.my_favorites),
+                            text = stringResource(id = R.string.app_name),
                             color = MaterialTheme.colors.onSurface
                         )
                     },

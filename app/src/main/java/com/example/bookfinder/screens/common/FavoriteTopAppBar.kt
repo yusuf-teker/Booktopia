@@ -1,6 +1,5 @@
 package com.example.bookfinder.screens.common
 
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -136,13 +135,11 @@ fun SearchAction(
 
 @Composable
 fun FilterAction(onFilter: (Int) -> Unit) {
-    val context = LocalContext.current
     var expanded by remember {
         mutableStateOf(false)
     }
     IconButton(
         onClick = {
-            Toast.makeText(context, "Filter Clicked!", Toast.LENGTH_SHORT).show()
             expanded = !expanded
         }
     ) {

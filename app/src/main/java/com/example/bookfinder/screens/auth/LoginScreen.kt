@@ -19,7 +19,9 @@ import com.example.bookfinder.screens.common.PasswordTextField
 @Composable
 fun LoginScreen( viewModel: AuthViewModel, onAuthScreenStateChange: (AuthScreenState) -> Unit){
     val emailText = viewModel.emailText.collectAsState()
+    val emailValidationState = viewModel.emailValidationState.collectAsState()
     val passwordText = viewModel.passwordText.collectAsState()
+    val passwordValidationState = viewModel.passwordValidationState.collectAsState()
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -41,16 +43,21 @@ fun LoginScreen( viewModel: AuthViewModel, onAuthScreenStateChange: (AuthScreenS
             // Email TextField
             EmailTextField(
                 emailText.value,
+                emailValidationState.value,
                 onEmailTextChange = {
                    viewModel.setEmailText(it)
-                }
+                    viewModel.setEmailValidationState(true)
+                },
+
             )
 
             // Password TextField
             PasswordTextField(
                 passwordText.value,
+                passwordValidationState.value,
                 onPasswordTextChange = {
                     viewModel.setPasswordText(it)
+                    viewModel.setPasswordValidationState(true)
                 }
             )
 

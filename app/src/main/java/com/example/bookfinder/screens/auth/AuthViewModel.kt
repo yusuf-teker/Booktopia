@@ -23,6 +23,16 @@ class AuthViewModel @Inject constructor(
     private val _emailText = MutableStateFlow<String>("")
     val emailText: StateFlow<String> = _emailText
 
+    private val _passwordText = MutableStateFlow<String>("")
+    val passwordText: StateFlow<String> = _passwordText
+
+
+    private val _emailValidationState = MutableStateFlow<Boolean>(true)
+    val emailValidationState: StateFlow<Boolean> = _emailValidationState
+
+    private val _passwordValidationState = MutableStateFlow<Boolean>(true)
+    val passwordValidationState: StateFlow<Boolean> = _passwordValidationState
+
     fun setEmailText(email: String?){
         _emailText.value = email?:""
     }
@@ -30,46 +40,61 @@ class AuthViewModel @Inject constructor(
         _passwordText.value = password?:""
     }
 
-    private val _passwordText = MutableStateFlow<String>("")
-    val passwordText: StateFlow<String> = _passwordText
+    fun setEmailValidationState(state: Boolean){
+        _emailValidationState.value = state
+    }
+    fun setPasswordValidationState(state: Boolean){
+        _passwordValidationState.value = state
+    }
 
-    private val _isError  = MutableStateFlow<Boolean>(false)
-    val isError: StateFlow<Boolean> = _isError
+
+
 
     fun signUp(email: String?, password: String?) {
-        if (!email.isNullOrEmpty() && !password.isNullOrEmpty()){
-            _isLoading.value = true
-            auth.createUserWithEmailAndPassword(email?:"", password?:"")
-                .addOnSuccessListener {
-                    _isLoggedIn.value = true
-                    _isLoading.value = false
-                }
-                .addOnFailureListener { exception ->
-                    _isLoading.value = false
-                }
-        }
+        if (validateEmail(emailText = email)){
+            if (passwordValidationState.value){
+                auth.createUserWithEmailAndPassword(email?:"", password?:"")
+                    .addOnSuccessListener {
+                        _isLoggedIn.value = true
+                        _isLoading.value = false
+                    }
+                    .addOnFailureListener { exception ->
+                        _isLoading.value = false
+                    }
+            }else _passwordValidationState.value = false
+
+        }else _emailValidationState.value = false
+
     }
 
     fun login() {
-
-        if (!_emailText.value.isNullOrEmpty() && !_passwordText.value.isNullOrEmpty()){
-            _isLoading.value = true
-            auth.signInWithEmailAndPassword(_emailText.value, _passwordText.value)
-                .addOnSuccessListener {
-                    _isLoggedIn.value = true
-                    _isLoading.value = false
-                }
-                .addOnFailureListener { exception ->
-                    _isLoading.value = false
-                }
-        }
+        if (validateEmail(_emailText.value)){
+            if (validatePassword(_passwordText.value)){
+                _isLoading.value = true
+                auth.signInWithEmailAndPassword(_emailText.value, _passwordText.value)
+                    .addOnSuccessListener {
+                        _isLoggedIn.value = true
+                        _isLoading.value = false
+                    }
+                    .addOnFailureListener { exception ->
+                        _isLoading.value = false
+                    }
+            }else _passwordValidationState.value = false
+        }else _emailValidationState.value = false
 
     }
 
-    //todo başka ekranda kullanacağım
     fun logout() {
         auth.signOut()
         _isLoggedIn.value = false
         _isLoading.value = false
+    }
+
+    fun validateEmail(emailText: String?): Boolean{
+        val emailRegex = Regex(pattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\\.[a-zA-Z0-9._-]+")
+        return !emailText.isNullOrEmpty() && emailText.matches(emailRegex)
+    }
+    fun validatePassword(password: String?): Boolean{
+        return  !password.isNullOrEmpty() && password.length > 6
     }
 }

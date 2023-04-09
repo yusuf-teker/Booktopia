@@ -3,6 +3,7 @@ package com.example.bookfinder.screens.auth
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -19,6 +20,8 @@ import com.example.bookfinder.screens.common.PasswordTextField
 @Composable
 fun SignupScreen(viewModel: AuthViewModel, onAuthScreenStateChange: (AuthScreenState) -> Unit  ) {
     val emailText = remember { mutableStateOf("") }
+    val passwordValidationState = viewModel.passwordValidationState.collectAsState()
+    val emailValidationState = viewModel.emailValidationState.collectAsState()
     val passwordText = remember { mutableStateOf("") }
     val passwordText2 = remember { mutableStateOf("") }
 
@@ -38,20 +41,27 @@ fun SignupScreen(viewModel: AuthViewModel, onAuthScreenStateChange: (AuthScreenS
 
             EmailTextField(
                 emailText.value,
+                emailValidationState.value,
                 onEmailTextChange = {
                     emailText.value = it
+                    viewModel.setEmailValidationState(true)
                 }
             )
             PasswordTextField(
                 passwordText.value,
+                passwordValidationState.value,
                 onPasswordTextChange = {
                     passwordText.value = it
-                }
+                    viewModel.setPasswordValidationState(true)
+                },
+
             )
             PasswordTextField(
                 passwordText2.value,
+                passwordValidationState.value,
                 onPasswordTextChange = {
                     passwordText2.value = it
+                    viewModel.setPasswordValidationState(true)
                 }
             )
             Button(
@@ -80,6 +90,10 @@ fun SignupScreen(viewModel: AuthViewModel, onAuthScreenStateChange: (AuthScreenS
                 TextButton(
                     onClick = {
                        onAuthScreenStateChange(AuthScreenState.Login)
+                        viewModel.setPasswordValidationState(true)
+                        viewModel.setPasswordValidationState(true)
+                        viewModel.setPasswordText("")
+                        viewModel.setEmailText("")
                     }
                 ) {
                     Text(
