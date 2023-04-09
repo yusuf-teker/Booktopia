@@ -39,6 +39,7 @@
     <string name="dont_have_account">Hesabınız yok mu?</string>
     <string name="signup">Kaydol</string>
     <string name="do_you_have_account">Hesabınız var mı?</string>
+    <string name="logout">Çıkış Yap</string>
 
     <string-array name="categories">
         <item>Bilgisayar ve Teknoloji</item>

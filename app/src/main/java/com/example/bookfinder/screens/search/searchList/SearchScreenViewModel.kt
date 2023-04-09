@@ -52,7 +52,7 @@ class SearchScreenViewModel @Inject constructor(
         }
     }
     init {
-        searchBooks()
+
     }
     fun setQueryAndSearch(query: String) {
         _query.value = query

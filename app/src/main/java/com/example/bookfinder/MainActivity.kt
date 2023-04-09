@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
                val isLoggedIn by viewModel.isLoggedIn.collectAsState()
 
                if (isLoggedIn) {
-                   AppScreen(navController)
+                   AppScreen(viewModel,navController)
                } else {
                    //navController.clearBackStack(Screen.Auth.route)
                    AuthScreen(viewModel, navController)

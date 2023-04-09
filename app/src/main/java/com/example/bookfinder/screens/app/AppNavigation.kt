@@ -19,6 +19,7 @@ import androidx.navigation.compose.composable
 import com.example.bookfinder.screens.app.bottomNavigation.BottomNavItem
 import com.example.bookfinder.screens.app.bottomNavigation.BottomNavigationBar
 import com.example.bookfinder.R
+import com.example.bookfinder.screens.auth.AuthViewModel
 import com.example.bookfinder.screens.favorites.FavoritesScreen
 import com.example.bookfinder.screens.favorites.favoriteList.FavoritesScreenViewModel
 import com.example.bookfinder.screens.home.HomeScreen
@@ -26,7 +27,7 @@ import com.example.bookfinder.screens.search.SearchScreen
 import com.example.bookfinder.ui.theme.Dimen
 
 @Composable
-fun AppScreen(navController: NavHostController) {
+fun AppScreen(viewModel: AuthViewModel,navController: NavHostController) {
 
     Scaffold(
         modifier = Modifier
@@ -64,7 +65,9 @@ fun AppScreen(navController: NavHostController) {
             it
             NavHost(navController = navController, startDestination = Screen.Home.route ){
                 composable(Screen.Home.route){
-                    HomeScreen()
+                    HomeScreen(
+                        onLogout ={ viewModel.logout() }
+                    )
                 }
                 composable(Screen.Favorites.route){
                     val viewModel = hiltViewModel<FavoritesScreenViewModel>()
