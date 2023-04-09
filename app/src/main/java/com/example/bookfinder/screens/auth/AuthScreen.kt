@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -34,7 +35,7 @@ fun AuthScreen(
         Box(modifier = Modifier.background(Color.Transparent).fillMaxSize()) {
             CircularProgressIndicator(
                 color = Color.Green,
-                backgroundColor = Color.White,
+                backgroundColor = MaterialTheme.colors.surface,
                 modifier = Modifier.align(Alignment.Center)
             )
         }

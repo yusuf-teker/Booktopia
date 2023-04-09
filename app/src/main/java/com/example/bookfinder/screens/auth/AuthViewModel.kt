@@ -20,10 +20,12 @@ class AuthViewModel @Inject constructor(
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
 
+    private val _isError  = MutableStateFlow<Boolean>(false)
+    val isError: StateFlow<Boolean> = _isError
 
-    fun signUp(email: String, password: String) {
+    fun signUp(email: String?, password: String?) {
         _isLoading.value = true
-        auth.createUserWithEmailAndPassword(email, password)
+        auth.createUserWithEmailAndPassword(email?:"", password?:"")
             .addOnSuccessListener {
                 _isLoggedIn.value = true
                 _isLoading.value = false

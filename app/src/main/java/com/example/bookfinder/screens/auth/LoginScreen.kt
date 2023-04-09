@@ -3,7 +3,6 @@ package com.example.bookfinder.screens.auth
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -13,22 +12,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.bookfinder.R
-import com.example.bookfinder.util.emailMaxLength
-import com.example.bookfinder.util.passwordMaxLength
-
+import com.example.bookfinder.screens.common.AppLogo
+import com.example.bookfinder.screens.common.EmailTextField
+import com.example.bookfinder.screens.common.PasswordTextField
 
 @Composable
 fun LoginScreen( viewModel: AuthViewModel, onAuthScreenStateChange: (AuthScreenState) -> Unit){
     val emailText = remember { mutableStateOf("") }
     val passwordText = remember { mutableStateOf("") }
-
-
 
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -36,16 +31,10 @@ fun LoginScreen( viewModel: AuthViewModel, onAuthScreenStateChange: (AuthScreenS
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 48.dp, bottom = 32.dp)){
-                Image(
-                    painter = painterResource(id = R.drawable.logo_no_background), contentDescription = null,
-                    modifier = Modifier.align(Alignment.Center)
-                )
+            // App Logo
+            AppLogo()
 
-            }
-
+            // Login Title
             Text(
                 text = stringResource(R.string.login),
                 style = MaterialTheme.typography.h4,
@@ -53,49 +42,28 @@ fun LoginScreen( viewModel: AuthViewModel, onAuthScreenStateChange: (AuthScreenS
                 color = MaterialTheme.colors.onSurface
             )
 
-            OutlinedTextField(
-                value = emailText.value,
-                label = { Text(text = stringResource(R.string.enter_your_email)) },
-                onValueChange = {
-                    if (it.length < emailMaxLength)
-                        emailText.value = it
-                },
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = MaterialTheme.colors.onSurface,
-                    unfocusedBorderColor = MaterialTheme.colors.onSurface,
-                    disabledLabelColor = Color.Gray,
-                    focusedLabelColor = MaterialTheme.colors.onSurface,
-                    unfocusedLabelColor = MaterialTheme.colors.onSurface,
-                    errorBorderColor = MaterialTheme.colors.error,
-                    textColor = MaterialTheme.colors.onSurface,
-                    cursorColor = MaterialTheme.colors.onSurface
-                )
+            // Email TextField
+            EmailTextField(
+                emailText.value,
+                onEmailTextChange = {
+                    emailText.value = it
+                }
             )
 
-            OutlinedTextField(
-                value = passwordText.value,
-                label = { Text(text = stringResource(R.string.enter_your_password)) },
-                onValueChange = {
-                    if (it.length < passwordMaxLength)
-                        passwordText.value = it
-                },
-                colors = TextFieldDefaults.outlinedTextFieldColors(
-                    focusedBorderColor = MaterialTheme.colors.onSurface,
-                    unfocusedBorderColor = MaterialTheme.colors.onSurface,
-                    disabledLabelColor = Color.Gray,
-                    focusedLabelColor = MaterialTheme.colors.onSurface,
-                    unfocusedLabelColor = MaterialTheme.colors.onSurface,
-                    errorBorderColor = MaterialTheme.colors.error,
-                    textColor = MaterialTheme.colors.onSurface,
-                    cursorColor = MaterialTheme.colors.onSurface
-                ),
-                visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password)
+            // Password TextField
+            PasswordTextField(
+                passwordText.value,
+                onPasswordTextChange = {
+                    passwordText.value = it
+                }
             )
-            
+
+            // Login Button
             Button(
                 onClick = {
-                    viewModel.login(emailText.value, passwordText.value)
+                    if (!emailText.value.isNullOrEmpty() && !passwordText.value.isNullOrEmpty()){
+                        viewModel.login(emailText.value, passwordText.value)
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = MaterialTheme.colors.surface,
@@ -105,8 +73,8 @@ fun LoginScreen( viewModel: AuthViewModel, onAuthScreenStateChange: (AuthScreenS
             ) {
                 Text(text = stringResource(id = R.string.login))
             }
-            
-            
+
+            // Go to Signup Text+Button
             Row(
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxWidth(),
