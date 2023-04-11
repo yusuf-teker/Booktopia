@@ -90,10 +90,7 @@ fun SignupScreen(viewModel: AuthViewModel, onAuthScreenStateChange: (AuthScreenS
                 TextButton(
                     onClick = {
                        onAuthScreenStateChange(AuthScreenState.Login)
-                        viewModel.setPasswordValidationState(true)
-                        viewModel.setPasswordValidationState(true)
-                        viewModel.setPasswordText("")
-                        viewModel.setEmailText("")
+                        viewModel.clearScreenState()
                     }
                 ) {
                     Text(

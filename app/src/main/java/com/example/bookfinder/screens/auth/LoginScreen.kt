@@ -89,6 +89,7 @@ fun LoginScreen( viewModel: AuthViewModel, onAuthScreenStateChange: (AuthScreenS
                 TextButton(
                     onClick = {
                         onAuthScreenStateChange(AuthScreenState.Signup)
+                        viewModel.clearScreenState()
                     }
                 ) {
                     Text(

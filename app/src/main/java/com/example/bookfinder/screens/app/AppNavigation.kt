@@ -23,6 +23,7 @@ import com.example.bookfinder.screens.auth.AuthViewModel
 import com.example.bookfinder.screens.favorites.FavoritesScreen
 import com.example.bookfinder.screens.favorites.favoriteList.FavoritesScreenViewModel
 import com.example.bookfinder.screens.home.HomeScreen
+import com.example.bookfinder.screens.home.HomeScreenViewModel
 import com.example.bookfinder.screens.search.SearchScreen
 import com.example.bookfinder.ui.theme.Dimen
 
@@ -31,7 +32,8 @@ fun AppScreen(viewModel: AuthViewModel,navController: NavHostController) {
 
     Scaffold(
         modifier = Modifier
-            .fillMaxSize().background(Color.Transparent),
+            .fillMaxSize()
+            .background(Color.Transparent),
         bottomBar = {
             BottomNavigationBar(
                 items = listOf(
@@ -65,8 +67,10 @@ fun AppScreen(viewModel: AuthViewModel,navController: NavHostController) {
             it
             NavHost(navController = navController, startDestination = Screen.Home.route ){
                 composable(Screen.Home.route){
+                    val homeViewModel = hiltViewModel<HomeScreenViewModel>()
                     HomeScreen(
-                        onLogout ={ viewModel.logout() }
+                        onLogout ={ viewModel.logout() },
+                        homeViewModel
                     )
                 }
                 composable(Screen.Favorites.route){

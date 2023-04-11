@@ -95,6 +95,13 @@ class AuthViewModel @Inject constructor(
         return !emailText.isNullOrEmpty() && emailText.matches(emailRegex)
     }
     fun validatePassword(password: String?): Boolean{
-        return  !password.isNullOrEmpty() && password.length > 6
+        return  !password.isNullOrEmpty() && password.length >= 6
+    }
+
+    fun clearScreenState(){
+        setEmailValidationState(true)
+        setPasswordValidationState(true)
+        setPasswordText("")
+        setEmailText("")
     }
 }

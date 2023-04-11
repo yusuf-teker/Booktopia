@@ -82,7 +82,6 @@ class FavoritesScreenViewModel @Inject constructor(
                 getAllFavoriteBooks()
             }
         }
-
     }
     private fun getShouldShowInfoPopUp(){
         viewModelScope.launch {

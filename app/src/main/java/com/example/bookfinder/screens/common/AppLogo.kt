@@ -14,11 +14,12 @@ import com.example.bookfinder.R
 @Composable
 fun AppLogo() {
     Box(modifier = Modifier
-        .fillMaxWidth(0.6f)
-        .padding(top = 48.dp, bottom = 32.dp)){
+        .fillMaxWidth()
+        .padding(top = 48.dp, bottom = 32.dp)
+    ){
         Image(
             painter = painterResource(id = R.drawable.logo_no_background), contentDescription = null,
-            modifier = Modifier.align(Alignment.Center)
+            modifier = Modifier.align(Alignment.Center).fillMaxWidth(0.6f)
         )
 
     }

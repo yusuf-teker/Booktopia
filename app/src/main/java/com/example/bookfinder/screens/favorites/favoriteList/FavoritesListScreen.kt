@@ -21,7 +21,6 @@ import com.example.bookfinder.screens.common.CustomTopAppBar
 import com.example.bookfinder.screens.common.InfoPopup
 import com.example.bookfinder.ui.theme.Dimen.bottomNavigationHeight
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun FavoritesListScreen(
     viewModel: FavoritesScreenViewModel,
@@ -57,7 +56,7 @@ fun FavoritesListScreen(
             modifier = Modifier
                 .background(
                     if (isSystemInDarkTheme()) Color.DarkGray else Color.LightGray
-                )
+                ).padding(it)
                 .fillMaxSize()
 
         ) {
@@ -96,7 +95,6 @@ fun FavoritesListScreen(
 
             }
         }
-
 
     }
 }

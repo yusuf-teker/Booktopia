@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.bookfinder.R
-import com.example.bookfinder.screens.categories.CategoriesScreen
+import com.example.bookfinder.screens.search.categories.CategoriesScreen
 import com.example.bookfinder.screens.common.BookList
 import com.example.bookfinder.screens.common.SearchWidget
 import com.example.bookfinder.screens.search.searchList.SearchScreenViewModel
