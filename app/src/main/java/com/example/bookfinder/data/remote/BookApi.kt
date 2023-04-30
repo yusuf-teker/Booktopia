@@ -25,6 +25,9 @@ interface BookApi {
     ): Book
 
     @GET("volumes")
+    suspend fun getBooksByIds(@Query("q") ids: String,@Query("maxResults") maxResults: Int): BookListResponse
+
+    @GET("volumes")
     suspend fun getNewReleases(
         @Query("q") query: String = "inauthor:",
         @Query("startIndex") startIndex: Int = 0,

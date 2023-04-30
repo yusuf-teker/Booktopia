@@ -44,11 +44,13 @@ class SearchScreenViewModel @Inject constructor(
     fun insertFavoriteBook(book: FavoriteBook) {
         viewModelScope.launch {
             repository.insertBookToFavorites(book)
+            repository.addOrRemoveBookFromFavorites(bookId = book.id, true)
         }
     }
     fun deleteFavoriteBook(book: FavoriteBook) {
         viewModelScope.launch {
             repository.deleteBookFromFavorites(book)
+            repository.addOrRemoveBookFromFavorites(book.id, false)
         }
     }
     init {
@@ -57,5 +59,8 @@ class SearchScreenViewModel @Inject constructor(
     fun setQueryAndSearch(query: String) {
         _query.value = query
         searchBooks()
+    }
+    fun clearQuery() {
+        _query.value = ""
     }
 }

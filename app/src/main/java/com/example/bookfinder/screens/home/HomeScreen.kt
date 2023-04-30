@@ -32,7 +32,6 @@ import coil.size.Size
 import coil.transform.RoundedCornersTransformation
 import com.example.bookfinder.R
 import com.example.bookfinder.data.model.remote.Book
-import com.example.bookfinder.data.model.room.FavoriteBook
 import com.example.bookfinder.screens.app.Screen
 import com.example.bookfinder.screens.common.ResponsiveText
 import com.example.bookfinder.screens.search.searchDetail.SearchDetailScreen
@@ -42,7 +41,7 @@ import com.example.bookfinder.ui.theme.Dimen
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun HomeScreen(onLogout: () -> Unit, viewModel: HomeScreenViewModel) {
+fun HomeScreen(onLogout: () -> Unit) {
     val navController = rememberNavController()
 
     NavHost(
@@ -77,6 +76,7 @@ fun HomeScreen(onLogout: () -> Unit, viewModel: HomeScreenViewModel) {
 
 }
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun HomeScreenContent(
     viewModel: HomeScreenViewModel,
@@ -84,124 +84,10 @@ fun HomeScreenContent(
     onBookClicked: (String) -> Unit
 ) {
     val newestBooks = viewModel.newestBooks.collectAsState()
+    val mostReadedBooks = viewModel.mostReadedBooks.collectAsState()
+    val mostFavoriteBooks = viewModel.mostFavoriteBooks.collectAsState()
 
-    var favoriteBooks: ArrayList<FavoriteBook> = arrayListOf()
-    repeat(1) {
-        favoriteBooks.add(
-            FavoriteBook(
-                "1",
-                "",
-                emptyList(),
-                listOf("CategoryName"),
-                "",
-                "http://books.google.com/books/content?id=caMWEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
-                "",
-                0,
-                "",
-                "",
-                "BookTitle",
-                false,
-                "",
-                -1,
-                "1"
-            )
-        )
-        favoriteBooks.add(
-            FavoriteBook(
-                "2",
-                "",
-                emptyList(),
-                listOf("CategoryName"),
-                "",
-                "http://books.google.com/books/content?id=NmuNEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-                "",
-                0,
-                "",
-                "",
-                "BookTitle",
-                false,
-                "",
-                -1,
-                "1"
-            )
-        )
-        favoriteBooks.add(
-            FavoriteBook(
-                "7",
-                "",
-                emptyList(),
-                listOf("CategoryName"),
-                "",
-                "http://books.google.com/books/content?id=caMWEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
-                "",
-                0,
-                "",
-                "",
-                "BookTitle",
-                false,
-                "",
-                -1,
-                "1"
-            )
-        )
-        favoriteBooks.add(
-            FavoriteBook(
-                "8",
-                "",
-                emptyList(),
-                listOf("CategoryName"),
-                "",
-                "http://books.google.com/books/content?id=caMWEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
-                "",
-                0,
-                "",
-                "",
-                "BookTitle",
-                false,
-                "",
-                -1,
-                "1"
-            )
-        )
-        favoriteBooks.add(
-            FavoriteBook(
-                "3",
-                "",
-                emptyList(),
-                listOf("CategoryName"),
-                "",
-                "http://books.google.com/books/content?id=NmuNEAAAQBAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
-                "",
-                0,
-                "",
-                "",
-                "BookTitle",
-                false,
-                "",
-                -1,
-                "1"
-            )
-        )
-        favoriteBooks.add(
-            FavoriteBook(
-                "4",
-                "",
-                emptyList(),
-                listOf("CategoryName"),
-                "",
-                "http://books.google.com/books/content?id=caMWEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
-                "",
-                0,
-                "",
-                "",
-                "BookTitle",
-                false,
-                "",
-                -1,
-                "1"
-            )
-        )
-    }
+
     Scaffold(
         topBar = {
             Box(
@@ -231,12 +117,10 @@ fun HomeScreenContent(
             }
         }
     ) {
-        it
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                //.border(2.dp, Color.Green)
                 .padding(bottom = Dimen.bottomNavigationHeight)
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.SpaceAround,
@@ -246,16 +130,13 @@ fun HomeScreenContent(
 
             Box(
                 modifier = Modifier
-                    //.fillMaxWidth()
                     .weight(1f)
                     .height(200.dp)
-                    //.border(2.dp, Color.Red)
                     .align(
                         Alignment.End
                     )
             ) {
-                favoriteBooksRow(favoriteBooks, "Çok okunanlar", onBookClicked = onBookClicked)
-                //mostFavoriteBooksSection(favoriteBooks)
+                FavoriteBooksRow(mostReadedBooks.value, "Çok okunanlar", onBookClicked = onBookClicked)
             }
 
             Box(
@@ -268,8 +149,7 @@ fun HomeScreenContent(
                         Alignment.End
                     )
             ) {
-                favoriteBooksRow(favoriteBooks, "Çok beğenilenler", onBookClicked = onBookClicked)
-                //mostReadedBooksSection(favoriteBooks)
+                FavoriteBooksRow(mostFavoriteBooks.value, "Çok beğenilenler", onBookClicked = onBookClicked)
             }
 
 
@@ -284,7 +164,7 @@ fun HomeScreenContent(
                         Alignment.End
                     )
             ) {
-                booksRow(newestBooks.value,
+                BooksRow(newestBooks.value,
                     "En yeniler",
                     onBookClicked = {
                         onBookClicked(it)
@@ -297,8 +177,8 @@ fun HomeScreenContent(
 
 
 @Composable
-fun favoriteBooksRow(
-    favoriteBooks: ArrayList<FavoriteBook>,
+fun FavoriteBooksRow(
+    favoriteBooks: List<Book>?,
     header: String,
     onBookClicked: (String) -> Unit
 ) {
@@ -338,7 +218,7 @@ fun favoriteBooksRow(
             )
         }
 
-        if (favoriteBooks.isNotEmpty()) {
+        if (!favoriteBooks.isNullOrEmpty()) {
             // ROW LIST
             LazyRow(
                 modifier = Modifier
@@ -365,7 +245,7 @@ fun favoriteBooksRow(
                             painter = rememberAsyncImagePainter(
                                 model = ImageRequest.Builder(context)
                                     .data(
-                                        favoriteBooks[it].thumbnail.ifEmpty { R.drawable.placeholder }
+                                        favoriteBooks[it].volumeInfo?.imageLinks?.thumbnail?.ifEmpty { R.drawable.placeholder }
                                     )
                                     .crossfade(true)
                                     .placeholder(R.drawable.placeholder)
@@ -382,13 +262,13 @@ fun favoriteBooksRow(
                                 //.border(2.dp, Color.Red)
                                 .align(Alignment.Start)
                                 .clickable {
-                                    onBookClicked(favoriteBooks[it].id ?: "")
+                                    onBookClicked(favoriteBooks[it].id)
                                 }
                             //.wrapContentWidth()
                         )
 
                         Text(
-                            text = favoriteBooks[it].categories[0] + "aasdadasd",
+                            text = favoriteBooks[it].volumeInfo?.categories?.firstOrNull()?:"No Category",
                             color = Color.Green,
                             overflow = TextOverflow.Ellipsis,
                             fontSize = 10.sp,
@@ -398,7 +278,7 @@ fun favoriteBooksRow(
                                 .padding(start = 2.dp)
                         )
                         Text(
-                            text = favoriteBooks[it].title,
+                            text = favoriteBooks[it].volumeInfo?.title?:"No Title",
                             color = MaterialTheme.colors.onSurface,
                             overflow = TextOverflow.Ellipsis,
                             fontSize = 10.sp,
@@ -430,7 +310,7 @@ fun favoriteBooksRow(
 }
 
 @Composable
-fun booksRow(books: List<Book>, header: String, onBookClicked: (String) -> Unit) {
+fun BooksRow(books: List<Book>, header: String, onBookClicked: (String) -> Unit) {
 
     val context = LocalContext.current
 
@@ -514,7 +394,7 @@ fun booksRow(books: List<Book>, header: String, onBookClicked: (String) -> Unit)
                                 //.border(2.dp, Color.Red)
                                 .align(Alignment.Start)
                                 .clickable {
-                                    onBookClicked(books[it].id ?: "")
+                                    onBookClicked(books[it].id)
                                 }
                             //.wrapContentWidth()
                         )
@@ -562,264 +442,13 @@ fun booksRow(books: List<Book>, header: String, onBookClicked: (String) -> Unit)
 
 }
 
-/*
-@Composable
-fun mostReadedBooksSection(favoriteBooks: ArrayList<FavoriteBook>) { //todo replace it with bookId and bookImageUrl
-val context = LocalContext.current
-
-Column(modifier = Modifier
-    .fillMaxWidth()
-    .fillMaxHeight()
-    //.fillMaxHeight(0.7f)
-) {
-    // HEADER
-    ResponsiveText(text = "En çok okunanlar...", textStyle = MaterialTheme.typography.h6 )
-
-    // ROW LIST
-    LazyRow(
-        modifier = Modifier
-            .wrapContentHeight()
-            .fillMaxWidth()
-
-    ) {
-        items(favoriteBooks.size, key = { index ->
-            favoriteBooks[index].id
-        }) {
-
-            val imageWidth = 150.dp
-            Column(
-                modifier = Modifier
-                    .wrapContentHeight()
-                    .wrapContentWidth()
-                    .padding(end = 16.dp)
-                //.border(2.dp, color = Color.Magenta),
-                ,
-                horizontalAlignment = Alignment.Start
-            ) {
-
-                Image(
-                    painter = rememberAsyncImagePainter(
-                        model = ImageRequest.Builder(context)
-                            .data(
-                                favoriteBooks[it].thumbnail.ifEmpty { R.drawable.placeholder }
-                            )
-                            .crossfade(true)
-                            .placeholder(R.drawable.placeholder)
-                            .transformations(RoundedCornersTransformation(1f))
-                            .size(Size.ORIGINAL)
-                            .build()
-                    ),
-                    contentDescription = null,
-                    contentScale = ContentScale.FillHeight,
-                    modifier = Modifier
-                        .fillMaxHeight(0.5f)
-                        .aspectRatio(0.7f)
-                        .width(imageWidth)
-                        //.border(2.dp, Color.Red)
-                        .align(Alignment.Start)
-                        .onSizeChanged { intSize ->
-
-                        }
-                    //.wrapContentWidth()
-                )
-
-                Text(
-                    text = favoriteBooks[it].categories[0]+"aasdadasd",
-                    color = Color.Green,
-                    overflow = TextOverflow.Ellipsis,
-                    fontSize = 10.sp,
-                    maxLines = 1,
-                    modifier = Modifier.width(100.dp)
-                )
-                Text(
-                    text = favoriteBooks[it].title,
-                    color = MaterialTheme.colors.onSurface,
-                    overflow = TextOverflow.Ellipsis,
-                    fontSize = 10.sp,
-                    maxLines = 1,
-                    modifier = Modifier.width(100.dp)
-                )
-            }
-
-        }
-    }
-}
-
-}
-@Composable
-fun newestBooksSection(favoriteBooks: ArrayList<FavoriteBook>) { //todo replace it with bookId and bookImageUrl
-val context = LocalContext.current
-
-Column(modifier = Modifier
-    .fillMaxWidth()
-    .fillMaxHeight()
-    //.fillMaxHeight(0.7f)
-) {
-    // HEADER
-    ResponsiveText(text = "En yeniler...", textStyle = MaterialTheme.typography.h6 )
-
-    // ROW LIST
-    LazyRow(
-        modifier = Modifier
-            .wrapContentHeight()
-            .fillMaxWidth()
-
-    ) {
-        items(favoriteBooks.size, key = { index ->
-            favoriteBooks[index].id
-        }) {
-
-            val imageWidth = 150.dp
-            Column(
-                modifier = Modifier
-                    .wrapContentHeight()
-                    .wrapContentWidth()
-                    .padding(end = 16.dp)
-                //.border(2.dp, color = Color.Magenta),
-                ,
-                horizontalAlignment = Alignment.Start
-            ) {
-
-                Image(
-                    painter = rememberAsyncImagePainter(
-                        model = ImageRequest.Builder(context)
-                            .data(
-                                favoriteBooks[it].thumbnail.ifEmpty { R.drawable.placeholder }
-                            )
-                            .crossfade(true)
-                            .placeholder(R.drawable.placeholder)
-                            .transformations(RoundedCornersTransformation(1f))
-                            .size(Size.ORIGINAL)
-                            .build()
-                    ),
-                    contentDescription = null,
-                    contentScale = ContentScale.FillHeight,
-                    modifier = Modifier
-                        .fillMaxHeight(0.5f)
-                        .aspectRatio(0.7f)
-                        .width(imageWidth)
-                        //.border(2.dp, Color.Red)
-                        .align(Alignment.Start)
-                        .onSizeChanged { intSize ->
-
-                        }
-                    //.wrapContentWidth()
-                )
-
-                Text(
-                    text = favoriteBooks[it].categories[0]+"aasdadasd",
-                    color = Color.Green,
-                    overflow = TextOverflow.Ellipsis,
-                    fontSize = 10.sp,
-                    maxLines = 1,
-                    modifier = Modifier.width(100.dp)
-                )
-                Text(
-                    text = favoriteBooks[it].title,
-                    color = MaterialTheme.colors.onSurface,
-                    overflow = TextOverflow.Ellipsis,
-                    fontSize = 10.sp,
-                    maxLines = 1,
-                    modifier = Modifier.width(100.dp)
-                )
-            }
-
-        }
-    }
-}
-
-}
-@Composable
-fun mostFavoriteBooksSection(favoriteBooks: ArrayList<FavoriteBook> ) { //todo replace it with bookId and bookImageUrl
-val context = LocalContext.current
-
-Column(modifier = Modifier
-    .fillMaxWidth()
-    .fillMaxHeight()
-    //.border(3.dp, Color.DarkGray)
-    //.fillMaxHeight(0.7f)
-) {
-    // HEADER
-    ResponsiveText(text ="En çok beğenilenler...", textStyle = MaterialTheme.typography.h6 )
-    // ROW LIST
-    LazyRow(
-        modifier = Modifier
-            .wrapContentHeight()
-            .fillMaxWidth()
-
-    ) {
-        items(favoriteBooks.size, key = { index ->
-            favoriteBooks[index].id
-        }) {
-
-            val imageWidth = 150.dp
-            Column(
-                modifier = Modifier
-                    .wrapContentHeight()
-                    .wrapContentWidth()
-                    .padding(end = 16.dp)
-                //.border(2.dp, color = Color.Magenta),
-                ,
-                horizontalAlignment = Alignment.Start
-            ) {
-
-                Image(
-                    painter = rememberAsyncImagePainter(
-                        model = ImageRequest.Builder(context)
-                            .data(
-                                favoriteBooks[it].thumbnail.ifEmpty { R.drawable.placeholder }
-                            )
-                            .crossfade(true)
-                            .placeholder(R.drawable.placeholder)
-                            .transformations(RoundedCornersTransformation(1f))
-                            .size(Size.ORIGINAL)
-                            .build()
-                    ),
-                    contentDescription = null,
-                    contentScale = ContentScale.FillHeight,
-                    modifier = Modifier
-                        .fillMaxHeight(0.5f)
-                        .aspectRatio(0.7f)
-                        .width(imageWidth)
-                        //.border(2.dp, Color.Red)
-                        .align(Alignment.Start)
-                        .onSizeChanged { intSize ->
-
-                        }
-                    //.wrapContentWidth()
-                )
-
-                Text(
-                    text = favoriteBooks[it].categories[0]+"aasdadasd",
-                    color = Color.Green,
-                    overflow = TextOverflow.Ellipsis,
-                    fontSize = 10.sp,
-                    maxLines = 1,
-                    modifier = Modifier.width(100.dp)
-                )
-                Text(
-                    text = favoriteBooks[it].title,
-                    color = MaterialTheme.colors.onSurface,
-                    overflow = TextOverflow.Ellipsis,
-                    fontSize = 10.sp,
-                    maxLines = 1,
-                    modifier = Modifier.width(100.dp)
-                )
-            }
-
-        }
-    }
-}
-
-}
-*/
 @Preview(showBackground = true)
 @Composable
-fun favoritesSectionPreview() {
+fun FavoritesSectionPreview() {
     BookFinderTheme {
         Column(modifier = Modifier.fillMaxSize()) {
 
-            favoriteBooksRow(favoriteBooks = arrayListOf(), header = "", onBookClicked = {})
+            FavoriteBooksRow(favoriteBooks = arrayListOf(), header = "", onBookClicked = {})
 
         }
 

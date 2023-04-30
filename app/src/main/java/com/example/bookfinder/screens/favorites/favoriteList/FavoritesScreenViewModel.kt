@@ -71,6 +71,7 @@ class FavoritesScreenViewModel @Inject constructor(
         if (book!=null){
             viewModelScope.launch {
                 repository.insertBookToFavorites(book)
+                repository.addOrRemoveBookFromFavorites(bookId = book.id, true)
             }
         }
 
@@ -79,6 +80,7 @@ class FavoritesScreenViewModel @Inject constructor(
         if (book != null){
             viewModelScope.launch {
                 repository.deleteBookFromFavorites(book)
+                repository.addOrRemoveBookFromFavorites(bookId = book.id, false)
                 getAllFavoriteBooks()
             }
         }

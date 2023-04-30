@@ -1,6 +1,5 @@
 package com.example.bookfinder.screens.favorites.favoritesDetails
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.*
 import androidx.compose.animation.core.FastOutLinearInEasing
@@ -50,7 +49,6 @@ fun FavoriteDetailsScreen(
     viewModel: FavoriteDetailsViewModel,
     navController: NavController
 ) {
-    Log.d("yusuf", bookId)
     FavoriteDetailItem(bookId, viewModel, navController)
 }
 
@@ -111,7 +109,7 @@ fun FavoriteDetailItem(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding( vertical = 12.dp),
+                            .padding(vertical = 12.dp),
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
                         Box(
@@ -129,7 +127,8 @@ fun FavoriteDetailItem(
                                     .clickable {
                                         navController.popBackStack()
                                     }
-                                    .padding(circleIconPadding) .align(Alignment.Center),
+                                    .padding(circleIconPadding)
+                                    .align(Alignment.Center),
                                 tint = Color.White
                             )
                         }
@@ -154,7 +153,6 @@ fun FavoriteDetailItem(
                                 .fillMaxHeight(0.5f)
                                 .aspectRatio(1f)
                                 .width(IntrinsicSize.Min)
-                                //.wrapContentWidth()
                         )
                         Box(
                             modifier = Modifier
@@ -246,10 +244,10 @@ fun FavoriteDetailItem(
                     stringResource(R.string.reading),
                     stringResource(R.string.read)
                 ),
-                modifier = Modifier.fillMaxWidth().wrapContentHeight()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
             )
-
-
 
 
         }
@@ -356,7 +354,11 @@ fun FavoriteDetailItem(
 
                 onClick = {
                     viewModel.updateBook()
-                    Toast.makeText(context, context.resources.getString(R.string.saved), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        context,
+                        context.resources.getString(R.string.saved),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 },
                 interactionSource = interactionSource,
                 colors = ButtonDefaults.buttonColors(backgroundColor = if (isPressed) Color.Red else MaterialTheme.colors.onSurface)
@@ -364,7 +366,6 @@ fun FavoriteDetailItem(
             ) {
                 Row(
                     modifier = Modifier
-
                         .fillMaxSize()
                         .background(Color.Transparent),
                     verticalAlignment = Alignment.CenterVertically,

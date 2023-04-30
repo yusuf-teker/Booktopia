@@ -16,7 +16,7 @@ class HomeScreenViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _mostFavoriteBooks = MutableStateFlow<List<Book>>(emptyList())
-    val books: StateFlow<List<Book>> = _mostFavoriteBooks
+    val mostFavoriteBooks: StateFlow<List<Book>> = _mostFavoriteBooks
 
     private val _mostReadedBooks = MutableStateFlow<List<Book>>(emptyList())
     val mostReadedBooks: StateFlow<List<Book>> = _mostReadedBooks
@@ -24,13 +24,22 @@ class HomeScreenViewModel @Inject constructor(
     private val _newestBooks = MutableStateFlow<List<Book>>(emptyList())
     val newestBooks: StateFlow<List<Book>> = _newestBooks
 
-  init {
-      repository.getMostFavoriteBooks()
-      repository.getMostReadedBooks()
-      viewModelScope.launch {
-          _newestBooks.value = repository.getNewestBooks()
-      }
+    init {
+        viewModelScope.launch {
+            _newestBooks.value = repository.getNewestBooks()
+        }
 
-  }
+        repository.getMostReadedBooksFromFirebase() {
+            viewModelScope.launch() {
+                _mostReadedBooks.value = repository.getBooksByIdList(it)
+            }
+        }
+        repository.getMostFavoritedBooksFromFirebase(){
+            viewModelScope.launch {
+                _mostFavoriteBooks.value = repository.getBooksByIdList(it)
+            }
+        }
+
+    }
 
 }

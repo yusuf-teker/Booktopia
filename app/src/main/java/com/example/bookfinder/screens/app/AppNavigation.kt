@@ -1,5 +1,6 @@
 package com.example.bookfinder.screens.app
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -23,10 +24,10 @@ import com.example.bookfinder.screens.auth.AuthViewModel
 import com.example.bookfinder.screens.favorites.FavoritesScreen
 import com.example.bookfinder.screens.favorites.favoriteList.FavoritesScreenViewModel
 import com.example.bookfinder.screens.home.HomeScreen
-import com.example.bookfinder.screens.home.HomeScreenViewModel
 import com.example.bookfinder.screens.search.SearchScreen
 import com.example.bookfinder.ui.theme.Dimen
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun AppScreen(viewModel: AuthViewModel,navController: NavHostController) {
 
@@ -64,18 +65,15 @@ fun AppScreen(viewModel: AuthViewModel,navController: NavHostController) {
             )
 
         }, content = {
-            it
             NavHost(navController = navController, startDestination = Screen.Home.route ){
                 composable(Screen.Home.route){
-                    val homeViewModel = hiltViewModel<HomeScreenViewModel>()
                     HomeScreen(
                         onLogout ={ viewModel.logout() },
-                        homeViewModel
                     )
                 }
                 composable(Screen.Favorites.route){
-                    val viewModel = hiltViewModel<FavoritesScreenViewModel>()
-                    FavoritesScreen(viewModel)
+                    val favoriteViewModel = hiltViewModel<FavoritesScreenViewModel>()
+                    FavoritesScreen(favoriteViewModel)
                 }
                 composable(Screen.Categories.route) {
                     SearchScreen()
@@ -94,6 +92,5 @@ sealed class Screen(val route: String) {
     object SearchList : Screen("search_list")
     object SearchDetails: Screen("search_details")
     object FavoriteDetails: Screen("favorite_details")
-    object Auth: Screen("auth")
     object App: Screen("app")
 }

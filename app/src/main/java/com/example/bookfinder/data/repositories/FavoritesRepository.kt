@@ -1,12 +1,21 @@
 package com.example.bookfinder.data.repositories
 
+import android.util.Log
 import com.example.bookfinder.data.local.dao.BookDao
+import com.example.bookfinder.data.model.remote.FirebaseBook
 import com.example.bookfinder.data.model.room.FavoriteBook
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 import javax.inject.Inject
-
+import com.example.bookfinder.BuildConfig
 class FavoritesRepository @Inject constructor(
     private val bookDao: BookDao
 ) {
+
+    val auth = FirebaseAuth.getInstance()
+    val currentUser = auth.currentUser
+    val userId = currentUser?.uid?:""
+
     suspend fun deleteBookFromFavorites(book: FavoriteBook) {
         bookDao.deleteFavoriteBook(book)
     }
@@ -33,5 +42,132 @@ class FavoritesRepository @Inject constructor(
         return bookDao.updateBook(book)
     }
 
+    fun addOrRemoveBookFromFavorites(bookId: String, isFavorite: Boolean) {
+        val usersRef = FirebaseDatabase.getInstance(BuildConfig.BOOKTOPIA_FIREBASE_URL).getReference("users")
+        val userFavoritesRef = usersRef.child(userId).child("favoriteBooks")
+        val bookRef = FirebaseDatabase.getInstance(BuildConfig.BOOKTOPIA_FIREBASE_URL).getReference("books").child(bookId)
+
+        bookRef.runTransaction(object : Transaction.Handler {
+            override fun doTransaction(mutableData: MutableData): Transaction.Result {
+                val book = mutableData.getValue(FirebaseBook::class.java)
+
+                if (book == null) {
+                    // If the book doesn't exist in the database -> create it with favoriteCount = 1 and readCount = 0
+                    val newBook = FirebaseBook(bookId, 0, 1)
+                    mutableData.value = newBook
+                } else {
+                    // If the book exists in the database,
+                    // if the book is being favorited -> increment the count
+                    // if the book is being unfavorited -> decrement the favorite count
+                    if (isFavorite) {
+                        book.favoriteCount++
+                    } else {
+                        if (book.favoriteCount>0){
+                            book.favoriteCount--
+                            if (book.favoriteCount == 0 && book.readCount == 0){
+                                bookRef.removeValue()
+                            }else{
+                                mutableData.value = book
+                            }
+                        }
+
+                    }
+
+                }
+                return Transaction.success(mutableData)
+            }
+
+            override fun onComplete(databaseError: DatabaseError?, b: Boolean, dataSnapshot: DataSnapshot?) {
+                if (databaseError == null) {
+                    // If the transaction was successful, add or remove the book from the user's favorites list
+                    if (isFavorite) {
+                        userFavoritesRef.child(bookId).setValue(true)
+                        Log.d("yusuf", "Added the book to favorites")
+                    } else {
+                        userFavoritesRef.child(bookId).removeValue()
+                        Log.d("yusuf", "Removed the book from favorites")
+                    }
+                } else {
+                    // If the transaction failed, log the error
+                    Log.d("yusuf", "Error adding or removing book from favorites")
+                }
+            }
+        })
+    }
+    fun addBookToReadBooks(bookId: String) {
+        val usersRef = FirebaseDatabase.getInstance(BuildConfig.BOOKTOPIA_FIREBASE_URL).getReference("users")
+        val userReadBooksRef = usersRef.child(userId).child("readBooks")
+        val bookRef = FirebaseDatabase.getInstance(BuildConfig.BOOKTOPIA_FIREBASE_URL).getReference("books").child(bookId)
+        bookRef.runTransaction(object : Transaction.Handler {
+            override fun doTransaction(mutableData: MutableData): Transaction.Result {
+                val book = mutableData.getValue(FirebaseBook::class.java)
+                if (book == null) {
+                    // If the book doesn't exist in the database, -> create it with favoriteCount = 1 and readCount = 1
+                    val newBook = FirebaseBook(bookId, 1, 1)
+                    mutableData.value = newBook
+                    userReadBooksRef.child(bookId).setValue(true)
+                } else {
+                    // If the book exist in the database -> increment the readCount
+                    book.readCount++
+                    mutableData.value = book
+                }
+                return Transaction.success(mutableData)
+            }
+
+            override fun onComplete(
+                databaseError: DatabaseError?,
+                b: Boolean,
+                dataSnapshot: DataSnapshot?
+            ) {
+                if (databaseError == null) {
+                    // bookRef readCount incremented, now userReadBooksRef'de bookId will be added
+                    userReadBooksRef.child(bookId).setValue(true)
+                } else {
+                    // ERROR
+                    Log.d("yusuf","bookRef couldn't addBookToReadBooks")
+                }
+            }
+        })
+
+    }
+
+
+    fun decreaseReadCount(bookId: String) {
+        val userRef = FirebaseDatabase.getInstance(BuildConfig.BOOKTOPIA_FIREBASE_URL).getReference("users").child(userId).child("readBooks").child(bookId)
+        userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    //User has already marked this book as read
+                    val bookRef = FirebaseDatabase.getInstance(BuildConfig.BOOKTOPIA_FIREBASE_URL).getReference("books").child(bookId)
+                    bookRef.runTransaction(object : Transaction.Handler {
+                        override fun doTransaction(mutableData: MutableData): Transaction.Result {
+                            val book = mutableData.getValue(FirebaseBook::class.java)
+
+                            if (book == null) {
+                                // If the book does not exist, create a new book
+                                mutableData.value = FirebaseBook(bookId, 0, 1)
+                            }
+                            else {
+                                // Decrease readCount if book exists
+                                book.readCount = book.readCount - 1
+                                mutableData.value = book
+                            }
+                            return Transaction.success(mutableData)
+                        }
+
+                        override fun onComplete(databaseError: DatabaseError?, b: Boolean, dataSnapshot: DataSnapshot?) {
+                            //Decreasing ReadCount successful
+                        }
+                    })
+                }
+                userRef.removeValue() // remove Books from user's node
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // ERROR
+                Log.d("yusuf","bookRef couldn't decreaseReadCount")
+            }
+        })
+    }
 
 }

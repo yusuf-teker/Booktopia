@@ -1,11 +1,9 @@
 package com.example.bookfinder.screens.search.searchDetail
 
-import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bookfinder.data.model.remote.Book
 import com.example.bookfinder.data.model.room.FavoriteBook
-import com.example.bookfinder.data.remote.BookApi
 import com.example.bookfinder.data.repositories.SearchRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +19,7 @@ class SearchDetailViewModel @Inject constructor(
     private val _book = MutableStateFlow<Book?>(null)
     val book: StateFlow<Book?> = _book
 
-    private val _isFavorite = MutableStateFlow<Boolean>(false)
+    private val _isFavorite = MutableStateFlow(false)
     val isFavorite: StateFlow<Boolean> = _isFavorite
 
      fun setIsFavorite(isFavorite: Boolean){
@@ -38,11 +36,13 @@ class SearchDetailViewModel @Inject constructor(
     fun insertFavoriteBook(book: FavoriteBook) {
         viewModelScope.launch {
             repository.insertBookToFavorites(book)
+            repository.addOrRemoveBookFromFavorites(bookId = book.id, true)
         }
     }
     fun deleteFavoriteBook(book: FavoriteBook) {
         viewModelScope.launch {
             repository.deleteBookFromFavorites(book)
+            repository.addOrRemoveBookFromFavorites(bookId = book.id, false)
         }
     }
 

@@ -21,20 +21,21 @@ class FavoriteDetailsViewModel  @Inject constructor(
     private val _book = MutableStateFlow<FavoriteBook?>(null)
     val book: StateFlow<FavoriteBook?> = _book
 
-    private val _noteText = MutableStateFlow<String>("")
+    private val _noteText = MutableStateFlow("")
     val noteText: StateFlow<String> = _noteText
 
 
-    private val _selectedBox = MutableStateFlow<Int>(_book.value?.readingStatus ?: -1)
+    private val _selectedBox = MutableStateFlow(_book.value?.readingStatus ?: -1)
     val selectedBox: StateFlow<Int> = _selectedBox
 
-    private val _isFavorite = MutableStateFlow<Boolean>(true)
+    private val _isFavorite = MutableStateFlow(true)
     val isFavorite: StateFlow<Boolean> = _isFavorite
 
     fun saveFavoriteBook(book: FavoriteBook?) {
         if (book!=null){
             viewModelScope.launch {
                 repository.insertBookToFavorites(book)
+                repository.addOrRemoveBookFromFavorites(bookId = book.id, true)
             }
         }
     }
@@ -42,6 +43,7 @@ class FavoriteDetailsViewModel  @Inject constructor(
     fun deleteFavoriteBookById(bookId: String) {
         viewModelScope.launch {
             repository.deleteBookFromFavoritesById(bookId)
+            repository.addOrRemoveBookFromFavorites(bookId,false)
         }
     }
 
@@ -54,6 +56,7 @@ class FavoriteDetailsViewModel  @Inject constructor(
             viewModelScope.launch {
                 repository.deleteBookFromFavorites(book)
                 _isFavorite.value = false
+                repository.addOrRemoveBookFromFavorites(bookId = book.id,false)
             }
         }
 
@@ -75,6 +78,14 @@ class FavoriteDetailsViewModel  @Inject constructor(
                         readingStatus = selectedBox.value
                     )
             )
+            if (selectedBox.value == 2){
+                repository.addBookToReadBooks(_book.value!!.id)
+            }else{
+                repository.decreaseReadCount(_book.value!!.id)
+            }
+            if (_book.value!!.isFavorite){
+                repository.addOrRemoveBookFromFavorites(_book.value!!.id,true)
+            }
 
         }
     }

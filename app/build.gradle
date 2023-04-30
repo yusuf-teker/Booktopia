@@ -23,6 +23,10 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        Properties properties=new Properties()
+        properties.load(project.rootProject.file("local.properties").newDataInputStream())
+        buildConfigField "String","BOOKTOPIA_FIREBASE_URL","\"${properties.getProperty("BOOKTOPIA_FIREBASE_URL")}\""
     }
 
     buildTypes {
@@ -113,8 +117,9 @@ dependencies {
     //icons
     implementation "androidx.compose.material:material-icons-extended:1.4.1"
 
-    // Import the BoM for the Firebase platform
+    // Firebase
     implementation platform('com.google.firebase:firebase-bom:31.4.0')
+    implementation 'com.google.firebase:firebase-database-ktx:20.1.0'
 
     // Crashlytics and Analytics libraries
     implementation 'com.google.firebase:firebase-crashlytics-ktx'

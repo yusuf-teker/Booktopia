@@ -1,6 +1,7 @@
 package com.example.bookfinder.screens.search
 
 import android.annotation.SuppressLint
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator
@@ -74,5 +75,9 @@ fun SearchListScreen(viewModel: SearchScreenViewModel, onBookClicked: (String) -
         }
 
     )
+    BackHandler {
+
+       viewModel.clearQuery()
+    }
 
 }
