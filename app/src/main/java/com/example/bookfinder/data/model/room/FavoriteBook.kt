@@ -1,15 +1,12 @@
 package com.example.bookfinder.data.model.room
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.TypeConverter
-import androidx.room.TypeConverters
+import androidx.room.*
 
 @TypeConverters(Converters::class)
 @Entity(tableName = "books")
 data class FavoriteBook(
     @PrimaryKey
-    val id: String,
+    val bookId: String,
     val kind: String,
     val authors: List<String> = listOf(),
     val categories: List<String> = listOf(),
@@ -21,7 +18,6 @@ data class FavoriteBook(
     val publisher: String = "",
     val title: String = "",
     var isFavorite: Boolean = false,
-    var myNotes: String?,
     var readingStatus: Int = -1,
     val addedDate : String = ""
 )

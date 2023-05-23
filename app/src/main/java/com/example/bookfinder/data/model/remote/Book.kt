@@ -1,8 +1,7 @@
 package com.example.bookfinder.data.model.remote
 
 import com.example.bookfinder.data.model.room.FavoriteBook
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import com.example.bookfinder.util.getCurrentDateAsString
 
 data class Book(
     val id: String,
@@ -15,7 +14,7 @@ data class Book(
 
 fun Book.toFavoriteBook(): FavoriteBook {
     return FavoriteBook(
-        id = id,
+        bookId = id,
         kind = kind,
         authors = volumeInfo?.authors ?: listOf(),
         categories = volumeInfo?.categories ?: listOf(),
@@ -27,13 +26,7 @@ fun Book.toFavoriteBook(): FavoriteBook {
         publisher = volumeInfo?.publisher ?: "",
         title = volumeInfo?.title ?: "",
         isFavorite = true,
-        myNotes = "",
         readingStatus = 0,
         addedDate = getCurrentDateAsString()
     )
-}
-
-fun getCurrentDateAsString(): String {
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    return LocalDate.now().format(formatter)
 }

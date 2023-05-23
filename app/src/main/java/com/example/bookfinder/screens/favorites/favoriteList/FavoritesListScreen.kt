@@ -1,6 +1,5 @@
 package com.example.bookfinder.screens.favorites.favoriteList
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -68,7 +67,7 @@ fun FavoritesListScreen(
                 ) {
 
                     items(favoriteBooks.value.size, key = { index ->
-                        favoriteBooks.value[index].id //üstteki silinince onun oldugu yerdeki stati yeni gelene atıyordu
+                        favoriteBooks.value[index].bookId //üstteki silinince onun oldugu yerdeki stati yeni gelene atıyordu
                     }) {
                         FavoriteBookItem(
                             book = favoriteBooks.value[it],

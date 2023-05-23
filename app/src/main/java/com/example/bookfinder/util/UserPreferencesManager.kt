@@ -32,29 +32,3 @@ class UserPreferencesManager @Inject constructor(
         }
     }
 }
-/*
-
-class UserPreferencesManager(private val context: Context) {
-    // to make sure there's only one instance
-    companion object {
-        private val Context.dataStoree: DataStore<Preferences> by preferencesDataStore("myPreferences")
-        val SHOULD_SHOW_INFO_POP_UP = booleanPreferencesKey("should_show_info_pop_up")
-    }
-
-    //get the saved preferences
-    val getShouldShowInfoPopUp: Flow<Boolean?> = context.dataStoree.data
-        .map { preferences ->
-            preferences[SHOULD_SHOW_INFO_POP_UP] ?: true
-        }
-
-    //save preference into datastore
-    suspend fun saveShouldShowInfoPopUp(shouldShowAgain: Boolean) {
-        context.dataStoree.edit { preferences ->
-            preferences[SHOULD_SHOW_INFO_POP_UP] = shouldShowAgain
-        }
-    }
-
-
-}
-
- */

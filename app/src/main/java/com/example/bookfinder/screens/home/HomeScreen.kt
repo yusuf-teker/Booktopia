@@ -38,6 +38,7 @@ import com.example.bookfinder.screens.search.searchDetail.SearchDetailScreen
 import com.example.bookfinder.screens.search.searchDetail.SearchDetailViewModel
 import com.example.bookfinder.ui.theme.BookFinderTheme
 import com.example.bookfinder.ui.theme.Dimen
+import java.time.format.TextStyle
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -136,7 +137,7 @@ fun HomeScreenContent(
                         Alignment.End
                     )
             ) {
-                FavoriteBooksRow(mostReadedBooks.value, "Çok okunanlar", onBookClicked = onBookClicked)
+                FavoriteBooksRow(mostReadedBooks.value, "Çok okunanlar", onBookClicked = onBookClicked, "Henüz kimse kitap okumadı  :(")
             }
 
             Box(
@@ -149,7 +150,7 @@ fun HomeScreenContent(
                         Alignment.End
                     )
             ) {
-                FavoriteBooksRow(mostFavoriteBooks.value, "Çok beğenilenler", onBookClicked = onBookClicked)
+                FavoriteBooksRow(mostFavoriteBooks.value, "Çok beğenilenler", onBookClicked = onBookClicked, "Henüz kimse kitap beğenmedi  :(")
             }
 
 
@@ -180,7 +181,8 @@ fun HomeScreenContent(
 fun FavoriteBooksRow(
     favoriteBooks: List<Book>?,
     header: String,
-    onBookClicked: (String) -> Unit
+    onBookClicked: (String) -> Unit,
+    emptyListMessage: String = "Empty"
 ) {
 
     val context = LocalContext.current
@@ -297,10 +299,12 @@ fun FavoriteBooksRow(
                     .background(Color.Transparent)
                     .fillMaxSize()
             ) {
-                CircularProgressIndicator(
-                    color = Color.Green,
-                    backgroundColor = MaterialTheme.colors.surface,
-                    modifier = Modifier.align(Alignment.Center)
+
+                Text(
+                    text = emptyListMessage,
+                    modifier = Modifier.align(Alignment.Center),
+                    style = androidx.compose.ui.text.TextStyle.Default,
+                    color = MaterialTheme.colors.onSurface
                 )
             }
         }

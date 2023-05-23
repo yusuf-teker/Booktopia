@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.bookfinder.data.local.BookDatabase
 import com.example.bookfinder.data.local.dao.BookDao
+import com.example.bookfinder.data.local.dao.NoteDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,5 +26,10 @@ object DatabaseModule {
     @Provides
     fun provideBookDao(database: BookDatabase): BookDao {
         return database.bookDao()
+    }
+
+    @Provides
+    fun provideNoteDao(database: BookDatabase): NoteDao {
+        return database.noteDao()
     }
 }

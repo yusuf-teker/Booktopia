@@ -3,6 +3,7 @@ package com.example.bookfinder.screens.favorites.favoritesDetails
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bookfinder.data.model.room.FavoriteBook
+import com.example.bookfinder.data.model.room.Note
 
 import com.example.bookfinder.data.repositories.FavoritesRepository
 
@@ -21,8 +22,8 @@ class FavoriteDetailsViewModel  @Inject constructor(
     private val _book = MutableStateFlow<FavoriteBook?>(null)
     val book: StateFlow<FavoriteBook?> = _book
 
-    private val _noteText = MutableStateFlow("")
-    val noteText: StateFlow<String> = _noteText
+    private val _notes = MutableStateFlow<List<Note>>(emptyList())
+    val notes: StateFlow<List<Note>> = _notes
 
 
     private val _selectedBox = MutableStateFlow(_book.value?.readingStatus ?: -1)
@@ -35,7 +36,7 @@ class FavoriteDetailsViewModel  @Inject constructor(
         if (book!=null){
             viewModelScope.launch {
                 repository.insertBookToFavorites(book)
-                repository.addOrRemoveBookFromFavorites(bookId = book.id, true)
+                repository.addOrRemoveBookFromFavorites(bookId = book.bookId, true)
             }
         }
     }
@@ -56,7 +57,7 @@ class FavoriteDetailsViewModel  @Inject constructor(
             viewModelScope.launch {
                 repository.deleteBookFromFavorites(book)
                 _isFavorite.value = false
-                repository.addOrRemoveBookFromFavorites(bookId = book.id,false)
+                repository.addOrRemoveBookFromFavorites(bookId = book.bookId,false)
             }
         }
 
@@ -65,33 +66,37 @@ class FavoriteDetailsViewModel  @Inject constructor(
     fun getFavoriteBookById(id : String){
         viewModelScope.launch {
             _book.value = repository.getFavoriteBookById(id)
-            _noteText.value = _book.value?.myNotes ?: ""
             _selectedBox.value = _book.value?.readingStatus ?: -1
         }
     }
-
+    fun getNotesByBookId(id : String){
+        viewModelScope.launch {
+           _notes.value = repository.getNotesForBook(id)
+        }
+    }
     fun updateBook(){
         viewModelScope.launch {
             repository.updateBook(
                 _book.value!!.copy(
-                        myNotes = noteText.value,
                         readingStatus = selectedBox.value
                     )
             )
             if (selectedBox.value == 2){
-                repository.addBookToReadBooks(_book.value!!.id)
+                repository.addBookToReadBooks(_book.value!!.bookId)
             }else{
-                repository.decreaseReadCount(_book.value!!.id)
+                repository.decreaseReadCount(_book.value!!.bookId)
             }
             if (_book.value!!.isFavorite){
-                repository.addOrRemoveBookFromFavorites(_book.value!!.id,true)
+                repository.addOrRemoveBookFromFavorites(_book.value!!.bookId,true)
             }
 
         }
     }
 
-    fun setNoteText(noteText: String){
-        _noteText.value = noteText
+    fun addNoteToBook(note: Note){
+        viewModelScope.launch {
+            repository.addNoteToBook(note)
+        }
     }
 
     fun setSelectedBox(selectedIndex: Int){

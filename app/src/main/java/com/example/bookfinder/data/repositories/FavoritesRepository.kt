@@ -8,8 +8,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import javax.inject.Inject
 import com.example.bookfinder.BuildConfig
+import com.example.bookfinder.data.local.dao.NoteDao
+import com.example.bookfinder.data.model.room.Note
+
 class FavoritesRepository @Inject constructor(
-    private val bookDao: BookDao
+    private val bookDao: BookDao,
+    private val noteDao: NoteDao
 ) {
 
     val auth = FirebaseAuth.getInstance()
@@ -40,6 +44,13 @@ class FavoritesRepository @Inject constructor(
     }
     suspend fun updateBook(book: FavoriteBook){
         return bookDao.updateBook(book)
+    }
+
+    suspend fun addNoteToBook(note: Note){
+        return noteDao.addNoteToBook(note)
+    }
+    suspend fun getNotesForBook(bookId: String): List<Note>{
+        return noteDao.getNotesForBook(bookId)
     }
 
     fun addOrRemoveBookFromFavorites(bookId: String, isFavorite: Boolean) {

@@ -11,6 +11,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.bookfinder.R
 import com.example.bookfinder.data.model.remote.*
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 
 const val emailMaxLength = 35
@@ -31,6 +33,22 @@ val categoryColors = listOf<Color>(
     Color(0xFFA52A2A), // Kahverengi
     Color(0xFF000000), // Siyah
 )
+val categoryColorsLongValue = listOf<Long>(
+    0xFF87CEEB, // Gökyüzü mavisi
+    0xFF0F52BA, // Kobalt mavisi
+    0xFF967BB6, // Lavanta mavisi
+    0xFFFF00FF, // Fuşya
+    0xFFFF0000, // Kırmızı
+    0xFFFFA500, // Turuncu
+    0xFFFFFF00, // Sarı
+    0xFF008000, // Yeşil
+    0xFF556B2F, // Haki yeşili
+    0xFF808080, // Gri
+    0xFF3E3E3E, //
+    0xFFA52A2A, // Kahverengi
+    0xFF000000, // Siyah
+)
+
 
 val categoryDrawableList = listOf(
     R.drawable.computer_and_technology,
@@ -112,3 +130,8 @@ fun Modifier.shadow(
             )
         }
     })
+
+fun getCurrentDateAsString(): String {
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+    return LocalDate.now().format(formatter)
+}

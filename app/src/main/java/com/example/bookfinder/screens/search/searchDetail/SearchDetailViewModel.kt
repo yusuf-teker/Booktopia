@@ -36,13 +36,13 @@ class SearchDetailViewModel @Inject constructor(
     fun insertFavoriteBook(book: FavoriteBook) {
         viewModelScope.launch {
             repository.insertBookToFavorites(book)
-            repository.addOrRemoveBookFromFavorites(bookId = book.id, true)
+            repository.addOrRemoveBookFromFavorites(bookId = book.bookId, true)
         }
     }
     fun deleteFavoriteBook(book: FavoriteBook) {
         viewModelScope.launch {
             repository.deleteBookFromFavorites(book)
-            repository.addOrRemoveBookFromFavorites(bookId = book.id, false)
+            repository.addOrRemoveBookFromFavorites(bookId = book.bookId, false)
         }
     }
 

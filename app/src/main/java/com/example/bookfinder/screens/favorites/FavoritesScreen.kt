@@ -24,7 +24,7 @@ fun FavoritesScreen(viewModel: FavoritesScreenViewModel) {
             FavoritesListScreen(
                 viewModel,
                 onItemClicked = { book ->
-                    favoritesNavHostController.navigate("${Screen.FavoriteDetails.route}/${book.id}")
+                    favoritesNavHostController.navigate("${Screen.FavoriteDetails.route}/${book.bookId}")
                 }
             )
         }

@@ -37,6 +37,7 @@ import com.example.bookfinder.data.model.remote.Book
 import com.example.bookfinder.data.model.remote.toFavoriteBook
 import com.example.bookfinder.screens.common.FavoriteIcon
 import com.example.bookfinder.screens.common.HtmlText
+import com.example.bookfinder.ui.theme.Dimen.bottomNavigationHeight
 import com.example.bookfinder.ui.theme.Dimen.circleIconPadding
 
 @Composable
@@ -243,6 +244,7 @@ fun BookDetailsScreen(book: Book, navController: NavController, viewModel: Searc
                 .verticalScroll(rememberScrollState())
                 .weight(weight = 1f, fill = false)
                 .padding(horizontal = 16.dp)
+                .padding(bottom = bottomNavigationHeight)
 
         ) {
             book.volumeInfo?.categories?.joinToString(separator = " ")?.let {
