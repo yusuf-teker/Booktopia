@@ -3,6 +3,7 @@ package com.example.bookfinder.data.remote
 import com.example.bookfinder.BuildConfig
 import com.example.bookfinder.data.model.remote.Book
 import com.example.bookfinder.data.model.remote.BookListResponse
+import com.example.bookfinder.util.maxBookCountForApi
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -14,7 +15,7 @@ interface BookApi {
     suspend fun searchBooks(
         @Query("q") query: String,
         @Query("startIndex") startIndex: Int = 0,
-        @Query("maxResults") maxResults: Int = 10,
+        @Query("maxResults") maxResults: Int = maxBookCountForApi,
         @Query("key") apiKey: String
     ): BookListResponse
 

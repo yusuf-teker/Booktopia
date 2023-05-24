@@ -11,6 +11,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
@@ -70,6 +71,7 @@ fun BookDetailsScreen(book: Book, navController: NavController, viewModel: Searc
     val context = LocalContext.current
 
     val isFavorite = viewModel.isFavorite.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -80,15 +82,11 @@ fun BookDetailsScreen(book: Book, navController: NavController, viewModel: Searc
                 .height(350.dp)
 
         ) {
+
             Image(
                 painter = rememberAsyncImagePainter(
                     model = ImageRequest.Builder(context)
-                        .data(
-                            if (book.volumeInfo?.imageLinks?.thumbnail.isNullOrEmpty())
-                                R.drawable.placeholder
-                            else
-                                book.volumeInfo?.imageLinks?.thumbnail
-                        )
+                        .data(book.volumeInfo?.imageLinks?.thumbnail)
                         .crossfade(true)
                         .placeholder(
                             R.drawable.placeholder
@@ -100,7 +98,7 @@ fun BookDetailsScreen(book: Book, navController: NavController, viewModel: Searc
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight(1f)
-                    .blur(7.dp)
+                    //.blur(7.dp)
             )
 
             Column(

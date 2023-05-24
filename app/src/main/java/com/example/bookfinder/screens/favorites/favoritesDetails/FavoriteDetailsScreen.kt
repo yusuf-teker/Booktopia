@@ -1,18 +1,24 @@
 package com.example.bookfinder.screens.favorites.favoritesDetails
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridScope
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -23,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -34,9 +41,11 @@ import com.example.bookfinder.R
 import com.example.bookfinder.data.model.room.Note
 import com.example.bookfinder.screens.common.CustomCheckboxGroup
 import com.example.bookfinder.screens.common.FavoriteIcon
+import com.example.bookfinder.screens.common.bounceClick
 import com.example.bookfinder.ui.theme.BookFinderTheme
 import com.example.bookfinder.ui.theme.Dimen.bottomNavigationHeight
 import com.example.bookfinder.ui.theme.Dimen.circleIconPadding
+import com.example.bookfinder.util.categoryColors
 import com.example.bookfinder.util.categoryColorsLongValue
 import com.example.bookfinder.util.getCurrentDateAsString
 
@@ -69,10 +78,6 @@ fun FavoriteDetailItem(
 
     Box(modifier = Modifier.fillMaxSize()) {
 
-        fun onAddNoteButtonClicked() {
-            showDialog.value = true
-        }
-
         if (showDialog.value) {
             AddOrChangeNote(
                 note = currentNote.value,
@@ -83,6 +88,11 @@ fun FavoriteDetailItem(
                 },
                 onNoteUpdated = {
                     viewModel.addNoteToBook(it)
+                    currentNote.value = null
+                    showDialog.value = false
+                },
+                onNoteDeleted = {
+                    viewModel.deleteNote(it)
                     currentNote.value = null
                     showDialog.value = false
                 }
@@ -292,7 +302,7 @@ fun FavoriteDetailItem(
                                 fontSize = 32.sp,
                                 color = MaterialTheme.colors.onSurface
                             )
-                            IconButton(onClick = { onAddNoteButtonClicked() }) {
+                            IconButton(onClick = { showDialog.value = true }) {
                                 Icon(
                                     imageVector = Icons.Default.Add,
                                     contentDescription = null,
@@ -311,7 +321,6 @@ fun FavoriteDetailItem(
                         currentNote.value = notes.value[it]
                         showDialog.value = true
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
                 }
 
             }
@@ -353,6 +362,7 @@ fun NoteItem(note: Note, onNoteClicked: () -> Unit){
                 color = Color(note.noteColor),
                 shape = RoundedCornerShape(15.dp)
             )
+            .heightIn(min = 72.dp)
             .padding(8.dp)
             .clickable {
                 onNoteClicked()
@@ -372,19 +382,25 @@ fun AddOrChangeNote(
     bookId: String,
     note: Note? = null,
     onNoteUpdated: (note: Note) -> Unit,
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
+    onNoteDeleted: (note: Note) -> Unit
 ){
 
     val inputValue = remember { mutableStateOf(TextFieldValue(note?.noteText ?: "")) }
     val backgroundColor = remember {
         mutableStateOf(note?.noteColor?: 0xFFFF00FF)
     }
-    Column(modifier = Modifier.fillMaxSize()) {
+    val showColorSelector = remember {
+        mutableStateOf(false)
+    }
+    Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center) {
         TextField(
             value = inputValue.value,
+            label = { Text(text = stringResource(R.string.my_note_hint))},
             onValueChange = { inputValue.value = it },
             modifier = Modifier
-                .padding(16.dp)
+                .padding(horizontal = 16.dp)
+                .fillMaxWidth()
                 .wrapContentHeight(),
             colors = TextFieldDefaults.textFieldColors(
                 textColor = MaterialTheme.colors.onBackground,
@@ -395,40 +411,112 @@ fun AddOrChangeNote(
             ),
             maxLines = 10
         )
-        Row(modifier = Modifier.fillMaxWidth()) {
-            TextButton(onClick = { onCancel() }) {
-                Text(text = "İPTAL", color = MaterialTheme.colors.onSurface)
+        Box(modifier = Modifier.fillMaxWidth().padding(32.dp)) {
+
+            ColorMixtureCircle(
+                circleSize = 36.dp,
+                colors = categoryColors,
+            ){
+                showColorSelector.value = !showColorSelector.value
             }
-            TextButton(onClick = {
-                if (note==null){
-                    onNoteUpdated(Note(bookId = bookId, noteText = inputValue.value.text, noteTime = getCurrentDateAsString(), noteColor = backgroundColor.value ))
-                }else{
-                    onNoteUpdated(note.copy(noteText = inputValue.value.text, noteColor = backgroundColor.value))
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                , horizontalArrangement = Arrangement.End) {
+
+
+
+                if(note != null){
+                    TextButton(onClick = { onNoteDeleted(note) }, modifier = Modifier.bounceClick()) {
+                        Text(text = stringResource(R.string.delete), color = MaterialTheme.colors.onSurface)
+                    }
                 }
-                inputValue.value =  TextFieldValue()
-            }) {
-                Text(text = "EKLE", color = MaterialTheme.colors.onSurface)
+
+                TextButton(onClick = { onCancel() }, modifier = Modifier.bounceClick()) {
+                    Text(text = stringResource(R.string.cancel), color = MaterialTheme.colors.onSurface)
+                }
+                TextButton(onClick = {
+                    if (note==null){
+                        onNoteUpdated(Note(bookId = bookId, noteText = inputValue.value.text, noteTime = getCurrentDateAsString(), noteColor = backgroundColor.value ))
+                    }else{
+                        onNoteUpdated(note.copy(noteText = inputValue.value.text, noteColor = backgroundColor.value))
+                    }
+                    inputValue.value =  TextFieldValue()
+                }, modifier = Modifier.bounceClick()) {
+                    Text(text = stringResource(R.string.add), color = MaterialTheme.colors.onSurface)
+                }
+
+
             }
         }
 
-        var sliderValue by remember {
-            mutableStateOf(findIndexOfCategoryColor(backgroundColor.value).toFloat())
+
+        if (showColorSelector.value){
+            MyColorSelector{
+                backgroundColor.value = categoryColorsLongValue.get(it)
+            }
         }
-        Slider(value = sliderValue, colors = SliderDefaults.colors(
-            thumbColor =    Color.White,
-            activeTrackColor = Color.White,
-            inactiveTrackColor = Color.White),
-            valueRange = 0f..categoryColorsLongValue.size.toFloat()-1,
-            onValueChange = {
-                sliderValue = it
-                backgroundColor.value = categoryColorsLongValue.get(it.toInt())
-        })
+
 
     }
 }
 fun findIndexOfCategoryColor(value: Long): Int{
     return categoryColorsLongValue.indexOf(value)
 }
+
+@Composable
+fun MyColorSelector(
+    onColorSelected: (index: Int) -> Unit
+){
+    val selected = remember {
+        mutableStateOf(0)
+    }
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(72.dp),
+        Modifier
+            .padding(32.dp)
+            .background(color = Color.DarkGray, RoundedCornerShape(32.dp))
+    ){
+
+        items(categoryColorsLongValue.size) { index ->
+
+
+            Box(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .clickable {
+                        selected.value = index
+                        onColorSelected(selected.value)
+                    }
+
+            ) {
+                Box(
+                    modifier = Modifier
+                        .background(
+                            color = Color(categoryColorsLongValue[index]),
+                            shape = CircleShape
+                        )
+                        .size(48.dp)
+                ) {
+                    if (selected.value == index) {
+                        Icon(
+                            modifier = Modifier
+                                .size(48.dp)
+                                .align(Alignment.Center),
+                            imageVector = Icons.Default.Check,
+                            contentDescription = null,
+                            tint = Color.White,
+                        )
+                    }
+                }
+
+
+            }
+
+        }
+    }
+}
+
+
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
@@ -444,6 +532,29 @@ fun DefaultPreview() {
                     "A"
                 )
             )
+        )
+    }
+}
+
+
+@Composable
+fun ColorMixtureCircle(
+    circleSize: Dp,
+    colors: List<Color>,
+    onColorMixtureCircleClicked: () -> Unit
+) {
+    BoxWithConstraints(
+        modifier = Modifier
+            .clickable {
+                onColorMixtureCircleClicked()
+            }
+    ) {
+
+        val gradientBrush = Brush.sweepGradient(colors)
+        Box(
+            modifier = Modifier
+                .size(circleSize)
+                .background(brush = gradientBrush, shape = CircleShape)
         )
     }
 }

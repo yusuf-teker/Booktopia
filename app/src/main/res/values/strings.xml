@@ -41,6 +41,10 @@
     <string name="do_you_have_account">Hesabınız var mı?</string>
     <string name="logout">Çıkış Yap</string>
     <string name="empty_email_error_message">Email alanı boş bırakılamaz.</string>
+    <string name="my_note_hint">Not ekle</string>
+    <string name="delete">SİL</string>
+    <string name="cancel">İPTAL</string>
+    <string name="add">EKLE</string>
 
     <string-array name="categories">
         <item>Bilgisayar ve Teknoloji</item>

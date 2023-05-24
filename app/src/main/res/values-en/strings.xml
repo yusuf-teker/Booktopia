@@ -43,6 +43,10 @@
     <string name="do_you_have_account">Do you have an account?</string>
     <string name="logout">Logout</string>
     <string name="empty_email_error_message">Email alanı boş bırakılamaz.</string>
+    <string name="my_note_hint">My note</string>
+    <string name="delete">DELETE</string>
+    <string name="cancel">CANCEL</string>
+    <string name="add">ADD</string>
 
     <string-array name="categories">
         <item>Computer and Technology</item>

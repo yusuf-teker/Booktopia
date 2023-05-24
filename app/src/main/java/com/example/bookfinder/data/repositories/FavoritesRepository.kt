@@ -49,6 +49,11 @@ class FavoritesRepository @Inject constructor(
     suspend fun addNoteToBook(note: Note){
         return noteDao.addNoteToBook(note)
     }
+
+    suspend fun deleteNote(note: Note){
+        return noteDao.deleteNote(note)
+    }
+
     suspend fun getNotesForBook(bookId: String): List<Note>{
         return noteDao.getNotesForBook(bookId)
     }

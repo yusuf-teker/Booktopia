@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter
 
 const val emailMaxLength = 35
 const val passwordMaxLength = 15
+const val maxBookCountForApi =  20
 
 val categoryColors = listOf<Color>(
     Color(0xFF87CEEB), // Gökyüzü mavisi

@@ -96,6 +96,13 @@ class FavoriteDetailsViewModel  @Inject constructor(
     fun addNoteToBook(note: Note){
         viewModelScope.launch {
             repository.addNoteToBook(note)
+            repository.getNotesForBook(note.bookId)
+        }
+    }
+
+    fun deleteNote(note: Note){
+        viewModelScope.launch {
+            repository.deleteNote(note)
         }
     }
 

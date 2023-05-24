@@ -20,7 +20,8 @@ class HomeRepository @Inject constructor(
 
      suspend fun getBooksByIdList(bookIdList: List<String>): List<Book>{
         return try {
-            bookApi.getBooksByIds(bookIdList.joinToString("|"), bookIdList.size).items
+            val filteredBookList = bookIdList.filter { !it.contains("-") && !it.contains("_")}
+            bookApi.getBooksByIds(filteredBookList.joinToString("|"), filteredBookList.size).items
         }catch (e: java.lang.Exception){
             listOf()
         }
@@ -35,7 +36,10 @@ class HomeRepository @Inject constructor(
                 val topReadBooksIds = mutableListOf<String>()
                 for (bookSnapshot in snapshot.children.reversed()) {
                     val bookId = bookSnapshot.key ?: continue
-                    topReadBooksIds.add(bookId)
+                    val readCount = bookSnapshot.child("readCount").getValue(Long::class.java) ?: 0
+                    if (readCount > 0) {
+                        topReadBooksIds.add(bookId)
+                    }
                 }
                 onMostReadedBooksFetch(topReadBooksIds.toList())
                 // topReadBooksIds -> top 10 most read books
@@ -57,7 +61,10 @@ class HomeRepository @Inject constructor(
                 val topFavoritedBooksIds = mutableListOf<String>()
                 for (bookSnapshot in snapshot.children.reversed()) {
                     val bookId = bookSnapshot.key ?: continue
-                    topFavoritedBooksIds.add(bookId)
+                    val favoriteCount = bookSnapshot.child("favoriteCount").getValue(Long::class.java) ?: 0
+                    if (favoriteCount > 0) {
+                        topFavoritedBooksIds.add(bookId)
+                    }
                 }
                 onMostFavoritedBooksFetch(topFavoritedBooksIds.toList())
                 // topReadBooksIds -> top 10 most read books

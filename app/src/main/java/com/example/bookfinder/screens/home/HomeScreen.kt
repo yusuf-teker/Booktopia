@@ -1,11 +1,8 @@
 package com.example.bookfinder.screens.home
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -33,12 +30,12 @@ import coil.transform.RoundedCornersTransformation
 import com.example.bookfinder.R
 import com.example.bookfinder.data.model.remote.Book
 import com.example.bookfinder.screens.app.Screen
+import com.example.bookfinder.screens.common.AutoScrollingLazyRow
 import com.example.bookfinder.screens.common.ResponsiveText
 import com.example.bookfinder.screens.search.searchDetail.SearchDetailScreen
 import com.example.bookfinder.screens.search.searchDetail.SearchDetailViewModel
 import com.example.bookfinder.ui.theme.BookFinderTheme
 import com.example.bookfinder.ui.theme.Dimen
-import java.time.format.TextStyle
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -221,78 +218,68 @@ fun FavoriteBooksRow(
         }
 
         if (!favoriteBooks.isNullOrEmpty()) {
-            // ROW LIST
-            LazyRow(
-                modifier = Modifier
-                    .wrapContentHeight()
-                    .fillMaxWidth()
 
-            ) {
-                items(favoriteBooks.size, key = { index ->
-                    favoriteBooks[index].id
-                }) {
+            AutoScrollingLazyRow(favoriteBooks){
+                val imageWidth = 150.dp
+                Column(
+                    modifier = Modifier
+                        .wrapContentHeight()
+                        .wrapContentWidth()
+                        .padding(end = 16.dp)
+                    //.border(2.dp, color = Color.Magenta),
+                    ,
+                    horizontalAlignment = Alignment.Start
+                ) {
 
-                    val imageWidth = 150.dp
-                    Column(
+                    Image(
+                        painter = rememberAsyncImagePainter(
+                            model = ImageRequest.Builder(context)
+                                .data(
+                                    it.volumeInfo?.imageLinks?.thumbnail?.ifEmpty { R.drawable.placeholder }
+                                )
+                                .crossfade(true)
+                                .placeholder(R.drawable.placeholder)
+                                .transformations(RoundedCornersTransformation(1f))
+                                .size(Size.ORIGINAL)
+                                .build()
+                        ),
+                        contentDescription = null,
+                        contentScale = ContentScale.FillHeight,
                         modifier = Modifier
-                            .wrapContentHeight()
-                            .wrapContentWidth()
-                            .padding(end = 16.dp)
-                        //.border(2.dp, color = Color.Magenta),
-                        ,
-                        horizontalAlignment = Alignment.Start
-                    ) {
+                            .fillMaxHeight(0.7f)
+                            .aspectRatio(0.7f)
+                            .width(imageWidth)
+                            //.border(2.dp, Color.Red)
+                            .align(Alignment.Start)
+                            .clickable {
+                                onBookClicked(it.id)
+                            }
+                        //.wrapContentWidth()
+                    )
 
-                        Image(
-                            painter = rememberAsyncImagePainter(
-                                model = ImageRequest.Builder(context)
-                                    .data(
-                                        favoriteBooks[it].volumeInfo?.imageLinks?.thumbnail?.ifEmpty { R.drawable.placeholder }
-                                    )
-                                    .crossfade(true)
-                                    .placeholder(R.drawable.placeholder)
-                                    .transformations(RoundedCornersTransformation(1f))
-                                    .size(Size.ORIGINAL)
-                                    .build()
-                            ),
-                            contentDescription = null,
-                            contentScale = ContentScale.FillHeight,
-                            modifier = Modifier
-                                .fillMaxHeight(0.7f)
-                                .aspectRatio(0.7f)
-                                .width(imageWidth)
-                                //.border(2.dp, Color.Red)
-                                .align(Alignment.Start)
-                                .clickable {
-                                    onBookClicked(favoriteBooks[it].id)
-                                }
-                            //.wrapContentWidth()
-                        )
-
-                        Text(
-                            text = favoriteBooks[it].volumeInfo?.categories?.firstOrNull()?:"No Category",
-                            color = Color.Green,
-                            overflow = TextOverflow.Ellipsis,
-                            fontSize = 10.sp,
-                            maxLines = 1,
-                            modifier = Modifier
-                                .width(100.dp)
-                                .padding(start = 2.dp)
-                        )
-                        Text(
-                            text = favoriteBooks[it].volumeInfo?.title?:"No Title",
-                            color = MaterialTheme.colors.onSurface,
-                            overflow = TextOverflow.Ellipsis,
-                            fontSize = 10.sp,
-                            maxLines = 1,
-                            modifier = Modifier
-                                .width(100.dp)
-                                .padding(start = 2.dp)
-                        )
-                    }
-
+                    Text(
+                        text = it.volumeInfo?.categories?.firstOrNull()?:"No Category",
+                        color = Color.Green,
+                        overflow = TextOverflow.Ellipsis,
+                        fontSize = 10.sp,
+                        maxLines = 1,
+                        modifier = Modifier
+                            .width(100.dp)
+                            .padding(start = 2.dp)
+                    )
+                    Text(
+                        text = it.volumeInfo?.title?:"No Title",
+                        color = MaterialTheme.colors.onSurface,
+                        overflow = TextOverflow.Ellipsis,
+                        fontSize = 10.sp,
+                        maxLines = 1,
+                        modifier = Modifier
+                            .width(100.dp)
+                            .padding(start = 2.dp)
+                    )
                 }
             }
+
         } else {
             Box(
                 modifier = Modifier
@@ -354,80 +341,70 @@ fun BooksRow(books: List<Book>, header: String, onBookClicked: (String) -> Unit)
 
 
         if (books.isNotEmpty()) {
-            // ROW LIST
-            LazyRow(
-                modifier = Modifier
-                    .wrapContentHeight()
-                    .fillMaxWidth()
 
-            ) {
-                items(books.size, key = { index ->
-                    books[index].id
-                }) {
+            AutoScrollingLazyRow(books){
+                val imageWidth = 150.dp
+                Column(
+                    modifier = Modifier
+                        .wrapContentHeight()
+                        .wrapContentWidth()
+                        .padding(end = 16.dp)
+                    //.border(2.dp, color = Color.Magenta),
+                    ,
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.Start
+                ) {
 
-                    val imageWidth = 150.dp
-                    Column(
+                    Image(
+                        painter = rememberAsyncImagePainter(
+                            model = ImageRequest.Builder(context)
+                                .data(
+                                    it.volumeInfo?.imageLinks?.thumbnail?.ifEmpty { R.drawable.placeholder }
+                                )
+                                .crossfade(true)
+                                .placeholder(R.drawable.placeholder)
+                                .transformations(RoundedCornersTransformation(1f))
+                                .size(Size.ORIGINAL)
+                                .build()
+                        ),
+                        contentDescription = null,
+                        contentScale = ContentScale.FillHeight,
                         modifier = Modifier
-                            .wrapContentHeight()
-                            .wrapContentWidth()
-                            .padding(end = 16.dp)
-                        //.border(2.dp, color = Color.Magenta),
-                        ,
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.Start
-                    ) {
+                            .fillMaxHeight(0.7f)
+                            .aspectRatio(0.7f)
+                            .width(imageWidth)
+                            //.border(2.dp, Color.Red)
+                            .align(Alignment.Start)
+                            .clickable {
+                                onBookClicked(it.id)
+                            }
+                        //.wrapContentWidth()
+                    )
 
-                        Image(
-                            painter = rememberAsyncImagePainter(
-                                model = ImageRequest.Builder(context)
-                                    .data(
-                                        books[it].volumeInfo?.imageLinks?.thumbnail?.ifEmpty { R.drawable.placeholder }
-                                    )
-                                    .crossfade(true)
-                                    .placeholder(R.drawable.placeholder)
-                                    .transformations(RoundedCornersTransformation(1f))
-                                    .size(Size.ORIGINAL)
-                                    .build()
-                            ),
-                            contentDescription = null,
-                            contentScale = ContentScale.FillHeight,
-                            modifier = Modifier
-                                .fillMaxHeight(0.7f)
-                                .aspectRatio(0.7f)
-                                .width(imageWidth)
-                                //.border(2.dp, Color.Red)
-                                .align(Alignment.Start)
-                                .clickable {
-                                    onBookClicked(books[it].id)
-                                }
-                            //.wrapContentWidth()
-                        )
-
-                        Text(
-                            text = (books[it].volumeInfo?.categories?.firstOrNull()
-                                ?: "No Category"),
-                            color = Color.Green,
-                            overflow = TextOverflow.Ellipsis,
-                            fontSize = 10.sp,
-                            maxLines = 1,
-                            modifier = Modifier
-                                .width(100.dp)
-                                .padding(start = 2.dp)
-                        )
-                        Text(
-                            text = books[it].volumeInfo?.title ?: "No Title",
-                            color = MaterialTheme.colors.onSurface,
-                            overflow = TextOverflow.Ellipsis,
-                            fontSize = 10.sp,
-                            maxLines = 1,
-                            modifier = Modifier
-                                .width(100.dp)
-                                .padding(start = 2.dp)
-                        )
-                    }
-
+                    Text(
+                        text = (it.volumeInfo?.categories?.firstOrNull()
+                            ?: "No Category"),
+                        color = Color.Green,
+                        overflow = TextOverflow.Ellipsis,
+                        fontSize = 10.sp,
+                        maxLines = 1,
+                        modifier = Modifier
+                            .width(100.dp)
+                            .padding(start = 2.dp)
+                    )
+                    Text(
+                        text = it.volumeInfo?.title ?: "No Title",
+                        color = MaterialTheme.colors.onSurface,
+                        overflow = TextOverflow.Ellipsis,
+                        fontSize = 10.sp,
+                        maxLines = 1,
+                        modifier = Modifier
+                            .width(100.dp)
+                            .padding(start = 2.dp)
+                    )
                 }
             }
+
         } else {
             Box(
                 modifier = Modifier
