@@ -134,7 +134,7 @@ fun HomeScreenContent(
                         Alignment.End
                     )
             ) {
-                FavoriteBooksRow(mostReadedBooks.value, "Çok okunanlar", onBookClicked = onBookClicked, "Henüz kimse kitap okumadı  :(")
+                FavoriteBooksRow(mostReadedBooks.value, stringResource(R.string.most_readed), onBookClicked = onBookClicked, "Henüz kimse kitap okumadı  :(")
             }
 
             Box(
@@ -147,7 +147,7 @@ fun HomeScreenContent(
                         Alignment.End
                     )
             ) {
-                FavoriteBooksRow(mostFavoriteBooks.value, "Çok beğenilenler", onBookClicked = onBookClicked, "Henüz kimse kitap beğenmedi  :(")
+                FavoriteBooksRow(mostFavoriteBooks.value, stringResource(R.string.most_favorited), onBookClicked = onBookClicked, "Henüz kimse kitap beğenmedi  :(")
             }
 
 
@@ -163,7 +163,7 @@ fun HomeScreenContent(
                     )
             ) {
                 BooksRow(newestBooks.value,
-                    "En yeniler",
+                    stringResource(R.string.newest),
                     onBookClicked = {
                         onBookClicked(it)
                     }
@@ -258,7 +258,7 @@ fun FavoriteBooksRow(
                     )
 
                     Text(
-                        text = it.volumeInfo?.categories?.firstOrNull()?:"No Category",
+                        text = it.volumeInfo?.categories?.firstOrNull()?: stringResource(R.string.no_category),
                         color = Color.Green,
                         overflow = TextOverflow.Ellipsis,
                         fontSize = 10.sp,
@@ -268,7 +268,7 @@ fun FavoriteBooksRow(
                             .padding(start = 2.dp)
                     )
                     Text(
-                        text = it.volumeInfo?.title?:"No Title",
+                        text = it.volumeInfo?.title?: stringResource(R.string.no_title),
                         color = MaterialTheme.colors.onSurface,
                         overflow = TextOverflow.Ellipsis,
                         fontSize = 10.sp,
@@ -309,8 +309,7 @@ fun BooksRow(books: List<Book>, header: String, onBookClicked: (String) -> Unit)
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()
-        //.border(3.dp, Color.DarkGray)
-        //.fillMaxHeight(0.7f)
+
     ) {
 
         // HEADER
@@ -383,7 +382,7 @@ fun BooksRow(books: List<Book>, header: String, onBookClicked: (String) -> Unit)
 
                     Text(
                         text = (it.volumeInfo?.categories?.firstOrNull()
-                            ?: "No Category"),
+                            ?: stringResource(id = R.string.no_category)),
                         color = Color.Green,
                         overflow = TextOverflow.Ellipsis,
                         fontSize = 10.sp,
@@ -393,7 +392,7 @@ fun BooksRow(books: List<Book>, header: String, onBookClicked: (String) -> Unit)
                             .padding(start = 2.dp)
                     )
                     Text(
-                        text = it.volumeInfo?.title ?: "No Title",
+                        text = it.volumeInfo?.title ?: stringResource(id = R.string.no_title),
                         color = MaterialTheme.colors.onSurface,
                         overflow = TextOverflow.Ellipsis,
                         fontSize = 10.sp,

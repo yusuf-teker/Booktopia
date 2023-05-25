@@ -10,12 +10,12 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.example.bookfinder.R
 import com.example.bookfinder.screens.search.categories.CategoriesScreen
 import com.example.bookfinder.screens.common.BookList
@@ -25,12 +25,15 @@ import com.example.bookfinder.screens.search.searchList.SearchScreenViewModel
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun SearchListScreen(viewModel: SearchScreenViewModel, onBookClicked: (String) -> Unit) {
-    val booksState by viewModel.books.collectAsState()
     val query = viewModel.query.collectAsState()
     val isLoading = viewModel.loading.collectAsState()
+    val books = viewModel.bookPager.collectAsLazyPagingItems()
+
     Scaffold(
         topBar = {
-            SearchWidget(onQueryChanged = { viewModel.setQueryAndSearch(it) })
+            SearchWidget(onQueryChanged = {
+                viewModel.setQueryAndSearch(it)
+            })
         },
         content = {
             Box(
@@ -51,8 +54,8 @@ fun SearchListScreen(viewModel: SearchScreenViewModel, onBookClicked: (String) -
                     if (query.value.isNullOrEmpty()) {
                         CategoriesScreen(viewModel)
                     } else {
-                        if (!booksState.isNullOrEmpty()) {
-                            BookList(items = booksState, viewModel, onBookClicked)
+                        if (books.itemCount!=0) {
+                            BookList(books = books, viewModel, onBookClicked)
                         } else {
                             Box(
                                 modifier = Modifier
@@ -66,8 +69,6 @@ fun SearchListScreen(viewModel: SearchScreenViewModel, onBookClicked: (String) -
                         }
                     }
                 }
-
-
 
             }
 

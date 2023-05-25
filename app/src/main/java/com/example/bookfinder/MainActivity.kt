@@ -28,7 +28,6 @@ class MainActivity : ComponentActivity() {
                if (isLoggedIn) {
                    AppScreen(viewModel,navController)
                } else {
-                   //navController.clearBackStack(Screen.Auth.route)
                    AuthScreen(viewModel, navController)
                }
 

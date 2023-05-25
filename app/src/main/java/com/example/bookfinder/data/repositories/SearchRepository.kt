@@ -15,9 +15,9 @@ class SearchRepository @Inject constructor(
     private val bookApi: BookApi,
     private val bookDao: BookDao
 ) {
-    suspend fun searchBooks(query: String): List<Book> {
+    suspend fun searchBooks(query: String, page : Int, pageSize: Int): List<Book> {
         return try {
-            val searchResult = bookApi.searchBooks(query, apiKey = BuildConfig.BOOK_FINDER_API_KEY)
+            val searchResult = bookApi.searchBooks(query, startIndex = page*10, apiKey = BuildConfig.BOOK_FINDER_API_KEY, maxResults = pageSize)
             searchResult.items
         } catch (e: Exception) {
             emptyList()
@@ -47,10 +47,6 @@ class SearchRepository @Inject constructor(
     suspend fun getFavoriteStatus(bookId: String): Boolean{
         return bookDao.getFavoriteStatus(bookId = bookId)?:false
     }
-
-
-
-
 
     val auth = FirebaseAuth.getInstance()
     val currentUser = auth.currentUser

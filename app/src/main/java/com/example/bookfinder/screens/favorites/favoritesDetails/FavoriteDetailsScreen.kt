@@ -1,11 +1,9 @@
 package com.example.bookfinder.screens.favorites.favoritesDetails
 
-import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -335,7 +333,7 @@ fun FavoriteDetailItem(
 @Composable
 fun NoteList(noteList: List<Note>) {
     if (noteList.isNullOrEmpty()) {
-        "Henüz not girilmedi."
+        stringResource(R.string.empty_note_message)
     } else {
         LazyColumn(modifier = Modifier
             .fillMaxWidth()

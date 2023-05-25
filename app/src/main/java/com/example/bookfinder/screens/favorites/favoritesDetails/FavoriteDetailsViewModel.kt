@@ -110,9 +110,4 @@ class FavoriteDetailsViewModel  @Inject constructor(
         _selectedBox.value = selectedIndex
     }
 
-    init {
-
-    }
-
-
 }

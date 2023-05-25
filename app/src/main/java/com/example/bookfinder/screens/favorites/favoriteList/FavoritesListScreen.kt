@@ -67,7 +67,7 @@ fun FavoritesListScreen(
                 ) {
 
                     items(favoriteBooks.value.size, key = { index ->
-                        favoriteBooks.value[index].bookId //üstteki silinince onun oldugu yerdeki stati yeni gelene atıyordu
+                        favoriteBooks.value[index].bookId
                     }) {
                         FavoriteBookItem(
                             book = favoriteBooks.value[it],

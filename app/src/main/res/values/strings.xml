@@ -45,6 +45,12 @@
     <string name="delete">SİL</string>
     <string name="cancel">İPTAL</string>
     <string name="add">EKLE</string>
+    <string name="empty_note_message">Henüz bir notunuz yok.</string>
+    <string name="most_readed">Çok  Okunanlar</string>
+    <string name="most_favorited">Çok Beğenilenler</string>
+    <string name="newest">En Yeniler</string>
+    <string name="no_category">Kategori Yok</string>
+    <string name="no_title">Başlık Yok</string>
 
     <string-array name="categories">
         <item>Bilgisayar ve Teknoloji</item>

@@ -1,5 +1,6 @@
 package com.example.bookfinder.di
 
+import android.util.Log
 import com.example.bookfinder.data.remote.BookApi
 import dagger.Module
 import dagger.Provides

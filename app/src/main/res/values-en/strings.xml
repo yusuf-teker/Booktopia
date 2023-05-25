@@ -47,6 +47,12 @@
     <string name="delete">DELETE</string>
     <string name="cancel">CANCEL</string>
     <string name="add">ADD</string>
+    <string name="empty_note_message">You don\'t have any notes yet.</string>
+    <string name="most_readed">Most Read</string>
+    <string name="most_favorited">Most Favorited</string>
+    <string name="newest">Newest</string>
+    <string name="no_category">No Category</string>
+    <string name="no_title">No Title</string>
 
     <string-array name="categories">
         <item>Computer and Technology</item>

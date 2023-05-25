@@ -42,7 +42,7 @@ fun BottomNavigationBar(
 
                 modifier = Modifier
                     .height(80.dp),
-                icon = { //Iconlar
+                icon = { //Icons
                     Column(
                         horizontalAlignment = CenterHorizontally,
                         verticalArrangement = Arrangement.Center,
