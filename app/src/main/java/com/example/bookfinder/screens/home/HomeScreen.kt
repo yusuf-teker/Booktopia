@@ -23,6 +23,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
@@ -81,9 +83,9 @@ fun HomeScreenContent(
     onLogout: () -> Unit,
     onBookClicked: (String) -> Unit
 ) {
-    val newestBooks = viewModel.newestBooks.collectAsState()
     val mostReadedBooks = viewModel.mostReadedBooks.collectAsState()
     val mostFavoriteBooks = viewModel.mostFavoriteBooks.collectAsState()
+    val newestBooks = viewModel.newestBookPager.collectAsLazyPagingItems()
 
 
     Scaffold(
@@ -162,7 +164,7 @@ fun HomeScreenContent(
                         Alignment.End
                     )
             ) {
-                BooksRow(newestBooks.value,
+                BooksRow(newestBooks,
                     stringResource(R.string.newest),
                     onBookClicked = {
                         onBookClicked(it)
@@ -301,7 +303,7 @@ fun FavoriteBooksRow(
 }
 
 @Composable
-fun BooksRow(books: List<Book>, header: String, onBookClicked: (String) -> Unit) {
+fun BooksRow(books: LazyPagingItems<Book>, header: String, onBookClicked: (String) -> Unit) {
 
     val context = LocalContext.current
 
@@ -339,9 +341,9 @@ fun BooksRow(books: List<Book>, header: String, onBookClicked: (String) -> Unit)
         }
 
 
-        if (books.isNotEmpty()) {
+        if (books.itemCount!=0) {
 
-            AutoScrollingLazyRow(books){
+            AutoScrollingLazyRow(books.itemSnapshotList.items.distinctBy { it.id }){
                 val imageWidth = 150.dp
                 Column(
                     modifier = Modifier

@@ -10,9 +10,9 @@ class HomeRepository @Inject constructor(
     private val bookApi: BookApi,
 ) {
 
-    suspend fun getNewestBooks(): List<Book>{
+    suspend fun getNewestBooks(page: Int, perPage: Int): List<Book>{
         return try {
-            bookApi.getNewReleases().items
+            bookApi.getNewReleases(startIndex = page, maxResults = perPage ).items
         } catch (e: Exception) {
             emptyList()
         }

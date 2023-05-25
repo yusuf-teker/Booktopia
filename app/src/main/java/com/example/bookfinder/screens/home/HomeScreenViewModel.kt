@@ -2,8 +2,12 @@ package com.example.bookfinder.screens.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import com.example.bookfinder.data.model.remote.Book
+import com.example.bookfinder.data.pagination.NewestPagingSource
 import com.example.bookfinder.data.repositories.HomeRepository
+import com.example.bookfinder.util.maxBookCountForApi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,13 +25,12 @@ class HomeScreenViewModel @Inject constructor(
     private val _mostReadedBooks = MutableStateFlow<List<Book>>(emptyList())
     val mostReadedBooks: StateFlow<List<Book>> = _mostReadedBooks
 
-    private val _newestBooks = MutableStateFlow<List<Book>>(emptyList())
-    val newestBooks: StateFlow<List<Book>> = _newestBooks
+    private lateinit var pagingSource : NewestPagingSource
 
+    val newestBookPager = Pager(PagingConfig(pageSize = maxBookCountForApi)) {
+        NewestPagingSource( repository).also { pagingSource = it }
+    }.flow
     init {
-        viewModelScope.launch {
-            _newestBooks.value = repository.getNewestBooks()
-        }
 
         repository.getMostReadedBooksFromFirebase() {
             viewModelScope.launch() {
