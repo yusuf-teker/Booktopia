@@ -30,6 +30,7 @@
     <string name="sort_by_date">Sort by date</string>
     <string name="reads">Reads</string>
     <string name="show_all">Show all</string>
+    <string name="sync_favorite_books">Sync your favorite books</string>
     <string name="help_and_feedback"><![CDATA[Help & Feedback]]></string>
     <string name="favorites">Favorites</string>
     <string name="home">Home</string>

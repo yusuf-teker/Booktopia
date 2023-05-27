@@ -1,15 +1,12 @@
 package com.example.bookfinder.data.local.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import com.example.bookfinder.data.model.room.Note
 
 @Dao
 interface NoteDao {
 
-    @Update
+    @Upsert(entity = Note::class)
     suspend fun addNoteToBook(note: Note)
 
     @Delete

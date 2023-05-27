@@ -53,8 +53,12 @@ fun CustomTopAppBar(
                         else -> null
                     }
 
+                },
+                onSyncFavoriteBooks = {
+                    viewModel.syncFavoriteBooks()
                 }
             )
+
         }
         else -> {
             SearchTopAppBar(
@@ -78,7 +82,8 @@ fun CustomTopAppBar(
 @Composable
 fun DefaultTopAppBar(
     onSearchClicked: () -> Unit,
-    onFilterClicked: (Int) -> Unit
+    onFilterClicked: (Int) -> Unit,
+    onSyncFavoriteBooks: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -99,7 +104,8 @@ fun DefaultTopAppBar(
             actions = {
                 AppBarActions(
                     onSearchClicked = onSearchClicked,
-                    onFilterClicked = onFilterClicked
+                    onFilterClicked = onFilterClicked,
+                    onSyncFavoriteBooks = onSyncFavoriteBooks,
                 )
             }
         )
@@ -109,11 +115,12 @@ fun DefaultTopAppBar(
 @Composable
 fun AppBarActions(
     onSearchClicked: () -> Unit,
-    onFilterClicked: (Int) -> Unit
+    onFilterClicked: (Int) -> Unit,
+    onSyncFavoriteBooks: () -> Unit
 ) {
     SearchAction(onSearchClicked = onSearchClicked)
     FilterAction(onFilterClicked)
-    MoreAction()
+    MoreAction(onSyncFavoriteBooks)
 }
 
 @Composable
@@ -219,7 +226,9 @@ fun FilterAction(onFilter: (Int) -> Unit) {
 }
 
 @Composable
-fun MoreAction() {
+fun MoreAction(
+    onSyncFavoriteBooks: () -> Unit
+) {
     var expanded by remember {
         mutableStateOf(false)
     }
@@ -241,10 +250,11 @@ fun MoreAction() {
             DropdownMenuItem(
                 onClick = {
                     expanded = false
+                    onSyncFavoriteBooks()
                 }
             ) {
                 Text(
-                    text = stringResource(R.string.help_and_feedback),
+                    text = stringResource(R.string.sync_favorite_books),
                     color = MaterialTheme.colors.onSurface
                 )
             }

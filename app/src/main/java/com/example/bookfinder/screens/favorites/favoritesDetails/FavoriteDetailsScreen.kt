@@ -37,9 +37,7 @@ import coil.size.Size
 import coil.transform.RoundedCornersTransformation
 import com.example.bookfinder.R
 import com.example.bookfinder.data.model.room.Note
-import com.example.bookfinder.screens.common.CustomCheckboxGroup
-import com.example.bookfinder.screens.common.FavoriteIcon
-import com.example.bookfinder.screens.common.bounceClick
+import com.example.bookfinder.screens.common.*
 import com.example.bookfinder.ui.theme.BookFinderTheme
 import com.example.bookfinder.ui.theme.Dimen.bottomNavigationHeight
 import com.example.bookfinder.ui.theme.Dimen.circleIconPadding
@@ -457,62 +455,9 @@ fun AddOrChangeNote(
 
     }
 }
-fun findIndexOfCategoryColor(value: Long): Int{
-    return categoryColorsLongValue.indexOf(value)
-}
-
-@Composable
-fun MyColorSelector(
-    onColorSelected: (index: Int) -> Unit
-){
-    val selected = remember {
-        mutableStateOf(0)
-    }
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(72.dp),
-        Modifier
-            .padding(32.dp)
-            .background(color = Color.DarkGray, RoundedCornerShape(32.dp))
-    ){
-
-        items(categoryColorsLongValue.size) { index ->
 
 
-            Box(
-                modifier = Modifier
-                    .padding(16.dp)
-                    .clickable {
-                        selected.value = index
-                        onColorSelected(selected.value)
-                    }
 
-            ) {
-                Box(
-                    modifier = Modifier
-                        .background(
-                            color = Color(categoryColorsLongValue[index]),
-                            shape = CircleShape
-                        )
-                        .size(48.dp)
-                ) {
-                    if (selected.value == index) {
-                        Icon(
-                            modifier = Modifier
-                                .size(48.dp)
-                                .align(Alignment.Center),
-                            imageVector = Icons.Default.Check,
-                            contentDescription = null,
-                            tint = Color.White,
-                        )
-                    }
-                }
-
-
-            }
-
-        }
-    }
-}
 
 
 @Preview(showBackground = true)
@@ -535,24 +480,4 @@ fun DefaultPreview() {
 }
 
 
-@Composable
-fun ColorMixtureCircle(
-    circleSize: Dp,
-    colors: List<Color>,
-    onColorMixtureCircleClicked: () -> Unit
-) {
-    BoxWithConstraints(
-        modifier = Modifier
-            .clickable {
-                onColorMixtureCircleClicked()
-            }
-    ) {
 
-        val gradientBrush = Brush.sweepGradient(colors)
-        Box(
-            modifier = Modifier
-                .size(circleSize)
-                .background(brush = gradientBrush, shape = CircleShape)
-        )
-    }
-}

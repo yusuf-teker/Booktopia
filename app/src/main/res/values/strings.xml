@@ -28,6 +28,7 @@
     <string name="sort_by_date">Yüklenme gününe göre sırala</string>
     <string name="reads">Okuduklarım</string>
     <string name="show_all">Hepsini göster</string>
+    <string name="sync_favorite_books">Favori kitaplarını senkronize et</string>
     <string name="help_and_feedback">Yardım ve Geribildirim</string>
     <string name="favorites">Favoriler</string>
     <string name="home">Ana sayfa</string>

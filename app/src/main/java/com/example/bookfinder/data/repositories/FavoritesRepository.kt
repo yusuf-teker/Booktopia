@@ -9,11 +9,14 @@ import com.google.firebase.database.*
 import javax.inject.Inject
 import com.example.bookfinder.BuildConfig
 import com.example.bookfinder.data.local.dao.NoteDao
+import com.example.bookfinder.data.model.remote.Book
 import com.example.bookfinder.data.model.room.Note
+import com.example.bookfinder.data.remote.BookApi
 
 class FavoritesRepository @Inject constructor(
     private val bookDao: BookDao,
-    private val noteDao: NoteDao
+    private val noteDao: NoteDao,
+    private val bookApi: BookApi,
 ) {
 
     val auth = FirebaseAuth.getInstance()
@@ -186,4 +189,37 @@ class FavoritesRepository @Inject constructor(
         })
     }
 
+    fun getAllBooksForUser(onBookIdsFetch: (List<String>) -> Unit) {
+        val userBooksRef = FirebaseDatabase.getInstance().getReference("users").child(userId).child("favoriteBooks")
+
+        userBooksRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val bookIds = mutableListOf<String>()
+                for (bookSnapshot in snapshot.children) {
+                    val bookId = bookSnapshot.key ?: continue
+                    bookIds.add(bookId)
+
+                }
+                onBookIdsFetch(bookIds)
+
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Hata durumunda yapılacak işlemler
+            }
+        })
+    }
+    suspend fun getBooksByIdList(bookIdList: List<String>): List<Book>{
+        return try {
+            val filteredBookList = bookIdList.filter { !it.contains("-") && !it.contains("_")}
+            bookApi.getBooksByIds(filteredBookList.joinToString("|"), filteredBookList.size).items
+        }catch (e: java.lang.Exception){
+            listOf()
+        }
+    }
+
+    suspend fun saveBooksToDatabase(books: List<FavoriteBook>) {
+        bookDao.insertBooks(books)
+    }
 }

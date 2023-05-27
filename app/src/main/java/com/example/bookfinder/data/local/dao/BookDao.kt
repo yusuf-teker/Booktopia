@@ -23,6 +23,9 @@ interface BookDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertFavoriteBook(book: FavoriteBook)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertBooks(books: List<FavoriteBook>)
+
     @Query("SELECT isFavorite FROM books WHERE bookId = :bookId" )
     suspend fun getFavoriteStatus(bookId: String): Boolean?
 
