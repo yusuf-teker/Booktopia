@@ -9,11 +9,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.bookfinder'
+    namespace 'com.yusufteker.bookfinder'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.bookfinder"
+        applicationId "com.yusufteker.bookfinder"
         minSdk 25
         targetSdk 33
         versionCode 1
