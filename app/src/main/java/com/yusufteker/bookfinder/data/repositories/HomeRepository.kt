@@ -4,6 +4,11 @@ import android.util.Log
 import com.yusufteker.bookfinder.data.model.remote.Book
 import com.yusufteker.bookfinder.data.remote.BookApi
 import com.google.firebase.database.*
+import com.yusufteker.bookfinder.BuildConfig
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.supervisorScope
 import javax.inject.Inject
 
 class HomeRepository @Inject constructor(
@@ -18,16 +23,37 @@ class HomeRepository @Inject constructor(
         }
     }
 
-     suspend fun getBooksByIdList(bookIdList: List<String>): List<Book>{
-        return try {
-            val filteredBookList = bookIdList.filter { !it.contains("-") && !it.contains("_")}
-            bookApi.getBooksByIds(filteredBookList.joinToString("|"), filteredBookList.size).items
-        }catch (e: java.lang.Exception){
-            listOf()
-        }
+    suspend fun getBooksByIdList(rawIds: List<String>): List<Book> = supervisorScope {
+        Log.d("yusuf", "RAW IDS  -> $rawIds")
+
+        val ids = rawIds
+            .map { it.substringAfterLast('-').substringAfterLast('_') }
+            .filter { it.isNotBlank() }
+
+        Log.d("yusuf", "CLEAN IDS -> $ids")
+
+        ids.map { id ->
+            async(Dispatchers.IO) {  // 👈 burada IO dispatcher kullanıyoruz
+                runCatching {
+                    Log.d("yusuf", "CALL       -> $id")
+                    var x: Book? =null
+                    try {
+                        x   = bookApi.getBookById(id, BuildConfig.BOOK_FINDER_API_KEY)
+                    }catch (e:Exception){
+
+                    }
+
+                    Log.d("yusuf", "BOOK       -> $x")
+                    x
+                }.getOrNull()
+            }
+        }.awaitAll()
+            .filterNotNull()
     }
 
-      fun getMostReadedBooksFromFirebase(onMostReadedBooksFetch:(List<String>)-> Unit){
+
+
+    fun getMostReadedBooksFromFirebase(onMostReadedBooksFetch:(List<String>)-> Unit){
         val booksRef = FirebaseDatabase.getInstance(com.yusufteker.bookfinder.BuildConfig.BOOKTOPIA_FIREBASE_URL).getReference("books")
         val topReadBooksQuery = booksRef.orderByChild("readCount").limitToLast(10)
 

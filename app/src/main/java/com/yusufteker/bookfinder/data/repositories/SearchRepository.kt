@@ -18,6 +18,7 @@ class SearchRepository @Inject constructor(
     suspend fun searchBooks(query: String, page : Int, pageSize: Int): List<Book> {
         return try {
             val searchResult = bookApi.searchBooks(query, startIndex = page*10, apiKey = BuildConfig.BOOK_FINDER_API_KEY, maxResults = pageSize)
+            Log.d("yusuf","searchBooks: $searchResult.items")
             searchResult.items
         } catch (e: Exception) {
             emptyList()
