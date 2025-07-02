@@ -94,7 +94,8 @@ fun HomeScreenContent(
                 modifier = Modifier
                     .wrapContentHeight()
                     .fillMaxWidth()
-                    .background(MaterialTheme.colors.surface)
+                    .statusBarsPadding()
+                .background(MaterialTheme.colors.surface)
             ) {
                 TopAppBar(
                     backgroundColor = Color.Transparent,

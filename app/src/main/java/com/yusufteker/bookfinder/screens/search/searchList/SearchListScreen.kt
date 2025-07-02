@@ -30,9 +30,12 @@ fun SearchListScreen(viewModel: SearchScreenViewModel, onBookClicked: (String) -
 
     Scaffold(
         topBar = {
-            SearchWidget(onQueryChanged = {
-                viewModel.setQueryAndSearch(it)
-            })
+            Box(modifier = Modifier.statusBarsPadding()) {
+                SearchWidget(onQueryChanged = {
+                    viewModel.setQueryAndSearch(it)
+                })
+            }
+
         },
         content = {
             Box(

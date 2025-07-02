@@ -89,6 +89,8 @@ fun DefaultTopAppBar(
             .wrapContentHeight()
             .fillMaxWidth()
             .background(MaterialTheme.colors.surface)
+            .statusBarsPadding()
+
 
     ) {
         TopAppBar(
@@ -286,6 +288,8 @@ fun SearchTopAppBar(
             .wrapContentHeight()
             .fillMaxWidth()
             .background(MaterialTheme.colors.surface)
+            .statusBarsPadding()
+
     ) {
 
         Surface(

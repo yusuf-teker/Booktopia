@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -63,11 +65,16 @@ fun AppScreen(viewModel: AuthViewModel,navController: NavHostController) {
                 modifier = Modifier
                     .height(Dimen.bottomNavigationHeight)
                     .background(Color.Transparent)
+                    .navigationBarsPadding()
 
             )
 
-        }, content = {
-            NavHost(navController = navController, startDestination = Screen.Home.route ){
+        }, content = { innerPadding ->
+            NavHost(
+                navController = navController,
+                startDestination = Screen.Home.route,
+                modifier = Modifier.padding(innerPadding)
+            ){
                 composable(Screen.Home.route){
                     HomeScreen(
                         onLogout ={ viewModel.logout() },
