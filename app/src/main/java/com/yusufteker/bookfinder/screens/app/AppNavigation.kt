@@ -14,6 +14,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -56,7 +58,7 @@ fun AppScreen(viewModel: AuthViewModel,navController: NavHostController) {
                 ),
                 navController = navController,
                 onItemClick = {
-                    navController.navigate(it.route)
+                    navController.navigateBottomNav(it.route)
                 },
                 modifier = Modifier
                     .height(Dimen.bottomNavigationHeight)
@@ -83,6 +85,18 @@ fun AppScreen(viewModel: AuthViewModel,navController: NavHostController) {
     )
 
 
+}
+fun NavController.navigateBottomNav(route: String) {
+    navigate(route) {
+        // Aynı sekmeye ikinci kez tıklayınca yeni kopya açma
+        launchSingleTop = true
+        // Başka sekmeye geçerken eski sekmenin back stack’ini sakla
+        restoreState = true
+        // Tüm alt sayfalardan başlangıca kadar geri döndürme
+        popUpTo(graph.findStartDestination().id) {
+            saveState = true
+        }
+    }
 }
 
 sealed class Screen(val route: String) {
